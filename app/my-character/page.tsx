@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { eq } from 'drizzle-orm';
 import { getDb } from '@/lib/db/client';
@@ -11,11 +11,12 @@ import { abilityModifier, proficiencyBonus, skillBonus, passivePerception, spell
 export const dynamic = 'force-dynamic';
 
 export default async function MyCharacterPage() {
-  const { userId } = await auth();
-  if (!userId) redirect('/sign-in');
+  const session = await auth();
+  if (!session?.user?.email) redirect('/sign-in');
+  const userEmail = session.user.email;
 
   const db = getDb();
-  const [char] = await db.select().from(characters).where(eq(characters.userId, userId));
+  const [char] = await db.select().from(characters).where(eq(characters.userId, userEmail));
 
   if (!char) {
     return (

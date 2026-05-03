@@ -56,7 +56,7 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
             <input
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder="user_2abc123..."
+              placeholder="email@gmail.com"
               style={{ flex: 1, backgroundColor: '#221c14', border: '1px solid #5a4020', color: '#e8d5a3', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', padding: '4px 8px', outline: 'none' }}
             />
             <button onClick={handleAssign} disabled={loading || !input.trim()}
@@ -69,7 +69,7 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
             </button>
           </div>
           <p style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontSize: '0.75rem', marginTop: 6, fontStyle: 'italic' }}>
-            Trova lo User ID dal dashboard Clerk → Users → click sul giocatore
+            Inserisci l'email Google del giocatore
           </p>
         </div>
       )}

@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import { getDb } from '@/lib/db/client';
-import { auth } from '@clerk/nextjs/server';
+import { auth } from '@/auth';
 import {
   characters, characterConditions, characterSpellSlots, characterResources,
   campaigns, type CharacterSheet,
@@ -34,8 +34,8 @@ type Params = { id: string };
 
 export default async function CharacterPage({ params }: { params: Promise<Params> }) {
   const { id } = await params;
-  const { userId } = await auth();
-  const isDm = userId === process.env.DM_USER_ID;
+  const session = await auth();
+  const isDm = session?.user?.email === process.env.NEXT_PUBLIC_DM_EMAIL;
   const db = getDb();
 
   const [char] = await db.select().from(characters).where(eq(characters.id, id));

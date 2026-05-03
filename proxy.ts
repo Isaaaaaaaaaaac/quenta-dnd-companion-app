@@ -1,17 +1,20 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { auth } from '@/auth';
 import { NextResponse } from 'next/server';
 
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)']);
+export default auth((req) => {
+  const session = req.auth;
+  const { pathname } = req.nextUrl;
 
-export default clerkMiddleware(async (auth, request) => {
-  if (isPublicRoute(request)) return NextResponse.next();
+  const isPublic = pathname.startsWith('/sign-in') || pathname.startsWith('/api/auth');
+  if (isPublic) return NextResponse.next();
 
-  const { userId } = await auth.protect();
-  const isDm = userId === process.env.NEXT_PUBLIC_DM_USER_ID;
+  if (!session) {
+    return NextResponse.redirect(new URL('/sign-in', req.url));
+  }
 
-  // I giocatori possono accedere solo a /my-character e alle API
-  if (!isDm && !request.nextUrl.pathname.startsWith('/my-character') && !request.nextUrl.pathname.startsWith('/api')) {
-    return NextResponse.redirect(new URL('/my-character', request.url));
+  const isDm = session.user?.email === process.env.NEXT_PUBLIC_DM_EMAIL;
+  if (!isDm && !pathname.startsWith('/my-character') && !pathname.startsWith('/api')) {
+    return NextResponse.redirect(new URL('/my-character', req.url));
   }
 });
 
