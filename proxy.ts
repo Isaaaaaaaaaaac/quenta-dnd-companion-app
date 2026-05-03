@@ -1,26 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
-export async function proxy(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const isPublic = pathname.startsWith('/sign-in') || pathname.startsWith('/api/auth');
   if (isPublic) return NextResponse.next();
 
-  const token = await getToken({
-    req,
-    secret: process.env.AUTH_SECRET,
-  });
+  // Optimistic check: verifica solo la presenza del cookie di sessione
+  const sessionToken =
+    req.cookies.get('__Secure-authjs.session-token') ??
+    req.cookies.get('authjs.session-token');
 
-  if (!token) {
+  if (!sessionToken) {
     return NextResponse.redirect(new URL('/sign-in', req.url));
   }
 
-  const isDm = token.email === process.env.NEXT_PUBLIC_DM_EMAIL;
-  if (!isDm && !pathname.startsWith('/my-character') && !pathname.startsWith('/api')) {
-    return NextResponse.redirect(new URL('/my-character', req.url));
-  }
-
+  // Il routing DM vs giocatore è gestito nelle singole pagine
   return NextResponse.next();
 }
 
