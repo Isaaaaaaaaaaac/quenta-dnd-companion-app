@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import { getDb } from '@/lib/db/client';
+import { auth } from '@clerk/nextjs/server';
 import {
   characters, characterConditions, characterSpellSlots, characterResources,
   campaigns, type CharacterSheet,
@@ -22,6 +23,7 @@ import SheetRestButtons from '@/components/character/sheet/SheetRestButtons';
 import LevelUpButton from '@/components/character/sheet/LevelUpButton';
 import SetupButton from '@/components/character/sheet/SetupButton';
 import AsiRetroactiveButton from '@/components/character/sheet/AsiRetroactiveButton';
+import AssignPlayerButton from '@/components/character/sheet/AssignPlayerButton';
 import type { Character } from '@/lib/db/schema';
 import XpControls from '@/components/dashboard/XpControls';
 import DeathSavesTracker from '@/components/character/sheet/DeathSavesTracker';
@@ -32,6 +34,8 @@ type Params = { id: string };
 
 export default async function CharacterPage({ params }: { params: Promise<Params> }) {
   const { id } = await params;
+  const { userId } = await auth();
+  const isDm = userId === process.env.DM_USER_ID;
   const db = getDb();
 
   const [char] = await db.select().from(characters).where(eq(characters.id, id));
@@ -208,6 +212,7 @@ export default async function CharacterPage({ params }: { params: Promise<Params
               )}
             </div>
             <div className="flex gap-2 flex-wrap justify-end">
+              {isDm && <AssignPlayerButton characterId={char.id} currentUserId={char.userId ?? null} />}
               <AsiRetroactiveButton character={char as Character} />
               <LevelUpButton character={char as Character} canLevelUp={canLevelUp} />
               <SheetRestButtons characterId={char.id} />

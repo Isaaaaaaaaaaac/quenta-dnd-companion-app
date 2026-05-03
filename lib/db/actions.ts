@@ -489,3 +489,17 @@ export async function deleteCampaign(id: string) {
   await db.delete(campaigns).where(eq(campaigns.id, id));
   revalidatePath('/campaigns');
 }
+
+// ─── ASSEGNAZIONE GIOCATORE ────────────────────────────────────────────────
+
+export async function assignUserToCharacter(characterId: string, clerkUserId: string) {
+  const db = getDb();
+  await db.update(characters).set({ userId: clerkUserId || null, updatedAt: now() }).where(eq(characters.id, characterId));
+  revalidatePath(`/characters/${characterId}`);
+}
+
+export async function removeUserFromCharacter(characterId: string) {
+  const db = getDb();
+  await db.update(characters).set({ userId: null, updatedAt: now() }).where(eq(characters.id, characterId));
+  revalidatePath(`/characters/${characterId}`);
+}

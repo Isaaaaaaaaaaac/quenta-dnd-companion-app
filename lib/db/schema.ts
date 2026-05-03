@@ -35,6 +35,7 @@ export const characters = sqliteTable('characters', {
   sheet: text('sheet', { mode: 'json' }).notNull().$type<CharacterSheet>().default({} as CharacterSheet),
 
   campaignId: text('campaign_id'),
+  userId:     text('user_id'),
   createdAt:  text('created_at').notNull(),
   updatedAt:  text('updated_at').notNull(),
 });
