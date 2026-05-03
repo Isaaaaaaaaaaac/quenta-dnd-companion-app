@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+@import "tailwindcss";
+
+@theme inline {
+  --font-cinzel: 'Cinzel', serif;
+  --font-cinzel-decorative: 'Cinzel Decorative', serif;
+  --font-fell: 'IM Fell English', serif;
+  --font-crimson: 'Crimson Text', serif;
+
+  --color-parchment:   #1a1410;
+  --color-parchment-2: #221c14;
+  --color-parchment-3: #2a2018;
+  --color-ink:         #e8d5a3;
+  --color-ink-muted:   #a08060;
+  --color-gold:        #c8922a;
+  --color-blood:       #8b2020;
+  --color-leather:     #5a4020;
+
+  --color-hp-green:  #4a7c4e;
+  --color-hp-yellow: #8a7a2a;
+  --color-hp-red:    #7a2a2a;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  background-color: #1a1410;
+  color: #e8d5a3;
+  font-family: 'Crimson Text', serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: 'Cinzel', serif;
+  color: #c8922a;
+  letter-spacing: 0.05em;
+}
+
+h1 { font-size: 1.8rem; font-weight: 700; }
+h2 { font-size: 1.4rem; font-weight: 600; }
+h3 { font-size: 1.1rem; font-weight: 600; }
+
+/* Separatori decorativi */
+.divider::before {
+  content: '────── ✦ ──────';
+  display: block;
+  text-align: center;
+  color: #5a4020;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1a1410; }
+::-webkit-scrollbar-thumb { background: #5a4020; border-radius: 3px; }

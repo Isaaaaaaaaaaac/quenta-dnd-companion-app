@@ -1,0 +1,22 @@
+// Abilità disponibili per scelta di competenza per ogni classe (SRD 2014)
+export const CLASS_SKILL_OPTIONS: Record<string, string[]> = {
+  barbarian: ['animal_handling', 'athletics', 'intimidation', 'nature', 'perception', 'survival'],
+  bard:      ['acrobatics', 'animal_handling', 'arcana', 'athletics', 'deception', 'history',
+               'insight', 'intimidation', 'investigation', 'medicine', 'nature', 'perception',
+               'performance', 'persuasion', 'religion', 'sleight_of_hand', 'stealth', 'survival'],
+  cleric:    ['history', 'insight', 'medicine', 'persuasion', 'religion'],
+  druid:     ['arcana', 'animal_handling', 'insight', 'medicine', 'nature', 'perception',
+               'religion', 'survival'],
+  fighter:   ['acrobatics', 'animal_handling', 'athletics', 'history', 'insight',
+               'intimidation', 'perception', 'survival'],
+  monk:      ['acrobatics', 'athletics', 'history', 'insight', 'religion', 'stealth'],
+  paladin:   ['athletics', 'insight', 'intimidation', 'medicine', 'persuasion', 'religion'],
+  ranger:    ['animal_handling', 'athletics', 'insight', 'investigation', 'nature',
+               'perception', 'stealth', 'survival'],
+  rogue:     ['acrobatics', 'athletics', 'deception', 'insight', 'intimidation', 'investigation',
+               'perception', 'performance', 'persuasion', 'sleight_of_hand', 'stealth'],
+  sorcerer:  ['arcana', 'deception', 'insight', 'intimidation', 'persuasion', 'religion'],
+  warlock:   ['arcana', 'deception', 'history', 'intimidation', 'investigation', 'nature',
+               'religion'],
+  wizard:    ['arcana', 'history', 'insight', 'investigation', 'medicine', 'religion'],
+};
