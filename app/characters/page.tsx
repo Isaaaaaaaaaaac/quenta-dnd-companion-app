@@ -3,6 +3,7 @@ import { characters } from '@/lib/db/schema';
 import type { Character, CharacterSheet } from '@/lib/db/schema';
 import { hpPercentage, proficiencyBonus } from '@/lib/rules/calculations';
 import { CLASSES } from '@/lib/srd/classes';
+import { requireDm } from '@/lib/auth-helpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,6 +16,7 @@ const TYPE_LABELS: Record<string, string> = {
 const TYPE_ORDER = ['pc', 'npc_major', 'npc_minor'];
 
 export default async function CharactersPage() {
+  await requireDm();
   const db = getDb();
   const all = await db.select().from(characters);
 

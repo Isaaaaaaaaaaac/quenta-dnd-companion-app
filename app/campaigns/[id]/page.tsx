@@ -28,6 +28,9 @@ interface CharacterWithRelations extends Character {
 export default async function CampaignDashboard({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const sessionUser = await getSessionUser();
+  if (!sessionUser) { const { redirect } = await import('next/navigation'); redirect('/sign-in'); }
+  if (sessionUser && sessionUser.role === 'player') { const { redirect } = await import('next/navigation'); redirect('/my-character'); }
+  if (sessionUser && !sessionUser.onboarded) { const { redirect } = await import('next/navigation'); redirect('/onboarding'); }
   const db = getDb();
 
   const [campaign] = await db.select().from(campaigns).where(eq(campaigns.id, id));

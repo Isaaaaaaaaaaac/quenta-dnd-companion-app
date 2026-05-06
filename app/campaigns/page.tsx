@@ -2,10 +2,12 @@ import { getDb } from '@/lib/db/client';
 import { campaigns, characters } from '@/lib/db/schema';
 import type { Campaign } from '@/lib/db/schema';
 import { eq, sql } from 'drizzle-orm';
+import { requireDm } from '@/lib/auth-helpers';
 
 export const dynamic = 'force-dynamic';
 
 export default async function CampaignsPage() {
+  await requireDm();
   const db = getDb();
   const allCampaigns = await db.select().from(campaigns).orderBy(campaigns.createdAt);
 
