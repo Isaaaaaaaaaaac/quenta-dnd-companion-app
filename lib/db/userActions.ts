@@ -11,8 +11,13 @@ import { generateId, now } from '@/lib/utils';
 
 export async function getOrCreateUser(id: string, email: string, name: string): Promise<User> {
   const db = getDb();
-  const [existing] = await db.select().from(users).where(eq(users.id, id));
-  if (existing) return existing;
+
+  // Cerca prima per ID, poi per email (gestisce cambio dispositivo o ID session diverso)
+  const [byId] = await db.select().from(users).where(eq(users.id, id));
+  if (byId) return byId;
+
+  const [byEmail] = await db.select().from(users).where(eq(users.email, email));
+  if (byEmail) return byEmail;
 
   const isSuperAdmin = email === process.env.SUPERADMIN_EMAIL;
   const ts = now();
