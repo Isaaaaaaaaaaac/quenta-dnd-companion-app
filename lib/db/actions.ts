@@ -482,6 +482,12 @@ export async function archiveCampaign(id: string) {
   revalidatePath('/campaigns');
 }
 
+export async function saveCombatState(campaignId: string, state: import('./schema').CombatState | null) {
+  const db = getDb();
+  await db.update(campaigns).set({ combatState: state, updatedAt: now() }).where(eq(campaigns.id, campaignId));
+  revalidatePath(`/campaigns/${campaignId}`);
+}
+
 export async function deleteCampaign(id: string) {
   const db = getDb();
   // Prima sposta i personaggi a NULL (o potresti eliminarli — scelta DM)

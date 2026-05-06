@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { auth, signOut } from '@/auth';
+import { getSessionUser } from '@/lib/auth-helpers';
 
 export const metadata: Metadata = {
   title: 'Aethon Companion',
@@ -8,8 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const sessionUser = await getSessionUser();
+  const isDm = sessionUser?.role === 'dm' || sessionUser?.role === 'superadmin';
+  const isSuperAdmin = sessionUser?.role === 'superadmin';
   const session = await auth();
-  const isDm = session?.user?.email === process.env.NEXT_PUBLIC_DM_EMAIL;
 
   return (
     <html lang="it" className="h-full">
@@ -20,12 +23,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             Aethon
           </a>
           <div className="flex items-center gap-6">
-            {isDm && (
-              <nav className="flex gap-6 text-sm" style={{ fontFamily: 'Crimson Text, serif', color: '#a08060' }}>
-                <a href="/campaigns"  className="hover:text-amber-300 transition-colors">Campagne</a>
-                <a href="/characters" className="hover:text-amber-300 transition-colors">Personaggi</a>
+            <nav className="flex gap-6 text-sm" style={{ fontFamily: 'Crimson Text, serif', color: '#a08060' }}>
+                {isDm && <>
+                  <a href="/campaigns"  className="hover:text-amber-300 transition-colors">Campagne</a>
+                  <a href="/characters" className="hover:text-amber-300 transition-colors">Personaggi</a>
+                </>}
+                {!isDm && sessionUser && (
+                  <a href="/my-characters" className="hover:text-amber-300 transition-colors">I miei personaggi</a>
+                )}
+                {isSuperAdmin && (
+                  <a href="/admin" className="hover:text-amber-300 transition-colors" style={{ color: '#c8922a' }}>Admin</a>
+                )}
               </nav>
-            )}
             {session && (
               <div className="flex items-center gap-3">
                 <span style={{ fontFamily: 'Crimson Text, serif', color: '#6a5040', fontSize: '0.8rem' }}>

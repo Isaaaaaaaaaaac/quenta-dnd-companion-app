@@ -3,10 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const isPublic = pathname.startsWith('/sign-in') || pathname.startsWith('/api/auth');
+  const isPublic =
+    pathname.startsWith('/sign-in') ||
+    pathname.startsWith('/api/auth') ||
+    pathname.startsWith('/onboarding') ||
+    pathname.startsWith('/join');
+
   if (isPublic) return NextResponse.next();
 
-  // Optimistic check: verifica solo la presenza del cookie di sessione
   const sessionToken =
     req.cookies.get('__Secure-authjs.session-token') ??
     req.cookies.get('authjs.session-token');
@@ -15,7 +19,6 @@ export function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL('/sign-in', req.url));
   }
 
-  // Il routing DM vs giocatore è gestito nelle singole pagine
   return NextResponse.next();
 }
 

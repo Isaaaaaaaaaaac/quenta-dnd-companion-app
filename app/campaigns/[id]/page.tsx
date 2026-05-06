@@ -2,7 +2,7 @@ import { eq, and } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import { getDb } from '@/lib/db/client';
 import { campaigns, characters, characterConditions, characterSpellSlots } from '@/lib/db/schema';
-import type { Character, CharacterCondition, CharacterSpellSlot, CharacterSheet } from '@/lib/db/schema';
+import type { Character, CharacterCondition, CharacterSpellSlot, CharacterSheet, CombatState } from '@/lib/db/schema';
 import { getCondition } from '@/lib/srd/conditions';
 import { XP_THRESHOLDS, getXpForNextLevel } from '@/lib/srd/constants';
 import { abilityModifier, proficiencyBonus, hpPercentage, formatModifier, initiative } from '@/lib/rules/calculations';
@@ -13,6 +13,10 @@ import ConditionBadge from '@/components/dashboard/ConditionBadge';
 import AddConditionButton from '@/components/dashboard/AddConditionButton';
 import XpControls from '@/components/dashboard/XpControls';
 import CampaignSettingsButton from '@/components/campaign/CampaignSettingsButton';
+import CombatStartButton from '@/components/combat/CombatStartButton';
+import CombatView from '@/components/combat/CombatView';
+import CampaignMembersButton from '@/components/campaign/CampaignMembersButton';
+import { getSessionUser } from '@/lib/auth-helpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,13 +27,21 @@ interface CharacterWithRelations extends Character {
 
 export default async function CampaignDashboard({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const sessionUser = await getSessionUser();
   const db = getDb();
 
   const [campaign] = await db.select().from(campaigns).where(eq(campaigns.id, id));
   if (!campaign) notFound();
 
-  const pcs = await db.select().from(characters)
-    .where(and(eq(characters.campaignId, id), eq(characters.type, 'pc')));
+  const allChars = await db.select().from(characters).where(eq(characters.campaignId, id));
+  const pcs = allChars.filter(c => c.type === 'pc');
+
+  // Fetch spell slots for all characters (needed for combat view)
+  const allSpellSlots = await Promise.all(
+    allChars.map(c => db.select().from(characterSpellSlots).where(eq(characterSpellSlots.characterId, c.id)))
+  );
+  const spellSlotsByChar: Record<string, CharacterSpellSlot[]> = {};
+  allChars.forEach((c, i) => { spellSlotsByChar[c.id] = allSpellSlots[i]; });
 
   const party: CharacterWithRelations[] = await Promise.all(pcs.map(async pc => {
     const [conditions, spellSlots] = await Promise.all([
@@ -38,6 +50,19 @@ export default async function CampaignDashboard({ params }: { params: Promise<{ 
     ]);
     return { ...pc, conditions, spellSlots };
   }));
+
+  // Combat mode
+  const combatState = campaign.combatState as CombatState | null;
+  if (combatState?.active) {
+    return (
+      <CombatView
+        campaignId={id}
+        initialState={combatState}
+        characters={allChars}
+        spellSlotsByChar={spellSlotsByChar}
+      />
+    );
+  }
 
   return (
     <div>
@@ -64,6 +89,8 @@ export default async function CampaignDashboard({ params }: { params: Promise<{ 
             Tutti i personaggi
           </a>
           <CampaignSettingsButton campaign={campaign} />
+          {sessionUser && <CampaignMembersButton campaignId={id} dmUserId={sessionUser.id} />}
+          <CombatStartButton campaignId={id} characters={allChars} />
         </div>
       </div>
 

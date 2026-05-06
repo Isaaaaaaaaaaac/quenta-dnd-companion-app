@@ -10,12 +10,87 @@ export const campaigns = sqliteTable('campaigns', {
   dmNotes:     text('dm_notes'),
   coverUrl:    text('cover_url'),
   status:      text('status', { enum: ['active', 'archived'] }).notNull().default('active'),
+  combatState: text('combat_state', { mode: 'json' }).$type<CombatState | null>(),
   createdAt:   text('created_at').notNull(),
   updatedAt:   text('updated_at').notNull(),
 });
 
 export type Campaign    = typeof campaigns.$inferSelect;
 export type NewCampaign = typeof campaigns.$inferInsert;
+
+// ─── UTENTI ────────────────────────────────────────────────────────────────
+
+export const users = sqliteTable('users', {
+  id:          text('id').primaryKey(),         // Google sub
+  email:       text('email').notNull().unique(),
+  name:        text('name').notNull().default(''),
+  role:        text('role', { enum: ['superadmin', 'dm', 'player', 'pending_dm', 'rejected', 'pending'] }).notNull().default('pending'),
+  onboarded:   integer('onboarded', { mode: 'boolean' }).notNull().default(false),
+  dmNote:      text('dm_note'),
+  createdAt:   text('created_at').notNull(),
+  updatedAt:   text('updated_at').notNull(),
+});
+
+export type User    = typeof users.$inferSelect;
+export type NewUser = typeof users.$inferInsert;
+
+// ─── MEMBERSHIP GIOCATORE ↔ CAMPAGNA ──────────────────────────────────────
+
+export const userCampaignMemberships = sqliteTable('user_campaign_memberships', {
+  userId:            text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  campaignId:        text('campaign_id').notNull().references(() => campaigns.id, { onDelete: 'cascade' }),
+  activeCharacterId: text('active_character_id'),
+  joinedAt:          text('joined_at').notNull(),
+}, (t) => ({ pk: primaryKey({ columns: [t.userId, t.campaignId] }) }));
+
+export type UserCampaignMembership = typeof userCampaignMemberships.$inferSelect;
+
+// ─── INVITI CAMPAGNA ───────────────────────────────────────────────────────
+
+export const campaignInvitations = sqliteTable('campaign_invitations', {
+  id:         text('id').primaryKey(),
+  campaignId: text('campaign_id').notNull().references(() => campaigns.id, { onDelete: 'cascade' }),
+  token:      text('token').notNull().unique(),
+  active:     integer('active', { mode: 'boolean' }).notNull().default(true),
+  createdBy:  text('created_by').notNull(),
+  createdAt:  text('created_at').notNull(),
+});
+
+export type CampaignInvitation = typeof campaignInvitations.$inferSelect;
+
+// ─── RICHIESTE CAMBIO PERSONAGGIO ─────────────────────────────────────────
+
+export const characterSwitchRequests = sqliteTable('character_switch_requests', {
+  id:          text('id').primaryKey(),
+  userId:      text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  campaignId:  text('campaign_id').notNull().references(() => campaigns.id, { onDelete: 'cascade' }),
+  fromCharId:  text('from_char_id'),
+  toCharId:    text('to_char_id').notNull(),
+  status:      text('status', { enum: ['pending', 'approved', 'rejected'] }).notNull().default('pending'),
+  createdAt:   text('created_at').notNull(),
+});
+
+export type CharacterSwitchRequest = typeof characterSwitchRequests.$inferSelect;
+
+// ─── COMBAT ────────────────────────────────────────────────────────────────
+
+export interface CombatParticipant {
+  characterId: string;
+  initiative: number;
+  actionsUsed: { action: boolean; bonusAction: boolean; movement: boolean; reaction: boolean };
+  concentrating: string | null;
+  hpCurrent: number;
+  hpMax: number;
+  hpTemp: number;
+  conditions: string[];
+}
+
+export interface CombatState {
+  active: boolean;
+  round: number;
+  currentTurnIndex: number;
+  participants: CombatParticipant[]; // ordered by display (rotates on turn end)
+}
 
 // ─── PERSONAGGI ────────────────────────────────────────────────────────────
 
