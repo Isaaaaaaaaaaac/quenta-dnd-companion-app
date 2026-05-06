@@ -71,6 +71,16 @@ export async function updateUserRole(userId: string, role: User['role']) {
 
 export async function deleteUser(userId: string) {
   const db = getDb();
+  // Recupera l'email prima di eliminare (userId su characters può essere email o sub)
+  const [user] = await db.select().from(users).where(eq(users.id, userId));
+  // Scollega i personaggi (rimangono nella campagna, solo non più legati all'account)
+  if (user?.email) {
+    await db.update(characters).set({ userId: null }).where(eq(characters.userId, user.email));
+  }
+  await db.update(characters).set({ userId: null }).where(eq(characters.userId, userId));
+  // Elimina inviti campagna creati da questo utente
+  await db.delete(campaignInvitations).where(eq(campaignInvitations.createdBy, userId));
+  // Elimina tutte le tracce utente
   await db.delete(userCampaignMemberships).where(eq(userCampaignMemberships.userId, userId));
   await db.delete(characterSwitchRequests).where(eq(characterSwitchRequests.userId, userId));
   await db.delete(users).where(eq(users.id, userId));
