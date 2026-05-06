@@ -69,6 +69,14 @@ export async function updateUserRole(userId: string, role: User['role']) {
   revalidatePath('/admin');
 }
 
+export async function deleteUser(userId: string) {
+  const db = getDb();
+  await db.delete(userCampaignMemberships).where(eq(userCampaignMemberships.userId, userId));
+  await db.delete(characterSwitchRequests).where(eq(characterSwitchRequests.userId, userId));
+  await db.delete(users).where(eq(users.id, userId));
+  revalidatePath('/admin');
+}
+
 // ─── Inviti ────────────────────────────────────────────────────────────────
 
 function randomToken() {

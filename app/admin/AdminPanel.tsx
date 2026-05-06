@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { approveDm, rejectDm, updateUserRole } from '@/lib/db/userActions';
+import { approveDm, rejectDm, updateUserRole, deleteUser } from '@/lib/db/userActions';
 import type { User } from '@/lib/db/schema';
 
 const ROLE_LABELS: Record<string, string> = {
@@ -35,6 +35,13 @@ export default function AdminPanel({ users }: { users: User[] }) {
   async function handleRoleChange(userId: string, role: User['role']) {
     setLoading(userId + '_role');
     await updateUserRole(userId, role);
+    setLoading(null);
+  }
+
+  async function handleDelete(userId: string, email: string) {
+    if (!confirm(`Eliminare l'utente ${email}? Questa azione è irreversibile.`)) return;
+    setLoading(userId + '_delete');
+    await deleteUser(userId);
     setLoading(null);
   }
 
@@ -113,6 +120,12 @@ export default function AdminPanel({ users }: { users: User[] }) {
                     <option value="pending">Pending</option>
                     <option value="rejected">Rifiutato</option>
                   </select>
+                )}
+                {u.role !== 'superadmin' && (
+                  <button onClick={() => handleDelete(u.id, u.email)} disabled={!!loading}
+                    style={{ border: '1px solid #5a2020', color: '#6a3030', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.6rem', padding: '3px 8px', cursor: 'pointer' }}>
+                    🗑
+                  </button>
                 )}
               </div>
             </div>
