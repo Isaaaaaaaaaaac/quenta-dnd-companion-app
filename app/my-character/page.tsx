@@ -1,8 +1,9 @@
-import { auth } from '@/auth';
-import { redirect } from 'next/navigation';
-import { eq } from 'drizzle-orm';
+import { requireAuth } from '@/lib/auth-helpers';
+import { getMemberships } from '@/lib/db/userActions';
 import { getDb } from '@/lib/db/client';
-import { characters, characterConditions, characterSpellSlots, type CharacterSheet } from '@/lib/db/schema';
+import { characters, characterConditions, characterSpellSlots, campaigns, type CharacterSheet } from '@/lib/db/schema';
+import { eq, and } from 'drizzle-orm';
+import { redirect } from 'next/navigation';
 import { CLASSES } from '@/lib/srd/classes';
 import { SKILLS, ABILITY_SHORT, ABILITY_NAMES, type Ability } from '@/lib/srd/skills';
 import { CONDITIONS } from '@/lib/srd/conditions';
@@ -11,21 +12,77 @@ import { abilityModifier, proficiencyBonus, skillBonus, passivePerception, spell
 export const dynamic = 'force-dynamic';
 
 export default async function MyCharacterPage() {
-  const session = await auth();
-  if (!session?.user?.email) redirect('/sign-in');
-  const userEmail = session.user.email;
-
+  const user = await requireAuth();
   const db = getDb();
-  const [char] = await db.select().from(characters).where(eq(characters.userId, userEmail));
+
+  const memberships = await getMemberships(user.id);
+
+  // Nessuna campagna → messaggio di attesa
+  if (memberships.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', marginTop: '4rem' }}>
+        <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1.5rem', marginBottom: 12 }}>
+          Nessuna campagna
+        </div>
+        <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem', fontStyle: 'italic' }}>
+          Chiedi al tuo DM il link di invito per unirti a una campagna.
+        </p>
+      </div>
+    );
+  }
+
+  // Più campagne → vai alla dashboard completa
+  if (memberships.length > 1) {
+    redirect('/my-characters');
+  }
+
+  // Una sola campagna → mostra il personaggio attivo
+  const membership = memberships[0];
+  const [campaign] = await db.select().from(campaigns).where(eq(campaigns.id, membership.campaignId));
+
+  // Nessun personaggio attivo assegnato
+  if (!membership.activeCharacterId) {
+    const myChars = await db.select().from(characters)
+      .where(and(eq(characters.userId, user.id), eq(characters.campaignId, membership.campaignId)));
+
+    return (
+      <div style={{ textAlign: 'center', marginTop: '4rem' }}>
+        <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1.3rem', marginBottom: 8 }}>
+          {campaign?.name ?? 'Campagna'}
+        </div>
+        {myChars.length === 0 ? (
+          <>
+            <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem', fontStyle: 'italic', marginBottom: 20 }}>
+              Non hai ancora un personaggio in questa campagna.
+            </p>
+            <a href={`/campaigns/${membership.campaignId}/characters/new`}
+              style={{ border: '1px solid #c8922a', color: '#c8922a', fontFamily: 'Cinzel, serif', fontSize: '0.8rem', padding: '10px 24px', textDecoration: 'none' }}>
+              + Crea il tuo personaggio
+            </a>
+          </>
+        ) : (
+          <>
+            <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem', fontStyle: 'italic', marginBottom: 20 }}>
+              Hai {myChars.length} personaggio{myChars.length > 1 ? 'i' : ''} ma nessuno è attivo. Richiedi al DM di assegnarne uno.
+            </p>
+            <a href="/my-characters"
+              style={{ border: '1px solid #5a4020', color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.8rem', padding: '10px 24px', textDecoration: 'none' }}>
+              Vedi i miei personaggi
+            </a>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // Mostra il personaggio attivo
+  const [char] = await db.select().from(characters).where(eq(characters.id, membership.activeCharacterId));
 
   if (!char) {
     return (
       <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-        <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1.5rem', marginBottom: 12 }}>
-          Nessun personaggio assegnato
-        </div>
-        <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem', fontStyle: 'italic' }}>
-          Chiedi al tuo DM di assegnare la tua scheda personaggio.
+        <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontStyle: 'italic' }}>
+          Personaggio non trovato. Chiedi al DM di riassegnarlo.
         </p>
       </div>
     );
@@ -73,6 +130,12 @@ export default async function MyCharacterPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
 
+      {/* Campagna breadcrumb */}
+      <div style={{ fontFamily: 'Crimson Text, serif', color: '#5a4020', fontSize: '0.8rem', fontStyle: 'italic' }}>
+        {campaign?.name ?? 'Campagna'} ·{' '}
+        <a href="/my-characters" style={{ color: '#5a4020', textDecoration: 'none' }}>I miei personaggi</a>
+      </div>
+
       {/* Header */}
       <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
         <div style={{ fontFamily: 'Cinzel Decorative, serif', color: '#c8922a', fontSize: '1.8rem' }}>{char.name}</div>
@@ -91,11 +154,9 @@ export default async function MyCharacterPage() {
           <div style={{ fontFamily: 'Cinzel, serif', fontSize: '2rem', color: hpBarColor }}>
             {char.hpCurrent}<span style={{ fontSize: '1rem', color: '#6a5040' }}>/{char.hpMax}</span>
           </div>
-          {char.hpTemp > 0 && (
-            <div style={{ fontSize: '0.75rem', color: '#6a8c6e', fontFamily: 'Cinzel, serif' }}>+{char.hpTemp} temp</div>
-          )}
+          {char.hpTemp > 0 && <div style={{ fontSize: '0.75rem', color: '#6a8c6e', fontFamily: 'Cinzel, serif' }}>+{char.hpTemp} temp</div>}
           <div style={{ height: 4, backgroundColor: '#3a2010', marginTop: 6, borderRadius: 2 }}>
-            <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpBarColor, borderRadius: 2, transition: 'width 0.3s' }} />
+            <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpBarColor, borderRadius: 2 }} />
           </div>
         </div>
         <div className="p-4 border text-center" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
@@ -188,7 +249,7 @@ export default async function MyCharacterPage() {
       )}
 
       {/* Slot incantesimo */}
-      {spellSlots.length > 0 && (
+      {spellSlots.filter(s => s.total > 0).length > 0 && (
         <div>
           <h3 className="mb-3 pb-1" style={{ borderBottom: '1px solid #5a4020' }}>Slot Incantesimo</h3>
           <div className="flex flex-wrap gap-3">
