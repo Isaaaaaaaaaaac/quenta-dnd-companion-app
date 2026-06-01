@@ -12,19 +12,14 @@ import {
   totalCarriedWeight, carryStatus, formatModifier, hpPercentage,
 } from '@/lib/rules/calculations';
 import { SKILLS, ABILITY_SHORT, ABILITY_NAMES, type Ability } from '@/lib/srd/skills';
-import { CONDITIONS } from '@/lib/srd/conditions';
 import { CLASSES, SPELLCASTING_SUBCLASSES } from '@/lib/srd/classes';
 import { XP_THRESHOLDS, getXpForNextLevel } from '@/lib/srd/constants';
 
-import HpControls from '@/components/dashboard/HpControls';
-import ConditionBadge from '@/components/dashboard/ConditionBadge';
-import AddConditionButton from '@/components/dashboard/AddConditionButton';
 import LevelUpButton from '@/components/character/sheet/LevelUpButton';
 import AsiRetroactiveButton from '@/components/character/sheet/AsiRetroactiveButton';
 import AssignPlayerButton from '@/components/character/sheet/AssignPlayerButton';
 import ActiveCharacterButton from '@/components/character/sheet/ActiveCharacterButton';
 import XpControls from '@/components/dashboard/XpControls';
-import DeathSavesTracker from '@/components/character/sheet/DeathSavesTracker';
 import InventoryCard from '@/components/character/sheet/InventoryCard';
 import AddSpellButton from '@/components/character/sheet/AddSpellButton';
 import PortraitButton from '@/components/character/portrait/PortraitButton';
@@ -36,6 +31,8 @@ import PinnedActiveResources from '@/components/character/features/PinnedActiveR
 import BackstoryCard from '@/components/character/sheet/BackstoryCard';
 import MobileSheet from '@/components/character/mobile/MobileSheet';
 import type { Character } from '@/lib/db/schema';
+import SheetTabBar from '@/components/character/sheet/SheetTabBar';
+import HpStrip from '@/components/character/sheet/HpStrip';
 
 export const dynamic = 'force-dynamic';
 
@@ -373,331 +370,291 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
         </div>
         {/* Fine sidebar ════════════════════════════════════════════════ */}
 
-        {/* ════ Pannello destro: grid 3 colonne + BackstoryCard ════ */}
+        {/* ════ Pannello destro: HpStrip + SheetTabBar ════ */}
         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
-        {/* ════ Storia: narrativa + backstory preview ════ */}
-        <BackstoryCard
+
+        {/* HP Strip — sempre visibile */}
+        <HpStrip
           characterId={char.id}
-          charName={char.name}
-          initialBackstory={sheet.backstory ?? ''}
-          personality={sheet.personality}
-          ideals={sheet.ideals}
-          bonds={sheet.bonds}
-          flaws={sheet.flaws}
-          isOwner={!isDm}
+          hpCurrent={char.hpCurrent}
+          hpMax={char.hpMax}
+          hpTemp={char.hpTemp}
+          hpPct={hpPct}
+          hpColor={hpColor}
+          hitDie={hitDie}
+          level={level}
+          conditions={conditions}
+          sheet={sheet}
         />
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--s-2)', alignItems: 'start' }}>
+        {/* Tab navigation */}
+        <SheetTabBar
+          combat={
+            <div style={{ padding: 'var(--s-2)', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--s-2)', alignItems: 'start' }}>
 
-        {/* ════ COL 2: Chi sei — Caratteristiche + Salvezze + Abilità ════ */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
-
-          {/* Caratteristiche */}
-          <div style={CARD}>
-            <SectionTitle>Caratteristiche</SectionTitle>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
-              {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
-                const val = stats[key];
-                const mod = abilityModifier(val);
-                const isNeg = mod < 0;
-                const isZero = mod === 0;
-                return (
-                  <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>{ABILITY_NAMES[key]}</span>
-                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 700, color: isNeg ? 'var(--danger)' : isZero ? 'var(--fg-2)' : 'var(--gold)', lineHeight: 1, display: 'block' }}>
-                      {formatModifier(mod)}
-                    </span>
-                    <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>{val}</span>
+              {/* Col A: Caratteristiche + Tiri Salvezza */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
+                <div style={CARD}>
+                  <SectionTitle>Caratteristiche</SectionTitle>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
+                    {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
+                      const val = stats[key];
+                      const mod = abilityModifier(val);
+                      const isNeg = mod < 0;
+                      const isZero = mod === 0;
+                      return (
+                        <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
+                          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>{ABILITY_NAMES[key]}</span>
+                          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 700, color: isNeg ? 'var(--danger)' : isZero ? 'var(--fg-2)' : 'var(--gold)', lineHeight: 1, display: 'block' }}>
+                            {formatModifier(mod)}
+                          </span>
+                          <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>{val}</span>
+                        </div>
+                      );
+                    })}
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                </div>
 
-          {/* Tiri Salvezza */}
-          <div style={CARD}>
-            <SectionTitle>Tiri Salvezza</SectionTitle>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
-                const proficient = (savingThrows as Record<string, boolean>)[key] ?? false;
-                const bonus = abilityModifier(stats[key]) + (proficient ? prof : 0);
-                return (
-                  <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
-                      <div style={{ width: 8, height: 8, borderRadius: 'var(--r-sm)', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
-                      <span style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{ABILITY_NAMES[key]}</span>
-                    </div>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)' }}>
-                      {formatModifier(bonus)}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Abilità */}
-          <div style={CARD}>
-            <SectionTitle>Abilità</SectionTitle>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 var(--s-1)' }}>
-              {/* Left: str + dex + int */}
-              <div>
-                {leftAbilities.map((ability, abilityIdx) => {
-                  const abilitySkills = SKILLS.filter(s => s.ability === ability);
-                  if (!abilitySkills.length) return null;
-                  return (
-                    <div key={ability}>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
-                        {ABILITY_SHORT[ability]}
-                      </div>
-                      {abilitySkills.map(skill => {
-                        const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
-                        const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
-                        return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                            <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
-                            <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
-                            <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
-                            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
-                              {formatModifier(bonus)}
-                            </span>
+                <div style={CARD}>
+                  <SectionTitle>Tiri Salvezza</SectionTitle>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
+                      const proficient = (savingThrows as Record<string, boolean>)[key] ?? false;
+                      const bonus = abilityModifier(stats[key]) + (proficient ? prof : 0);
+                      return (
+                        <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
+                            <div style={{ width: 8, height: 8, borderRadius: 'var(--r-sm)', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
+                            <span style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{ABILITY_NAMES[key]}</span>
                           </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+                          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)' }}>
+                            {formatModifier(bonus)}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
-              {/* Right: wis + cha */}
-              <div>
-                {rightAbilities.map((ability, abilityIdx) => {
-                  const abilitySkills = SKILLS.filter(s => s.ability === ability);
-                  if (!abilitySkills.length) return null;
-                  return (
-                    <div key={ability}>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
-                        {ABILITY_SHORT[ability]}
-                      </div>
-                      {abilitySkills.map(skill => {
-                        const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
-                        const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
-                        return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                            <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
-                            <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
-                            <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
-                            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
-                              {formatModifier(bonus)}
-                            </span>
+
+              {/* Col B: Stats combattimento + Attacchi + Risorse pinnate attive */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
+                <div style={CARD}>
+                  <SectionTitle>Statistiche di Combattimento</SectionTitle>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 'var(--s-1)' }}>
+                      {[
+                        ['C.A.', sheet.armorClass ?? (10 + abilityModifier(stats.dex))],
+                        ['Iniziativa', formatModifier(abilityModifier(stats.dex) + (sheet.initiativeBonus ?? 0))],
+                        ['Velocità', `${sheet.speed ?? 9}m`],
+                      ].map(([l, v]) => (
+                        <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
+                          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
+                          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
+                      {[
+                        ['Bonus Comp.', `+${prof}`],
+                        ['Perc. Passiva', passPerc],
+                        ...(spellDC !== null ? [['CD Incant.', spellDC], ['Att. Incant.', formatModifier(spellAtk!)]] : []),
+                      ].map(([l, v]) => (
+                        <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
+                          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
+                          <span style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={CARD}>
+                  <SectionTitle>Attacchi</SectionTitle>
+                  {(sheet.weapons?.length ?? 0) === 0 ? (
+                    <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)' }}>
+                      Nessuna arma — aggiungi equipaggiamento nella scheda
+                    </p>
+                  ) : (
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+                      <thead>
+                        <tr>
+                          {['Arma', 'Car.', 'Danno', 'Acc.'].map(h => (
+                            <th key={h} style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', textAlign: 'left', paddingBottom: 'var(--s-1)', borderBottom: '1px solid var(--border-leather)', fontWeight: 400, textTransform: 'uppercase' }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(sheet.weapons ?? []).map(w => {
+                          const atkMod = abilityModifier(stats[w.attackStat]) + prof + (w.magicBonus ?? 0);
+                          const dmgMod = abilityModifier(stats[w.attackStat]) + (w.magicBonus ?? 0);
+                          return (
+                            <tr key={w.id}>
+                              <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', color: 'var(--fg-1)' }}>{w.name}{w.magic && w.magicBonus ? ` +${w.magicBonus}` : ''}</td>
+                              <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', color: 'var(--fg-2)', fontSize: '10px' }}>{w.attackStat.toUpperCase()}</td>
+                              <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', fontFamily: 'var(--font-sans)', color: 'var(--gold)', fontSize: '11px', fontWeight: 500 }}>
+                                {w.damageDice}{dmgMod !== 0 ? formatModifier(dmgMod) : ''}
+                              </td>
+                              <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', fontFamily: 'var(--font-sans)', color: 'var(--hp-healthy)', fontSize: '11px' }}>
+                                {formatModifier(atkMod)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+
+                {pinnedActive.length > 0 && (
+                  <PinnedActiveResources
+                    characterId={char.id}
+                    features={pinnedActive}
+                    resources={resources}
+                  />
+                )}
+              </div>
+
+              {/* Col C: Abilità */}
+              <div style={CARD}>
+                <SectionTitle>Abilità</SectionTitle>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 var(--s-1)' }}>
+                  <div>
+                    {leftAbilities.map((ability, abilityIdx) => {
+                      const abilitySkills = SKILLS.filter(s => s.ability === ability);
+                      if (!abilitySkills.length) return null;
+                      return (
+                        <div key={ability}>
+                          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
+                            {ABILITY_SHORT[ability]}
                           </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* ════ COL 3: In battaglia — Combattimento + HP + Condizioni + Attacchi ════ */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
-
-          {/* Statistiche di Combattimento + HP */}
-          <div style={CARD}>
-            <SectionTitle>Statistiche di Combattimento</SectionTitle>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 'var(--s-1)' }}>
-                {[
-                  ['C.A.', sheet.armorClass ?? (10 + abilityModifier(stats.dex))],
-                  ['Iniziativa', formatModifier(abilityModifier(stats.dex) + (sheet.initiativeBonus ?? 0))],
-                  ['Velocità', `${sheet.speed ?? 9}m`],
-                ].map(([l, v]) => (
-                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
-                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
+                          {abilitySkills.map(skill => {
+                            const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
+                            const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
+                            return (
+                              <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
+                                <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                                <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
+                                <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
+                                <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
+                                  {formatModifier(bonus)}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
                   </div>
-                ))}
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
-                {[
-                  ['Bonus Comp.', `+${prof}`],
-                  ['Perc. Passiva', passPerc],
-                  ...(spellDC !== null ? [['CD Incant.', spellDC], ['Att. Incant.', formatModifier(spellAtk!)]] : []),
-                ].map(([l, v]) => (
-                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
-                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
+                  <div>
+                    {rightAbilities.map((ability, abilityIdx) => {
+                      const abilitySkills = SKILLS.filter(s => s.ability === ability);
+                      if (!abilitySkills.length) return null;
+                      return (
+                        <div key={ability}>
+                          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
+                            {ABILITY_SHORT[ability]}
+                          </div>
+                          {abilitySkills.map(skill => {
+                            const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
+                            const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
+                            return (
+                              <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
+                                <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                                <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
+                                <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
+                                <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
+                                  {formatModifier(bonus)}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
 
-            {/* HP */}
-            <div style={{ marginTop: 'var(--s-2)' }}>
-              <SectionTitle>Punti Ferita</SectionTitle>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
-                <span style={{ fontFamily: 'var(--font-serif)', fontSize: '48px', fontWeight: 700, lineHeight: 1, color: hpColor, transition: 'color .4s' }}>{char.hpCurrent}</span>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--fg-2)' }}>
-                  / {char.hpMax} max{char.hpTemp > 0 ? ` (+${char.hpTemp} temp)` : ''}
-                </span>
+            </div>
+          }
+          equipment={
+            <div style={{ padding: 'var(--s-2)', display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
+              <InventoryCard
+                characterId={char.id}
+                inventory={sheet.inventory ?? []}
+                money={sheet.money ?? { pp: 0, gp: 0, ep: 0, sp: 0, cp: 0 }}
+              />
+              <div style={CARD}>
+                <SectionTitle>Capacità di Trasporto</SectionTitle>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--s-1)' }}>
+                  <span>Peso trasportato</span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: carryOverloaded ? 'var(--danger)' : 'var(--fg-1)' }}>
+                    {carriedKg.toFixed(1)} / {carryMax} kg
+                  </span>
+                </div>
+                <div style={{ height: 4, backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--r-sm)', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${carryPct}%`, backgroundColor: carryOverloaded ? 'var(--danger)' : 'var(--gold)', borderRadius: 'var(--r-sm)', opacity: 0.7 }} />
+                </div>
               </div>
-              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 'var(--r-sm)', overflow: 'hidden', marginBottom: 'var(--s-1)' }}>
-                <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpColor, borderRadius: 'var(--r-sm)', transition: 'width .5s ease, background .6s' }} />
-              </div>
-              <HpControls characterId={char.id} hpCurrent={char.hpCurrent} hpMax={char.hpMax} />
-              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginTop: 'var(--s-1)' }}>
-                Dado Vita <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '12px', color: 'var(--fg-1)' }}>d{hitDie} × {level}</strong>
-              </div>
-              {char.hpCurrent === 0 && (
-                <div style={{ marginTop: 'var(--s-1)', paddingTop: 'var(--s-1)', borderTop: '1px solid var(--danger-border)' }}>
-                  <DeathSavesTracker characterId={char.id} sheet={sheet} />
+              {sheet.money && (
+                <div style={CARD}>
+                  <SectionTitle>Denaro</SectionTitle>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
+                    {([
+                      ['PP', 'var(--fg-1)', sheet.money.pp],
+                      ['PO', 'var(--gold)', sheet.money.gp],
+                      ['PE', '#a0a0c8',    sheet.money.ep],
+                      ['PA', '#a8a8a8',    sheet.money.sp],
+                      ['PR', '#b06030',    sheet.money.cp],
+                    ] as [string, string, number][]).map(([label, color, val]) => (
+                      <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
+                        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
+                        <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
+                    <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>+ Aggiungi</button>
+                    <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>Assegna Denaro</button>
+                  </div>
+                </div>
+              )}
+              {sheet.dmNotes && isDm && (
+                <div style={{ ...CARD, border: '1px solid var(--danger-border)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--s-1)' }}>
+                    <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 'var(--r-sm)' }} />
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
+                  </div>
+                  <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-2)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{sheet.dmNotes}</p>
                 </div>
               )}
             </div>
-          </div>
-
-          {/* Condizioni */}
-          <div style={CARD}>
-            <SectionTitle>Condizioni Attive</SectionTitle>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--s-1)', alignItems: 'center', minHeight: 24 }}>
-              {conditions.length === 0 && (
-                <span style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)' }}>Nessuna condizione</span>
-              )}
-              {conditions.map(c => {
-                const def = CONDITIONS.find(d => d.key === c.conditionKey);
-                return def ? <ConditionBadge key={c.id} conditionId={c.id} characterId={char.id} name={def.name} icon={def.icon} /> : null;
-              })}
-              <AddConditionButton characterId={char.id} />
-            </div>
-          </div>
-
-          {/* Attacchi */}
-          <div style={CARD}>
-            <SectionTitle>Attacchi</SectionTitle>
-            {(sheet.weapons?.length ?? 0) === 0 ? (
-              <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)' }}>
-                Nessuna arma — aggiungi equipaggiamento nella scheda
-              </p>
-            ) : (
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
-                <thead>
-                  <tr>
-                    {['Arma', 'Car.', 'Danno', 'Acc.'].map(h => (
-                      <th key={h} style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', textAlign: 'left', paddingBottom: 'var(--s-1)', borderBottom: '1px solid var(--border-leather)', fontWeight: 400, textTransform: 'uppercase' }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {(sheet.weapons ?? []).map(w => {
-                    const atkMod = abilityModifier(stats[w.attackStat]) + prof + (w.magicBonus ?? 0);
-                    const dmgMod = abilityModifier(stats[w.attackStat]) + (w.magicBonus ?? 0);
-                    return (
-                      <tr key={w.id}>
-                        <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', color: 'var(--fg-1)' }}>{w.name}{w.magic && w.magicBonus ? ` +${w.magicBonus}` : ''}</td>
-                        <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', color: 'var(--fg-2)', fontSize: '10px' }}>{w.attackStat.toUpperCase()}</td>
-                        <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', fontFamily: 'var(--font-sans)', color: 'var(--gold)', fontSize: '11px', fontWeight: 500 }}>
-                          {w.damageDice}{dmgMod !== 0 ? formatModifier(dmgMod) : ''}
-                        </td>
-                        <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', fontFamily: 'var(--font-sans)', color: 'var(--hp-healthy)', fontSize: '11px' }}>
-                          {formatModifier(atkMod)}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            )}
-          </div>
-
-          {/* Risorse Attive pinnate */}
-          {pinnedActive.length > 0 && (
-            <PinnedActiveResources
-              characterId={char.id}
-              features={pinnedActive}
-              resources={resources}
-            />
-          )}
-        </div>
-
-        {/* ════ COL 4: Cosa hai — Inventario + Denaro + Incantesimi ════ */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
-
-          {/* Inventario */}
-          <InventoryCard
-            characterId={char.id}
-            inventory={sheet.inventory ?? []}
-            money={sheet.money ?? { pp: 0, gp: 0, ep: 0, sp: 0, cp: 0 }}
-          />
-
-          {/* Capacità di Trasporto */}
-          <div style={CARD}>
-            <SectionTitle>Capacità di Trasporto</SectionTitle>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--s-1)' }}>
-              <span>Peso trasportato</span>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: carryOverloaded ? 'var(--danger)' : 'var(--fg-1)' }}>
-                {carriedKg.toFixed(1)} / {carryMax} kg
-              </span>
-            </div>
-            <div style={{ height: 4, backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--r-sm)', overflow: 'hidden' }}>
-              <div style={{ height: '100%', width: `${carryPct}%`, backgroundColor: carryOverloaded ? 'var(--danger)' : 'var(--gold)', borderRadius: 'var(--r-sm)', opacity: 0.7 }} />
-            </div>
-          </div>
-
-          {/* Denaro */}
-          {sheet.money && (
-            <div style={CARD}>
-              <SectionTitle>Denaro</SectionTitle>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
-                {([
-                  ['PP', 'var(--fg-1)', sheet.money.pp],
-                  ['PO', 'var(--gold)',    sheet.money.gp],
-                  ['PE', '#a0a0c8',               sheet.money.ep],
-                  ['PA', '#a8a8a8',               sheet.money.sp],
-                  ['PR', '#b06030',               sheet.money.cp],
-                ] as [string, string, number][]).map(([label, color, val]) => (
-                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
-                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
-                  </div>
-                ))}
+          }
+          spells={
+            <div style={{ padding: 'var(--s-2)', opacity: canCast ? 1 : 0.55 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s-1)' }}>
+                <SectionTitle mb={false}>Incantesimi</SectionTitle>
+                {canCast && (
+                  <AddSpellButton
+                    characterId={char.id}
+                    currentSpells={knownSpells}
+                    casterClassKeys={casterClassKeys}
+                    characterClasses={sheet.classes ?? []}
+                    characterStats={stats}
+                  />
+                )}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
-                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>+ Aggiungi</button>
-                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>Assegna Denaro</button>
-              </div>
-            </div>
-          )}
-
-          {/* Incantesimi */}
-          <div style={{ ...CARD, opacity: canCast ? 1 : 0.55 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s-1)' }}>
-              <SectionTitle mb={false}>Incantesimi</SectionTitle>
-              {canCast && (
-                <AddSpellButton
-                  characterId={char.id}
-                  currentSpells={knownSpells}
-                  casterClassKeys={casterClassKeys}
-                  characterClasses={sheet.classes ?? []}
-                  characterStats={stats}
-                />
+              {!canCast && (
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', lineHeight: 1.6 }}>
+                  Il tuo personaggio non possiede le capacità per lanciare incantesimi. Per iniziare a usare la magia, scegli una classe o un archetipo che conferisce questa capacità.
+                </p>
               )}
-            </div>
-
-            {/* Non-caster message */}
-            {!canCast && (
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', lineHeight: 1.6 }}>
-                Il tuo personaggio non possiede le capacità per lanciare incantesimi. Per iniziare a usare la magia, scegli una classe o un archetipo che conferisce questa capacità.
-              </p>
-            )}
-
-              {knownSpells.length === 0 && activeSpellSlots.length === 0 && (
+              {knownSpells.length === 0 && activeSpellSlots.length === 0 && canCast && (
                 <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)', padding: '4px 0' }}>
                   Nessun incantesimo — usa + Aggiungi per iniziare.
                 </p>
               )}
-
               <SpellSectionTabs
                 knownSpells={knownSpells}
                 activeSpellSlots={activeSpellSlots}
@@ -705,130 +662,22 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                 schoolAbbr={SCHOOL_ABBR}
               />
             </div>
-
-          {/* Note DM */}
-          {sheet.dmNotes && isDm && (
-            <div style={{ ...CARD, border: '1px solid var(--danger-border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--s-1)' }}>
-                <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 'var(--r-sm)' }} />
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
-              </div>
-              <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-2)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{sheet.dmNotes}</p>
+          }
+          bio={
+            <div style={{ padding: 'var(--s-2)' }}>
+              <BackstoryCard
+                characterId={char.id}
+                charName={char.name}
+                initialBackstory={sheet.backstory ?? ''}
+                personality={sheet.personality}
+                ideals={sheet.ideals}
+                bonds={sheet.bonds}
+                flaws={sheet.flaws}
+                isOwner={!isDm}
+              />
             </div>
-          )}
-        </div>
-
-        {/* ═══ (old COL4 placeholder — content moved) ═══ */}
-        <div style={{ display: 'none' }}>
-
-          {/* Abilità — rimosso, ora in COL 2 */}
-          <div style={CARD}>
-            <SectionTitle>Abilità</SectionTitle>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 var(--s-1)' }}>
-
-              {/* Left: str + dex + int */}
-              <div>
-                {leftAbilities.map((ability, abilityIdx) => {
-                  const abilitySkills = SKILLS.filter(s => s.ability === ability);
-                  if (!abilitySkills.length) return null;
-                  return (
-                    <div key={ability}>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
-                        {ABILITY_SHORT[ability]}
-                      </div>
-                      {abilitySkills.map(skill => {
-                        const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
-                        const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
-                        return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                            <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
-                            <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
-                            <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
-                            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
-                              {formatModifier(bonus)}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Right: wis + cha */}
-              <div>
-                {rightAbilities.map((ability, abilityIdx) => {
-                  const abilitySkills = SKILLS.filter(s => s.ability === ability);
-                  if (!abilitySkills.length) return null;
-                  return (
-                    <div key={ability}>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
-                        {ABILITY_SHORT[ability]}
-                      </div>
-                      {abilitySkills.map(skill => {
-                        const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
-                        const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
-                        return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                            <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
-                            <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
-                            <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
-                            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
-                              {formatModifier(bonus)}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Denaro */}
-          {sheet.money && (
-            <div style={CARD}>
-              <SectionTitle>Denaro</SectionTitle>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
-                {([
-                  ['PP', 'var(--fg-1)', sheet.money.pp],
-                  ['PO', 'var(--gold)',    sheet.money.gp],
-                  ['PE', '#a0a0c8',               sheet.money.ep],
-                  ['PA', '#a8a8a8',               sheet.money.sp],
-                  ['PR', '#b06030',               sheet.money.cp],
-                ] as [string, string, number][]).map(([label, color, val]) => (
-                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
-                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
-                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>
-                  + Aggiungi
-                </button>
-                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>
-                  Assegna Denaro
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Note DM */}
-          {sheet.dmNotes && isDm && (
-            <div style={{ ...CARD, border: '1px solid var(--danger-border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--s-1)' }}>
-                <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 'var(--r-sm)' }} />
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
-              </div>
-              <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-2)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{sheet.dmNotes}</p>
-            </div>
-          )}
-        </div>
-        </div>
-        {/* Fine sub-grid 3 colonne ══════════════════════════════════ */}
-
+          }
+        />
 
         </div>
         {/* Fine pannello destro ════════════════════════════════════ */}
