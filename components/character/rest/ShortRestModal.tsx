@@ -64,7 +64,7 @@ export default function ShortRestModal({ characterId, classes, conModifier, hitD
 
   const inp: React.CSSProperties = {
     background: 'var(--bg-card)', border: '1px solid var(--border-leather)',
-    borderRadius: 'var(--r)', color: 'var(--fg-1)',
+    borderRadius: 'var(--r-sm)', color: 'var(--fg-1)',
     fontFamily: 'var(--font-sans)', fontSize: '14px', outline: 'none',
     textAlign: 'center', height: 40, width: 80,
   };
@@ -72,7 +72,7 @@ export default function ShortRestModal({ characterId, classes, conModifier, hitD
   return (
     <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--s-3)', width: '100%', maxWidth: 420 }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', padding: 'var(--s-3)', width: '100%', maxWidth: 420 }}>
 
         {/* Header */}
         <div style={{ marginBottom: 'var(--s-2)' }}>
@@ -85,7 +85,7 @@ export default function ShortRestModal({ characterId, classes, conModifier, hitD
         </div>
 
         {/* HD disponibili */}
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1) var(--s-2)', marginBottom: 'var(--s-2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) var(--s-2)', marginBottom: 'var(--s-2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)' }}>Dadi Vita disponibili</span>
           <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: available > 0 ? 'var(--gold)' : 'var(--fg-3)' }}>
             {available} / {totalHD}
@@ -97,7 +97,7 @@ export default function ShortRestModal({ characterId, classes, conModifier, hitD
           {hitDieTypes.map(({ die, count }, i) => {
             const cls = CLASSES.find(cl => cl.hitDie === die && classes[i]?.classKey === cl.key);
             return (
-              <span key={i} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-2)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '2px 8px' }}>
+              <span key={i} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-2)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '2px 8px' }}>
                 {count}×d{die} {cls ? `(${cls.name})` : ''}
               </span>
             );
@@ -120,14 +120,14 @@ export default function ShortRestModal({ characterId, classes, conModifier, hitD
             {diceToSpend > 0 && (
               <div style={{ display: 'flex', gap: 'var(--s-1)', marginBottom: 'var(--s-2)' }}>
                 <button onClick={rollDice}
-                  style={{ flex: 1, fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em', height: 36, borderRadius: 'var(--r)', border: '1px solid var(--info)', color: 'var(--info)', background: 'rgba(14,116,144,.07)', cursor: 'pointer' }}>
+                  style={{ flex: 1, fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em', height: 36, borderRadius: 'var(--r-sm)', border: '1px solid var(--info)', color: 'var(--info)', background: 'rgba(14,116,144,.07)', cursor: 'pointer' }}>
                   🎲 Tira i Dadi
                 </button>
               </div>
             )}
 
             {rolledHp !== null && (
-              <div style={{ background: 'rgba(74,124,78,.1)', border: '1px solid rgba(74,124,78,.3)', borderRadius: 'var(--r)', padding: 'var(--s-1) var(--s-2)', marginBottom: 'var(--s-2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ background: 'rgba(74,124,78,.1)', border: '1px solid rgba(74,124,78,.3)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) var(--s-2)', marginBottom: 'var(--s-2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)' }}>PF recuperati</span>
                 <span style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 700, color: 'var(--hp-healthy)' }}>+{rolledHp}</span>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)' }}>{hpCurrent} → {hpAfter}</span>
@@ -143,12 +143,12 @@ export default function ShortRestModal({ characterId, classes, conModifier, hitD
         {/* Azioni */}
         <div style={{ display: 'flex', gap: 'var(--s-1)', justifyContent: 'flex-end' }}>
           <button onClick={handleSkip} disabled={pending}
-            style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', padding: '0 var(--s-2)', height: 32, borderRadius: 'var(--r)', cursor: 'pointer', opacity: pending ? 0.4 : 1 }}>
+            style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', padding: '0 var(--s-2)', height: 32, borderRadius: 'var(--r-sm)', cursor: 'pointer', opacity: pending ? 0.4 : 1 }}>
             Salta
           </button>
           {rolledHp !== null && (
             <button onClick={handleConfirm} disabled={pending}
-              style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--bg-deep)', background: 'var(--hp-healthy)', border: 'none', padding: '0 var(--s-2)', height: 32, borderRadius: 'var(--r)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.5 : 1 }}>
+              style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--bg-deep)', background: 'var(--hp-healthy)', border: 'none', padding: '0 var(--s-2)', height: 32, borderRadius: 'var(--r-sm)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.5 : 1 }}>
               {pending ? '…' : 'Conferma'}
             </button>
           )}

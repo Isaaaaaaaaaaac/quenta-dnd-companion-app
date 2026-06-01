@@ -48,7 +48,7 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
   return (
     <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--s-3)', width: '100%', maxWidth: 440 }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', padding: 'var(--s-3)', width: '100%', maxWidth: 440 }}>
 
         {/* Header */}
         <div style={{ marginBottom: 'var(--s-3)' }}>
@@ -72,7 +72,7 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
               onClick={handleKeep} disabled={pending}
               style={{
                 fontFamily: 'var(--font-sans)', fontSize: '11px', letterSpacing: '.04em',
-                padding: 'var(--s-2)', borderRadius: 'var(--r)',
+                padding: 'var(--s-2)', borderRadius: 'var(--r-sm)',
                 border: '1px solid var(--border-leather)', background: 'var(--bg-card)',
                 color: 'var(--fg-1)', cursor: pending ? 'not-allowed' : 'pointer',
                 textAlign: 'left', lineHeight: 1.5, transition: 'all .2s',
@@ -86,7 +86,7 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
               onClick={() => setStep('spell-prep')} disabled={pending}
               style={{
                 fontFamily: 'var(--font-sans)', fontSize: '11px', letterSpacing: '.04em',
-                padding: 'var(--s-2)', borderRadius: 'var(--r)',
+                padding: 'var(--s-2)', borderRadius: 'var(--r-sm)',
                 border: '1px solid rgba(91,33,182,.4)', background: 'rgba(91,33,182,.06)',
                 color: 'var(--arcane)', cursor: 'pointer',
                 textAlign: 'left', lineHeight: 1.5, transition: 'all .2s',
@@ -102,7 +102,7 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
               onClick={handleKeep} disabled={pending}
               style={{
                 width: '100%', fontFamily: 'var(--font-sans)', fontSize: '11px', letterSpacing: '.04em',
-                height: 40, borderRadius: 'var(--r)',
+                height: 40, borderRadius: 'var(--r-sm)',
                 border: '1px solid var(--border-leather)', background: 'var(--bg-card)',
                 color: 'var(--fg-1)', cursor: pending ? 'not-allowed' : 'pointer',
                 opacity: pending ? 0.4 : 1, transition: 'all .2s',

@@ -79,7 +79,7 @@ const TABS: { id: Tab; icon: string; label: string }[] = [
 const CARD: React.CSSProperties = {
   background: 'var(--bg-deep)',
   border: '1px solid var(--border-leather-dim)',
-  borderRadius: 'var(--r2)',
+  borderRadius: 'var(--r-lg)',
   padding: 'var(--s-2)',
   marginBottom: 'var(--s-2)',
 };
@@ -102,7 +102,7 @@ function SH({ children }: { children: React.ReactNode }) {
 
 function SB({ label, value }: { label: string; value: string | number }) {
   return (
-    <div style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
+    <div style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{label}</span>
       <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)', display: 'block' }}>{value}</span>
     </div>
@@ -348,14 +348,14 @@ export default function MobileSheet({
                   const isNeg = mod < 0;
                   const isZero = mod === 0;
                   return (
-                    <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
+                    <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
                       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>
                         {ABILITY_NAMES[key]}
                       </span>
                       <span style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 700, color: isNeg ? 'var(--danger)' : isZero ? 'var(--fg-2)' : 'var(--gold)', lineHeight: 1, display: 'block' }}>
                         {formatModifier(mod)}
                       </span>
-                      <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>
+                      <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>
                         {val}
                       </span>
                     </div>
@@ -394,7 +394,7 @@ export default function MobileSheet({
                   const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                   const bonus = skillBonus(stats[skill.ability as Ability], level, sk.proficient, sk.expertise);
                   return (
-                    <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px var(--s-1)', borderRadius: 'var(--r)' }}>
+                    <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
                       <div style={{ width: 7, height: 7, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                       <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '12px' }}>{skill.name}</span>
                       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>
@@ -446,7 +446,7 @@ export default function MobileSheet({
                     ['PA', '#a8a8a8',               sheet.money.sp],
                     ['PR', '#b06030',               sheet.money.cp],
                   ] as [string, string, number][]).map(([label, color, val]) => (
-                    <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
+                    <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
                       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
                       <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
                     </div>
@@ -514,7 +514,7 @@ export default function MobileSheet({
               <div style={{ display: 'flex', gap: 'var(--s-2)', alignItems: 'flex-start' }}>
                 {/* Portrait */}
                 <div style={{
-                  width: 72, height: 72, borderRadius: 'var(--r2)', flexShrink: 0,
+                  width: 72, height: 72, borderRadius: 'var(--r-lg)', flexShrink: 0,
                   overflow: 'hidden', border: '2px solid var(--border-leather-dim)',
                   background: 'var(--bg-card)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',

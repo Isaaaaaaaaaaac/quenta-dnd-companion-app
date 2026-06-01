@@ -18,7 +18,7 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
   return (
     <div style={{
       background: 'var(--bg-deep)', border: `1px solid ${isWarning ? 'rgba(139,26,26,.5)' : 'var(--border-leather-dim)'}`,
-      borderRadius: 'var(--r2)', padding: 'var(--s-3)', marginBottom: 'var(--s-4)',
+      borderRadius: 'var(--r-lg)', padding: 'var(--s-3)', marginBottom: 'var(--s-4)',
     }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s-2)' }}>
@@ -26,7 +26,7 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
           ✨ Utilizzo Gemini API — Generazione Ritratti
         </div>
         {isWarning && (
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.06em', color: 'var(--danger)', background: 'rgba(139,26,26,.1)', border: '1px solid rgba(139,26,26,.3)', borderRadius: 'var(--r)', padding: '2px 10px' }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.06em', color: 'var(--danger)', background: 'rgba(139,26,26,.1)', border: '1px solid rgba(139,26,26,.3)', borderRadius: 'var(--r-sm)', padding: '2px 10px' }}>
             ⚠ Crediti in esaurimento
           </div>
         )}
@@ -57,7 +57,7 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
           { label: 'Costo mese', value: `€${thisMonthCost.toFixed(2)}` },
           { label: 'Costo medio/img', value: `€0.04` },
         ].map(({ label, value }) => (
-          <div key={label} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
+          <div key={label} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
             <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.07em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 4 }}>{label}</div>
             <div style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 600, color: 'var(--fg-1)' }}>{value}</div>
           </div>

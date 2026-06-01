@@ -102,7 +102,7 @@ export default function MobileNavDrawer({
               background: 'none', border: 'none', cursor: 'pointer',
               color: 'var(--fg-2)', fontSize: 18, lineHeight: 1,
               padding: 4, display: 'flex', alignItems: 'center',
-              borderRadius: 'var(--r)',
+              borderRadius: 'var(--r-sm)',
             }}
           >
             ✕
@@ -158,7 +158,7 @@ export default function MobileNavDrawer({
           {/* User info */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', marginBottom: 'var(--s-2)' }}>
             <div style={{
-              width: 36, height: 36, borderRadius: 'var(--r)', flexShrink: 0,
+              width: 36, height: 36, borderRadius: 'var(--r-sm)', flexShrink: 0,
               background: 'var(--gold)', color: 'var(--bg-deep)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 700,

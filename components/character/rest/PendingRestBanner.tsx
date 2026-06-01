@@ -35,7 +35,7 @@ export default function PendingRestBanner({
       <div style={{
         margin: '0 0 16px 0', padding: '10px 16px',
         background: bgColor, border: `1px solid ${border}`,
-        borderRadius: 'var(--r)', display: 'flex', alignItems: 'center',
+        borderRadius: 'var(--r-sm)', display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', gap: 12,
       }}>
         <div>
@@ -53,7 +53,7 @@ export default function PendingRestBanner({
           style={{
             fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', fontWeight: 600,
             color: accent, background: bgColor, border: `1px solid ${border}`,
-            padding: '0 12px', height: 28, borderRadius: 'var(--r)',
+            padding: '0 12px', height: 28, borderRadius: 'var(--r-sm)',
             cursor: 'pointer', transition: 'all .2s', flexShrink: 0,
           }}
         >

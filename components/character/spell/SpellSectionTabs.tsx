@@ -33,7 +33,7 @@ export default function SpellSectionTabs({ knownSpells, activeSpellSlots, isPrep
 
   const tabStyle = (active: boolean): React.CSSProperties => ({
     fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
-    padding: '0 10px', height: 24, borderRadius: 'var(--r)', cursor: 'pointer',
+    padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', cursor: 'pointer',
     border: active ? '1px solid var(--border-leather)' : '1px solid transparent',
     background: active ? 'var(--bg-card)' : 'none',
     color: active ? 'var(--fg-1)' : 'var(--fg-2)',
@@ -80,7 +80,7 @@ export default function SpellSectionTabs({ knownSpells, activeSpellSlots, isPrep
           )}
 
           {displaySpells.map(spell => (
-            <div key={spell.id} style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)', padding: '4px var(--s-1)', borderRadius: 'var(--r)' }}>
+            <div key={spell.id} style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)', padding: '4px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
               <LevelPips level={spell.level} />
               <span style={{ flex: 1, fontSize: '12px', color: spell.prepared || spell.level === 0 ? 'var(--fg-1)' : 'var(--fg-2)' }}>
                 {spell.name}

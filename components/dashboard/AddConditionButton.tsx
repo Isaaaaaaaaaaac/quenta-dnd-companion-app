@@ -21,7 +21,7 @@ export default function AddConditionButton({ characterId }: Props) {
           fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em',
           color: 'var(--fg-3)', background: 'none',
           border: '1px dashed var(--fg-3)', padding: '0 var(--s-1)',
-          height: 24, borderRadius: 'var(--r)', cursor: 'pointer', transition: 'all .2s',
+          height: 24, borderRadius: 'var(--r-sm)', cursor: 'pointer', transition: 'all .2s',
         }}>
         + Condizione
       </button>
@@ -33,7 +33,7 @@ export default function AddConditionButton({ characterId }: Props) {
             position: 'absolute', left: 0, top: '100%', marginTop: 4,
             zIndex: 20, maxHeight: 240, overflowY: 'auto',
             background: 'var(--bg-card)', border: '1px solid var(--border-leather)',
-            borderRadius: 'var(--r)', minWidth: 180,
+            borderRadius: 'var(--r-sm)', minWidth: 180,
           }}>
             {CONDITIONS.map(c => (
               <button key={c.key} onClick={() => handleAdd(c.key)}

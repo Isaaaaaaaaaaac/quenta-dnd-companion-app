@@ -29,7 +29,7 @@ export default function PinnedPassiveSection({ features }: Props) {
               onClick={() => setExpanded(isOpen ? null : id)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6,
-                padding: '3px var(--s-1)', borderRadius: 'var(--r)',
+                padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)',
                 cursor: f.description ? 'pointer' : 'default',
                 transition: 'background .15s',
               }}
@@ -51,7 +51,7 @@ export default function PinnedPassiveSection({ features }: Props) {
             {isOpen && f.description && (
               <div style={{
                 marginLeft: 20, marginBottom: 4, padding: '6px 10px',
-                background: 'var(--bg-card)', borderRadius: 'var(--r)',
+                background: 'var(--bg-card)', borderRadius: 'var(--r-sm)',
                 border: '1px solid var(--border-leather)',
               }}>
                 <p style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', lineHeight: 1.6, margin: 0 }}>

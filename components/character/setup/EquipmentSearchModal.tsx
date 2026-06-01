@@ -227,7 +227,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
         <span style={{ fontSize: 15, flexShrink: 0, width: 24, textAlign: 'center' }}>{item.ico}</span>
         <span style={{ flex: 1, fontSize: 14, color: 'var(--fg-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
           dangerouslySetInnerHTML={{ __html: highlight(item.name) }} />
-        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 8, fontWeight: 600, letterSpacing: '.05em', textTransform: 'uppercase', padding: '2px 6px', borderRadius: 'var(--r)', flexShrink: 0, backgroundColor: cc.bg, color: cc.color, border: `1px solid ${cc.border}` }}>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 8, fontWeight: 600, letterSpacing: '.05em', textTransform: 'uppercase', padding: '2px 6px', borderRadius: 'var(--r-sm)', flexShrink: 0, backgroundColor: cc.bg, color: cc.color, border: `1px solid ${cc.border}` }}>
           {item.cat}
         </span>
         <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--fg-2)', minWidth: 36, textAlign: 'right', flexShrink: 0 }}>
@@ -237,9 +237,9 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
           <button onClick={e => { e.stopPropagation(); toggleItem(item); }} style={{ width: 24, height: 24, borderRadius: '50%', border: '1px solid var(--border-leather)', background: 'none', color: 'var(--fg-2)', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>+</button>
         ) : (
           <div onClick={e => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
-            <button onClick={() => changeQty(item.id, -1)} style={{ width: 24, height: 24, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'none', color: 'var(--fg-2)', fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>−</button>
+            <button onClick={() => changeQty(item.id, -1)} style={{ width: 24, height: 24, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'none', color: 'var(--fg-2)', fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>−</button>
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600, color: 'var(--gold)', minWidth: 20, textAlign: 'center' }}>{qty}</span>
-            <button onClick={() => changeQty(item.id, 1)} style={{ width: 24, height: 24, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'none', color: 'var(--fg-2)', fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>+</button>
+            <button onClick={() => changeQty(item.id, 1)} style={{ width: 24, height: 24, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'none', color: 'var(--fg-2)', fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>+</button>
           </div>
         )}
       </div>
@@ -250,7 +250,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
     <div className="modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(4,3,2,.84)', backdropFilter: 'blur(4px)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
 
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', width: '100%', maxWidth: 800, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', width: '100%', maxWidth: 800, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', padding: 'var(--s-2) var(--s-3)', borderBottom: '1px solid var(--border-leather-dim)', flexShrink: 0 }}>
@@ -258,12 +258,12 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 700, letterSpacing: '.08em', color: 'var(--gold)', textTransform: 'uppercase' }}>Aggiungi Equipaggiamento</span>
             <span style={{ fontFamily: 'var(--font-serif)', fontSize: 12, color: 'var(--fg-3)', fontStyle: 'italic' }}>seleziona uno o più oggetti</span>
           </div>
-          <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer', flexShrink: 0 }}>✕</button>
+          <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r-sm)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer', flexShrink: 0 }}>✕</button>
         </div>
 
         {/* Search */}
         <div style={{ padding: 'var(--s-2) var(--s-3) 0', flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)', background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '0 var(--s-1)', height: 40 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)', background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '0 var(--s-1)', height: 40 }}>
             <span style={{ color: 'var(--fg-3)', fontSize: 15, flexShrink: 0 }}>🔍</span>
             <input ref={inputRef} value={query} onChange={e => setQuery(e.target.value)} placeholder="Cerca tra tutti gli oggetti…" autoFocus
               style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--fg-1)' }} />
@@ -276,7 +276,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
           {CATS.map(({ label, cat }) => {
             const isOn = activeChip === cat;
             return (
-              <button key={cat} onClick={() => setActiveChip(isOn ? '' : cat)} style={{ fontFamily: 'var(--font-sans)', fontSize: 9, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', height: 24, padding: '0 var(--s-1)', borderRadius: 'var(--r)', border: `1px solid ${isOn ? 'var(--gold-dim)' : 'var(--border-leather)'}`, background: isOn ? 'rgba(184,134,11,.12)' : 'none', color: isOn ? 'var(--gold)' : 'var(--fg-2)', cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0, transition: 'all .18s' }}>
+              <button key={cat} onClick={() => setActiveChip(isOn ? '' : cat)} style={{ fontFamily: 'var(--font-sans)', fontSize: 9, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', height: 24, padding: '0 var(--s-1)', borderRadius: 'var(--r-sm)', border: `1px solid ${isOn ? 'var(--gold-dim)' : 'var(--border-leather)'}`, background: isOn ? 'rgba(184,134,11,.12)' : 'none', color: isOn ? 'var(--gold)' : 'var(--fg-2)', cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0, transition: 'all .18s' }}>
                 {label}
               </button>
             );
@@ -332,20 +332,20 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
               {customOpen && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)', padding: 'var(--s-1) var(--s-2) var(--s-2)', background: 'rgba(91,33,182,.04)', borderTop: '1px solid rgba(91,33,182,.2)' }}>
                   <input value={customName} onChange={e => setCustomName(e.target.value)} placeholder="Nome oggetto…"
-                    style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none' }} />
+                    style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none' }} />
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
                     <select value={customCat} onChange={e => setCustomCat(e.target.value)}
-                      style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none', cursor: 'pointer' }}>
+                      style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none', cursor: 'pointer' }}>
                       <option value="">Categoria…</option>
                       {(['Arma','Armatura','Scudo','Magico','Pergamena','Pozione','Comune'] as ItemCat[]).map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                     <input value={customWt} onChange={e => setCustomWt(e.target.value)} type="number" placeholder="Peso (kg)" min="0" step="0.1"
-                      style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none' }} />
+                      style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none' }} />
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
                     <input value={customQty} onChange={e => setCustomQty(e.target.value)} type="number" placeholder="Quantità" min="1"
-                      style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none' }} />
-                    <button onClick={addCustom} disabled={!customName.trim()} style={{ height: 32, fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--arcane)', background: 'rgba(91,33,182,.07)', border: '1px solid rgba(91,33,182,.3)', borderRadius: 'var(--r)', cursor: customName.trim() ? 'pointer' : 'not-allowed', opacity: customName.trim() ? 1 : 0.5 }}>
+                      style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none' }} />
+                    <button onClick={addCustom} disabled={!customName.trim()} style={{ height: 32, fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--arcane)', background: 'rgba(91,33,182,.07)', border: '1px solid rgba(91,33,182,.3)', borderRadius: 'var(--r-sm)', cursor: customName.trim() ? 'pointer' : 'not-allowed', opacity: customName.trim() ? 1 : 0.5 }}>
                       ✦ Aggiungi
                     </button>
                   </div>
@@ -368,7 +368,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
                   Nessun oggetto<br />selezionato.
                 </div>
               ) : Object.entries(sel).map(([id, { item, qty }]) => (
-                <div key={id} style={{ display: 'flex', alignItems: 'center', padding: '5px var(--s-1)', borderRadius: 'var(--r)', background: 'var(--bg-card)', gap: 4, border: '1px solid transparent' }}>
+                <div key={id} style={{ display: 'flex', alignItems: 'center', padding: '5px var(--s-1)', borderRadius: 'var(--r-sm)', background: 'var(--bg-card)', gap: 4, border: '1px solid transparent' }}>
                   <span style={{ fontSize: 11, flexShrink: 0 }}>{item.ico}</span>
                   <span style={{ flex: 1, fontSize: 12, color: 'var(--fg-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</span>
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, fontWeight: 600, color: 'var(--gold)', flexShrink: 0 }}>×{qty}</span>
@@ -389,10 +389,10 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
 
         {/* Footer */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 'var(--s-1)', padding: 'var(--s-2) var(--s-3)', borderTop: '1px solid var(--border-leather-dim)', background: 'var(--bg-deep)', flexShrink: 0 }}>
-          <button onClick={onClose} style={{ height: 40, padding: '0 var(--s-3)', fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', cursor: 'pointer' }}>
+          <button onClick={onClose} style={{ height: 40, padding: '0 var(--s-3)', fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', cursor: 'pointer' }}>
             Annulla
           </button>
-          <button onClick={handleConfirm} disabled={Object.keys(sel).length === 0 || saving} style={{ height: 40, padding: '0 var(--s-3)', fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--bg-deep)', background: Object.keys(sel).length === 0 || saving ? 'var(--border-leather)' : 'var(--gold)', border: 'none', borderRadius: 'var(--r)', cursor: Object.keys(sel).length === 0 || saving ? 'not-allowed' : 'pointer', opacity: Object.keys(sel).length === 0 ? .32 : 1, transition: 'all .18s' }}>
+          <button onClick={handleConfirm} disabled={Object.keys(sel).length === 0 || saving} style={{ height: 40, padding: '0 var(--s-3)', fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--bg-deep)', background: Object.keys(sel).length === 0 || saving ? 'var(--border-leather)' : 'var(--gold)', border: 'none', borderRadius: 'var(--r-sm)', cursor: Object.keys(sel).length === 0 || saving ? 'not-allowed' : 'pointer', opacity: Object.keys(sel).length === 0 ? .32 : 1, transition: 'all .18s' }}>
             {saving ? 'Salvando…' : `Aggiungi ai Possedimenti${totalQty > 0 ? ` (${totalQty})` : ''}`}
           </button>
         </div>

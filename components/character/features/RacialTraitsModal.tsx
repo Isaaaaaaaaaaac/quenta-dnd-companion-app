@@ -80,7 +80,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
   return (
     <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 250, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', width: '100%', maxWidth: 960, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', width: '100%', maxWidth: 960, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
         {/* Header */}
         <div style={{ padding: 'var(--s-2) var(--s-2) var(--s-1)', borderBottom: '1px solid var(--border-leather)', flexShrink: 0 }}>
@@ -91,7 +91,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
               </span>
               <div style={{ fontFamily: 'var(--font-serif)', fontSize: '14px', color: 'var(--fg-1)', marginTop: 2 }}>{raceName}</div>
             </div>
-            <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
+            <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r-sm)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
           </div>
         </div>
 
@@ -108,7 +108,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
             const currentVal = getChoice(trait.key);
 
             return (
-              <div key={trait.key} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-2)', marginBottom: 'var(--s-1)' }}>
+              <div key={trait.key} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-2)', marginBottom: 'var(--s-1)' }}>
                 {/* Trait header */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                   {trait.choice && <span style={{ fontSize: 10 }}>⚡</span>}
@@ -149,7 +149,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
                                   const next = isSelected ? selected.filter(s => s !== k) : canSelect ? [...selected, k] : selected;
                                   setChoice(trait.key, next);
                                 }}
-                                style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r)', border: isSelected ? '1px solid var(--gold)' : '1px solid var(--border-leather)', color: isSelected ? 'var(--gold)' : canSelect ? 'var(--fg-2)' : 'var(--fg-3)', background: isSelected ? 'rgba(184,134,11,.08)' : 'none', cursor: canSelect || isSelected ? 'pointer' : 'not-allowed', opacity: !canSelect && !isSelected ? 0.35 : 1 }}>
+                                style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', border: isSelected ? '1px solid var(--gold)' : '1px solid var(--border-leather)', color: isSelected ? 'var(--gold)' : canSelect ? 'var(--fg-2)' : 'var(--fg-3)', background: isSelected ? 'rgba(184,134,11,.08)' : 'none', cursor: canSelect || isSelected ? 'pointer' : 'not-allowed', opacity: !canSelect && !isSelected ? 0.35 : 1 }}>
                                 {STAT_NAMES[k]}
                               </button>
                             );
@@ -173,7 +173,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
                             return (
                               <button key={skill}
                                 onClick={() => setChoice(trait.key, isSel ? selected.filter(s => s !== skill) : canSel ? [...selected, skill] : selected)}
-                                style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', padding: '0 8px', height: 22, borderRadius: 'var(--r)', border: isSel ? '1px solid var(--gold)' : '1px solid var(--border-leather)', color: isSel ? 'var(--gold)' : canSel ? 'var(--fg-2)' : 'var(--fg-3)', background: isSel ? 'rgba(184,134,11,.08)' : 'none', cursor: canSel || isSel ? 'pointer' : 'not-allowed', opacity: !canSel && !isSel ? 0.35 : 1 }}>
+                                style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', padding: '0 8px', height: 22, borderRadius: 'var(--r-sm)', border: isSel ? '1px solid var(--gold)' : '1px solid var(--border-leather)', color: isSel ? 'var(--gold)' : canSel ? 'var(--fg-2)' : 'var(--fg-3)', background: isSel ? 'rgba(184,134,11,.08)' : 'none', cursor: canSel || isSel ? 'pointer' : 'not-allowed', opacity: !canSel && !isSel ? 0.35 : 1 }}>
                                 {skill}
                               </button>
                             );
@@ -191,7 +191,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
                           Scegli un trucchetto:
                         </div>
                         <select value={val} onChange={e => setChoice(trait.key, e.target.value)}
-                          style={{ height: 32, background: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '11px', padding: '0 8px', outline: 'none', cursor: 'pointer' }}>
+                          style={{ height: 32, background: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '11px', padding: '0 8px', outline: 'none', cursor: 'pointer' }}>
                           <option value="">— Scegli un trucchetto —</option>
                           {(ch.options ?? CANTRIP_OPTIONS).map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
@@ -207,7 +207,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
                           Lingua bonus (scrivi il nome):
                         </div>
                         <input value={val} onChange={e => setChoice(trait.key, e.target.value)} placeholder="Es. Nano, Elfico, Silvano…"
-                          style={{ height: 32, width: '100%', background: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '11px', padding: '0 10px', outline: 'none' }} />
+                          style={{ height: 32, width: '100%', background: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '11px', padding: '0 10px', outline: 'none' }} />
                       </div>
                     );
                   }
@@ -220,7 +220,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
                           Talento a scelta (usa il pannello Talenti):
                         </div>
                         <input value={val} onChange={e => setChoice(trait.key, e.target.value)} placeholder="Nome del talento scelto…"
-                          style={{ height: 32, width: '100%', background: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '11px', padding: '0 10px', outline: 'none' }} />
+                          style={{ height: 32, width: '100%', background: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '11px', padding: '0 10px', outline: 'none' }} />
                       </div>
                     );
                   }
@@ -236,11 +236,11 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
         {/* Footer */}
         {hasChoices && (
           <div style={{ padding: 'var(--s-2)', borderTop: '1px solid var(--border-leather)', flexShrink: 0, display: 'flex', justifyContent: 'flex-end', gap: 'var(--s-1)' }}>
-            <button onClick={onClose} style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', padding: '0 var(--s-2)', height: 36, borderRadius: 'var(--r)', cursor: 'pointer' }}>
+            <button onClick={onClose} style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', padding: '0 var(--s-2)', height: 36, borderRadius: 'var(--r-sm)', cursor: 'pointer' }}>
               Annulla
             </button>
             <button onClick={handleSave} disabled={isPending}
-              style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', fontWeight: 600, color: 'var(--bg-deep)', background: 'var(--gold)', border: 'none', padding: '0 var(--s-3)', height: 36, borderRadius: 'var(--r)', cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.5 : 1 }}>
+              style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', fontWeight: 600, color: 'var(--bg-deep)', background: 'var(--gold)', border: 'none', padding: '0 var(--s-3)', height: 36, borderRadius: 'var(--r-sm)', cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.5 : 1 }}>
               {isPending ? 'Salvataggio…' : 'Salva Scelte'}
             </button>
           </div>

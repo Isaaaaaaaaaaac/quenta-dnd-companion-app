@@ -20,7 +20,7 @@ export default function AddEquipmentButton({ characterId, inventory, money }: Pr
           fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
           color: 'var(--gold)', background: 'rgba(184,134,11,.05)',
           border: '1px solid rgba(184,134,11,.35)', padding: '0 var(--s-1)',
-          height: 24, borderRadius: 'var(--r)', cursor: 'pointer', transition: 'all .2s',
+          height: 24, borderRadius: 'var(--r-sm)', cursor: 'pointer', transition: 'all .2s',
           flexShrink: 0,
         }}
       >

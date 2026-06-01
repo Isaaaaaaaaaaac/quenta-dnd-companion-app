@@ -82,7 +82,7 @@ const OVERLAY: React.CSSProperties = {
   display: 'flex', alignItems: 'center', justifyContent: 'center',
 };
 const MODAL: React.CSSProperties = {
-  background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)',
+  background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)',
   width: '100%', maxWidth: 720, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden',
 };
 
@@ -155,10 +155,10 @@ export default function TalentiModal({ characterId, currentFeats, asiHistory, st
                 Slot disponibili: <strong style={{ color: slots.available > 0 ? 'var(--gold)' : 'var(--fg-3)' }}>{slots.available}</strong> · Talenti attuali: {localFeats.length}
               </div>
             </div>
-            <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
+            <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r-sm)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
           </div>
           <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Cerca talento…"
-            style={{ width: '100%', height: 36, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '13px', outline: 'none', padding: '0 12px' }} />
+            style={{ width: '100%', height: 36, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '13px', outline: 'none', padding: '0 12px' }} />
         </div>
 
         {/* Body */}
@@ -205,7 +205,7 @@ export default function TalentiModal({ characterId, currentFeats, asiHistory, st
                       disabled={!owned && blocked}
                       style={{
                         fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', flexShrink: 0,
-                        width: 64, height: 24, borderRadius: 'var(--r)',
+                        width: 64, height: 24, borderRadius: 'var(--r-sm)',
                         border: owned ? '1px solid rgba(139,26,26,.4)' : blocked ? '1px solid var(--border-leather)' : '1px solid rgba(184,134,11,.4)',
                         color: owned ? 'var(--danger)' : blocked ? 'var(--fg-3)' : 'var(--gold)',
                         background: owned ? 'rgba(139,26,26,.06)' : 'transparent',
@@ -236,12 +236,12 @@ export default function TalentiModal({ characterId, currentFeats, asiHistory, st
             {localFeats.map(f => (
               <div key={f.key} style={{ padding: '6px 16px', borderBottom: '.5px solid var(--bg-elevated)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-1)', flex: 1 }}>{f.name}</span>
-                <button onClick={() => removeFeat(f.key)} style={{ width: 18, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r)', color: 'var(--fg-3)', fontSize: 10, cursor: 'pointer' }}>✕</button>
+                <button onClick={() => removeFeat(f.key)} style={{ width: 18, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r-sm)', color: 'var(--fg-3)', fontSize: 10, cursor: 'pointer' }}>✕</button>
               </div>
             ))}
             <div style={{ marginTop: 'auto', padding: 12, borderTop: '1px solid var(--border-leather)', flexShrink: 0 }}>
               <button onClick={handleSave} disabled={pending}
-                style={{ width: '100%', height: 40, fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--bg-deep)', background: 'var(--gold)', border: 'none', borderRadius: 'var(--r)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.5 : 1 }}>
+                style={{ width: '100%', height: 40, fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--bg-deep)', background: 'var(--gold)', border: 'none', borderRadius: 'var(--r-sm)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.5 : 1 }}>
                 {pending ? 'Salvataggio…' : 'Conferma'}
               </button>
             </div>

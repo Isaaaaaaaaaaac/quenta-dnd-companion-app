@@ -43,7 +43,7 @@ export const dynamic = 'force-dynamic';
 const CARD: React.CSSProperties = {
   background: 'var(--bg-deep)',
   border: '1px solid var(--border-leather-dim)',
-  borderRadius: 'var(--r2)',
+  borderRadius: 'var(--r-lg)',
   padding: 'var(--s-2)',
 };
 const DV: React.CSSProperties = {
@@ -242,7 +242,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                 </div>
                 <div style={{ fontSize: '11px', color: 'var(--fg-2)', lineHeight: 1.5 }}>{classLabel}</div>
                 {sheet.alignment && (
-                  <span style={{ display: 'inline-block', marginTop: 'var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '2px var(--s-1)' }}>
+                  <span style={{ display: 'inline-block', marginTop: 'var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '2px var(--s-1)' }}>
                     {sheet.alignment}
                   </span>
                 )}
@@ -295,7 +295,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
             {classesWithSubclass.map(c => {
               const cls = CLASSES.find(cl => cl.key === c.classKey);
               return (
-                <div key={c.classKey} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 var(--s-1)', height: 32, border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', marginBottom: 4, cursor: 'default' }}>
+                <div key={c.classKey} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 var(--s-1)', height: 32, border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', marginBottom: 4, cursor: 'default' }}>
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)' }}>
                     {cls?.name ?? c.classKey}
                   </span>
@@ -402,12 +402,12 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                 const isNeg = mod < 0;
                 const isZero = mod === 0;
                 return (
-                  <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
+                  <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>{ABILITY_NAMES[key]}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 700, color: isNeg ? 'var(--danger)' : isZero ? 'var(--fg-2)' : 'var(--gold)', lineHeight: 1, display: 'block' }}>
                       {formatModifier(mod)}
                     </span>
-                    <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>{val}</span>
+                    <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>{val}</span>
                   </div>
                 );
               })}
@@ -454,7 +454,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                         const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r)' }}>
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
@@ -482,7 +482,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                         const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r)' }}>
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
@@ -514,7 +514,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   ['Iniziativa', formatModifier(abilityModifier(stats.dex) + (sheet.initiativeBonus ?? 0))],
                   ['Velocità', `${sheet.speed ?? 9}m`],
                 ].map(([l, v]) => (
-                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
+                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
                   </div>
@@ -526,7 +526,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   ['Perc. Passiva', passPerc],
                   ...(spellDC !== null ? [['CD Incant.', spellDC], ['Att. Incant.', formatModifier(spellAtk!)]] : []),
                 ].map(([l, v]) => (
-                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
+                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
                   </div>
@@ -657,15 +657,15 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   ['PA', '#a8a8a8',               sheet.money.sp],
                   ['PR', '#b06030',               sheet.money.cp],
                 ] as [string, string, number][]).map(([label, color, val]) => (
-                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
+                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
                   </div>
                 ))}
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
-                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>+ Aggiungi</button>
-                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>Assegna Denaro</button>
+                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>+ Aggiungi</button>
+                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>Assegna Denaro</button>
               </div>
             </div>
           )}
@@ -740,7 +740,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                         const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r)' }}>
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
@@ -769,7 +769,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                         const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r)' }}>
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
@@ -798,17 +798,17 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   ['PA', '#a8a8a8',               sheet.money.sp],
                   ['PR', '#b06030',               sheet.money.cp],
                 ] as [string, string, number][]).map(([label, color, val]) => (
-                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
+                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
                   </div>
                 ))}
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
-                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>
+                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>
                   + Aggiungi
                 </button>
-                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>
+                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>
                   Assegna Denaro
                 </button>
               </div>

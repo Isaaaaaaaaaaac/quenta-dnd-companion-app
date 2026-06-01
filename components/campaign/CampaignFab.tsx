@@ -47,7 +47,7 @@ function XpModal({
       style={{ position: 'fixed', inset: 0, zIndex: 460, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, background: 'rgba(0,0,0,.65)' }}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--s-3)', width: '100%', maxWidth: 320 }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', padding: 'var(--s-3)', width: '100%', maxWidth: 320 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s-1)' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 700, color: 'var(--fg-1)' }}>⭐ Assegna XP al gruppo</span>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer', padding: 4 }}>✕</button>
@@ -58,7 +58,7 @@ function XpModal({
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 'var(--s-2)' }}>
           {XP_AMOUNTS.map(amount => (
             <button key={amount} onClick={() => setVal(String(amount))} style={{
-              height: 34, padding: '0 12px', borderRadius: 'var(--r)',
+              height: 34, padding: '0 12px', borderRadius: 'var(--r-sm)',
               border: `1px solid ${val === String(amount) ? 'var(--gold)' : 'var(--border-leather)'}`,
               background: val === String(amount) ? 'rgba(184,134,11,.12)' : 'none',
               color: val === String(amount) ? 'var(--gold)' : 'var(--fg-2)',
@@ -72,7 +72,7 @@ function XpModal({
           min="1" placeholder="Valore personalizzato…" autoFocus
           style={{
             width: '100%', height: 48, background: 'var(--bg-card)',
-            border: '1px solid var(--border-leather)', borderRadius: 'var(--r)',
+            border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)',
             color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '18px',
             outline: 'none', padding: '0 var(--s-2)', marginBottom: 'var(--s-2)',
             boxSizing: 'border-box', textAlign: 'center',
@@ -82,7 +82,7 @@ function XpModal({
           onClick={() => valid && onConfirm(n)}
           disabled={!valid || isPending}
           style={{
-            width: '100%', height: 48, borderRadius: 'var(--r)',
+            width: '100%', height: 48, borderRadius: 'var(--r-sm)',
             background: valid ? 'rgba(184,134,11,.85)' : 'var(--bg-card)',
             color: valid ? '#000' : 'var(--fg-3)',
             border: 'none', fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 600,

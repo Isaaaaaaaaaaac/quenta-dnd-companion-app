@@ -29,7 +29,7 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
     fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em',
     color: 'var(--fg-2)', background: 'none',
     border: '1px solid var(--border-leather)', padding: '0 var(--s-1)',
-    height: 24, borderRadius: 'var(--r)', cursor: 'pointer', transition: 'all .2s',
+    height: 24, borderRadius: 'var(--r-sm)', cursor: 'pointer', transition: 'all .2s',
   };
 
   return (
@@ -38,7 +38,7 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
           <div style={{
-            width: 32, height: 32, borderRadius: 'var(--r)',
+            width: 32, height: 32, borderRadius: 'var(--r-sm)',
             background: 'var(--bg-card)', border: '1px solid var(--border-leather)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 600,
@@ -65,7 +65,7 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
             value={input} onChange={e => setInput(e.target.value)}
             placeholder="email@gmail.com"
             style={{
-              height: 32, padding: '0 var(--s-1)', borderRadius: 'var(--r)',
+              height: 32, padding: '0 var(--s-1)', borderRadius: 'var(--r-sm)',
               border: '1px solid var(--border-leather)', background: 'var(--bg-card)',
               color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '11px',
               outline: 'none', width: '100%',

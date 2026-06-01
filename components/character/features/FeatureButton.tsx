@@ -45,7 +45,7 @@ export default function FeatureButton({
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '0 var(--s-1)', height: 32,
-          border: '1px solid var(--border-leather)', borderRadius: 'var(--r)',
+          border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)',
           cursor: 'pointer', transition: 'all .2s',
         }}
         onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(184,134,11,.35)'; e.currentTarget.style.background = 'rgba(184,134,11,.03)'; }}

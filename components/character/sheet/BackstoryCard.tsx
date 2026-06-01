@@ -48,7 +48,7 @@ export default function BackstoryCard({
       <div style={{
         background: 'var(--bg-deep)',
         border: '1px solid var(--border-leather-dim)',
-        borderRadius: 'var(--r2)',
+        borderRadius: 'var(--r-lg)',
         padding: 'var(--s-2)',
         display: 'flex',
         flexDirection: vertical ? 'column' : 'row',
@@ -81,7 +81,7 @@ export default function BackstoryCard({
                 <div key={label} style={{
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border-leather)',
-                  borderRadius: 'var(--r)',
+                  borderRadius: 'var(--r-sm)',
                   padding: '6px var(--s-1)',
                 }}>
                   <span style={{
@@ -158,7 +158,7 @@ export default function BackstoryCard({
                     letterSpacing: '.06em',
                     color: 'var(--gold)', background: 'rgba(184,134,11,.07)',
                     border: '1px solid rgba(184,134,11,.3)',
-                    borderRadius: 'var(--r)', cursor: 'pointer',
+                    borderRadius: 'var(--r-sm)', cursor: 'pointer',
                     transition: 'all .18s',
                     display: 'flex', alignItems: 'center', gap: 5,
                   }}
@@ -204,7 +204,7 @@ export default function BackstoryCard({
                   letterSpacing: '.06em',
                   color: 'var(--arcane)', background: 'rgba(91,33,182,.07)',
                   border: '1px solid rgba(91,33,182,.3)',
-                  borderRadius: 'var(--r)', cursor: 'pointer',
+                  borderRadius: 'var(--r-sm)', cursor: 'pointer',
                   transition: 'all .18s',
                   display: 'flex', alignItems: 'center', gap: 5,
                 }}

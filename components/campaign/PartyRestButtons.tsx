@@ -17,7 +17,7 @@ export default function PartyRestButtons({ campaignId }: Props) {
 
   const btn = (type: 'short' | 'long', label: string, color: string): React.CSSProperties => ({
     flex: 1, fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em',
-    height: 32, borderRadius: 'var(--r)', border: `1px solid ${color}`,
+    height: 32, borderRadius: 'var(--r-sm)', border: `1px solid ${color}`,
     color, background: 'transparent',
     cursor: pending ? 'not-allowed' : 'pointer',
     opacity: pending && pending !== type ? 0.4 : 1,

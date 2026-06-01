@@ -19,7 +19,7 @@ export default function PinnedActiveResources({ characterId, features, resources
   return (
     <div style={{
       background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)',
-      borderRadius: 'var(--r2)', padding: 'var(--s-2)', marginBottom: 'var(--s-2)',
+      borderRadius: 'var(--r-lg)', padding: 'var(--s-2)', marginBottom: 'var(--s-2)',
     }}>
       {/* Header */}
       <div style={{
@@ -63,15 +63,15 @@ export default function PinnedActiveResources({ characterId, features, resources
                 <div style={{ display: 'flex', gap: 3, flexShrink: 0 }}>
                   <button onClick={() => startTransition(() => useClassResource(characterId, f.resourceKey!, -1))}
                     disabled={resource.current <= 0 || isPending}
-                    style={{ width: 22, height: 22, borderRadius: 'var(--r)', border: '1px solid rgba(139,26,26,.4)', color: 'var(--danger)', background: 'rgba(139,26,26,.07)', cursor: resource.current <= 0 ? 'not-allowed' : 'pointer', opacity: resource.current <= 0 ? 0.25 : 1, fontSize: 10, fontFamily: 'var(--font-sans)' }}>−</button>
+                    style={{ width: 22, height: 22, borderRadius: 'var(--r-sm)', border: '1px solid rgba(139,26,26,.4)', color: 'var(--danger)', background: 'rgba(139,26,26,.07)', cursor: resource.current <= 0 ? 'not-allowed' : 'pointer', opacity: resource.current <= 0 ? 0.25 : 1, fontSize: 10, fontFamily: 'var(--font-sans)' }}>−</button>
                   <button onClick={() => startTransition(() => useClassResource(characterId, f.resourceKey!, +1))}
                     disabled={resource.current >= resource.maximum || isPending}
-                    style={{ width: 22, height: 22, borderRadius: 'var(--r)', border: '1px solid rgba(74,124,78,.4)', color: 'var(--hp-healthy)', background: 'rgba(74,124,78,.07)', cursor: resource.current >= resource.maximum ? 'not-allowed' : 'pointer', opacity: resource.current >= resource.maximum ? 0.25 : 1, fontSize: 10, fontFamily: 'var(--font-sans)' }}>+</button>
+                    style={{ width: 22, height: 22, borderRadius: 'var(--r-sm)', border: '1px solid rgba(74,124,78,.4)', color: 'var(--hp-healthy)', background: 'rgba(74,124,78,.07)', cursor: resource.current >= resource.maximum ? 'not-allowed' : 'pointer', opacity: resource.current >= resource.maximum ? 0.25 : 1, fontSize: 10, fontFamily: 'var(--font-sans)' }}>+</button>
                 </div>
               </>
             ) : (
               /* ── Risorsa non inizializzata: mostra badge informativo ── */
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-3)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '1px 8px', flexShrink: 0 }}>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-3)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '1px 8px', flexShrink: 0 }}>
                 {f.resetType === 'short' ? '☽ Riposo Breve' : '☾ Riposo Lungo'}
               </span>
             )}

@@ -80,7 +80,7 @@ export default function BackstoryModal({
         maxHeight: '90vh',
         background: 'var(--bg-deep)',
         border: '1px solid var(--border-leather-dim)',
-        borderRadius: 'var(--r2)',
+        borderRadius: 'var(--r-lg)',
         display: 'flex', flexDirection: 'column',
         overflow: 'hidden',
       }}>
@@ -121,7 +121,7 @@ export default function BackstoryModal({
               fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600,
               letterSpacing: '.07em', textTransform: 'uppercase',
               color: 'var(--fg-3)', border: '1px solid var(--border-leather)',
-              borderRadius: 'var(--r)', padding: '2px 8px',
+              borderRadius: 'var(--r-sm)', padding: '2px 8px',
             }}>
               Sola lettura
             </span>
@@ -131,7 +131,7 @@ export default function BackstoryModal({
             onClick={onClose}
             style={{
               width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'none', border: '1px solid transparent', borderRadius: 'var(--r)',
+              background: 'none', border: '1px solid transparent', borderRadius: 'var(--r-sm)',
               color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer',
               transition: 'all .2s',
             }}
@@ -218,7 +218,7 @@ export default function BackstoryModal({
               fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600,
               letterSpacing: '.07em', textTransform: 'uppercase',
               color: 'var(--fg-2)', background: 'none',
-              border: '1px solid var(--border-leather)', borderRadius: 'var(--r)',
+              border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)',
               cursor: 'pointer',
             }}
           >

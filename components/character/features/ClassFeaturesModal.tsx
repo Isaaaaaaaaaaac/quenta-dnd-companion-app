@@ -52,7 +52,7 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
 
   const CARD: React.CSSProperties = {
     background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)',
-    borderRadius: 'var(--r2)', padding: 'var(--s-2)',
+    borderRadius: 'var(--r-lg)', padding: 'var(--s-2)',
     opacity: isPending ? 0.7 : 1, transition: 'opacity .2s',
   };
 
@@ -67,7 +67,7 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase' }}>
               Caratteristiche di Classe
             </span>
-            <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
+            <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r-sm)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
           </div>
 
           {/* Tab classi (multiclasse) */}
@@ -78,7 +78,7 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
                 <button key={c.classKey} onClick={() => setActiveClass(c.classKey)}
                   style={{
                     fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
-                    padding: '0 12px', height: 28, borderRadius: 'var(--r)',
+                    padding: '0 12px', height: 28, borderRadius: 'var(--r-sm)',
                     border: activeClass === c.classKey ? '1px solid var(--gold)' : '1px solid var(--border-leather)',
                     background: activeClass === c.classKey ? 'rgba(184,134,11,.08)' : 'none',
                     color: activeClass === c.classKey ? 'var(--gold)' : 'var(--fg-2)',
@@ -108,7 +108,7 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
               <div key={`${feat.key}-${feat.unlockLevel}`} style={{
                 background: unlocked ? 'var(--bg-card)' : 'var(--bg-deep)',
                 border: `1px solid ${unlocked ? 'var(--border-leather)' : 'rgba(74,69,56,.3)'}`,
-                borderRadius: 'var(--r)',
+                borderRadius: 'var(--r-sm)',
                 padding: 'var(--s-2)',
                 marginBottom: 'var(--s-1)',
                 opacity: unlocked ? 1 : 0.4,
@@ -162,13 +162,13 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
                       <button
                         onClick={() => handleUseResource(resource.characterId, feat.resourceKey!, -1)}
                         disabled={resource.current <= 0 || isPending}
-                        style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r)', border: '1px solid rgba(139,26,26,.4)', color: 'var(--danger)', background: 'rgba(139,26,26,.07)', cursor: resource.current <= 0 ? 'not-allowed' : 'pointer', opacity: resource.current <= 0 ? 0.35 : 1 }}>
+                        style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', border: '1px solid rgba(139,26,26,.4)', color: 'var(--danger)', background: 'rgba(139,26,26,.07)', cursor: resource.current <= 0 ? 'not-allowed' : 'pointer', opacity: resource.current <= 0 ? 0.35 : 1 }}>
                         Usa
                       </button>
                       <button
                         onClick={() => handleUseResource(resource.characterId, feat.resourceKey!, +1)}
                         disabled={resource.current >= resource.maximum || isPending}
-                        style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r)', border: '1px solid rgba(74,124,78,.4)', color: 'var(--hp-healthy)', background: 'rgba(74,124,78,.07)', cursor: resource.current >= resource.maximum ? 'not-allowed' : 'pointer', opacity: resource.current >= resource.maximum ? 0.35 : 1 }}>
+                        style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', border: '1px solid rgba(74,124,78,.4)', color: 'var(--hp-healthy)', background: 'rgba(74,124,78,.07)', cursor: resource.current >= resource.maximum ? 'not-allowed' : 'pointer', opacity: resource.current >= resource.maximum ? 0.35 : 1 }}>
                         +1
                       </button>
                     </div>

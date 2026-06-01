@@ -25,12 +25,12 @@ const OVERLAY: React.CSSProperties = {
 };
 const MODAL: React.CSSProperties = {
   background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)',
-  borderRadius: 'var(--r2)', width: '100%', maxWidth: 900, maxHeight: '90vh',
+  borderRadius: 'var(--r-lg)', width: '100%', maxWidth: 900, maxHeight: '90vh',
   display: 'flex', flexDirection: 'column', overflow: 'hidden',
 };
 const CHIP = (active: boolean, color = 'var(--arcane)', bg = 'rgba(91,33,182,.08)'): React.CSSProperties => ({
   fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
-  padding: '0 10px', height: 24, borderRadius: 'var(--r)', cursor: 'pointer',
+  padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', cursor: 'pointer',
   border: active ? `1px solid ${color}` : '1px solid var(--border-leather)',
   color: active ? color : 'var(--fg-2)',
   background: active ? bg : 'none', transition: 'all .2s', flexShrink: 0,
@@ -75,7 +75,7 @@ function SpellRow({ spell, inSel, onAdd }: { spell: SpellEntry; inSel: boolean; 
           {spell.ritual        && <span style={{ fontSize: 8, color: 'var(--gold)',     fontFamily: 'var(--font-sans)', fontWeight: 600 }}>R</span>}
           <SchoolBadge school={spell.school} />
           <button onClick={e => { e.stopPropagation(); onAdd(); }} disabled={inSel}
-            style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', width: 52, height: 22, borderRadius: 'var(--r)', border: `1px solid ${inSel ? 'var(--border-leather)' : 'rgba(91,33,182,.4)'}`, color: inSel ? 'var(--fg-3)' : 'var(--arcane)', background: inSel ? 'transparent' : 'rgba(91,33,182,.06)', cursor: inSel ? 'default' : 'pointer', transition: 'all .2s' }}>
+            style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', width: 52, height: 22, borderRadius: 'var(--r-sm)', border: `1px solid ${inSel ? 'var(--border-leather)' : 'rgba(91,33,182,.4)'}`, color: inSel ? 'var(--fg-3)' : 'var(--arcane)', background: inSel ? 'transparent' : 'rgba(91,33,182,.06)', cursor: inSel ? 'default' : 'pointer', transition: 'all .2s' }}>
             {inSel ? '✓' : '+ Apprendi'}
           </button>
         </div>
@@ -205,7 +205,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
     onClose();
   }
 
-  const inp: React.CSSProperties = { background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '13px', outline: 'none', padding: '0 12px' };
+  const inp: React.CSSProperties = { background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '13px', outline: 'none', padding: '0 12px' };
 
   return (
     <div style={OVERLAY} className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
@@ -215,7 +215,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
         <div style={{ padding: '16px 20px 12px', borderBottom: '1px solid var(--border-leather)', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--arcane)', textTransform: 'uppercase' }}>Gestisci Incantesimi</span>
-            <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
+            <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r-sm)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
           </div>
 
           {/* Contatori preparazione per classe */}
@@ -225,7 +225,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
                 const count = preparedCount[cls] ?? 0;
                 const atLimit = count >= limit;
                 return (
-                  <div key={cls} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: atLimit ? 'var(--danger)' : 'var(--fg-2)', border: `1px solid ${atLimit ? 'rgba(139,26,26,.4)' : 'var(--border-leather)'}`, borderRadius: 'var(--r)', padding: '2px 8px' }}>
+                  <div key={cls} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: atLimit ? 'var(--danger)' : 'var(--fg-2)', border: `1px solid ${atLimit ? 'rgba(139,26,26,.4)' : 'var(--border-leather)'}`, borderRadius: 'var(--r-sm)', padding: '2px 8px' }}>
                     {cls.charAt(0).toUpperCase() + cls.slice(1)}: <strong style={{ color: atLimit ? 'var(--danger)' : 'var(--gold)' }}>{count}/{limit}</strong> preparati
                     {atLimit && ' (limite raggiunto)'}
                   </div>
@@ -266,11 +266,11 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
 
             {/* Homebrew */}
             <div style={{ padding: '8px 16px' }}>
-              <button onClick={() => setHbOpen(o => !o)} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px dashed var(--border-leather)', borderRadius: 'var(--r)', padding: '0 12px', height: 28, cursor: 'pointer', width: '100%' }}>
+              <button onClick={() => setHbOpen(o => !o)} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px dashed var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '0 12px', height: 28, cursor: 'pointer', width: '100%' }}>
                 + Incantesimo Homebrew
               </button>
               {hbOpen && (
-                <div style={{ marginTop: 8, padding: 12, background: 'var(--bg-card)', borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{ marginTop: 8, padding: 12, background: 'var(--bg-card)', borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <input value={hbName} onChange={e => setHbName(e.target.value)} placeholder="Nome incantesimo" style={{ ...inp, height: 32, width: '100%', fontSize: '12px' }} />
                   <div style={{ display: 'flex', gap: 8 }}>
                     <select value={hbLevel} onChange={e => setHbLevel(Number(e.target.value))} style={{ ...inp, height: 32, flex: 1, fontSize: '11px', cursor: 'pointer' }}>
@@ -283,7 +283,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
                   <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '11px', color: 'var(--fg-2)', cursor: 'pointer' }}>
                     <input type="checkbox" checked={hbConc} onChange={e => setHbConc(e.target.checked)} /> Concentrazione
                   </label>
-                  <button onClick={addHomebrew} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--arcane)', background: 'rgba(91,33,182,.06)', border: '1px solid rgba(91,33,182,.35)', borderRadius: 'var(--r)', height: 32, cursor: 'pointer' }}>Aggiungi Homebrew</button>
+                  <button onClick={addHomebrew} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--arcane)', background: 'rgba(91,33,182,.06)', border: '1px solid rgba(91,33,182,.35)', borderRadius: 'var(--r-sm)', height: 32, cursor: 'pointer' }}>Aggiungi Homebrew</button>
                 </div>
               )}
             </div>
@@ -326,7 +326,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
 
                   {/* Rimuovi */}
                   {!isDomain && (
-                    <button onClick={() => removeSpell(sp.id)} style={{ width: 18, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r)', color: 'var(--fg-3)', fontSize: 10, cursor: 'pointer' }}>✕</button>
+                    <button onClick={() => removeSpell(sp.id)} style={{ width: 18, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r-sm)', color: 'var(--fg-3)', fontSize: 10, cursor: 'pointer' }}>✕</button>
                   )}
                 </div>
               );
@@ -338,7 +338,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
                 ● = preparato · ○ = non preparato · Dom. = sempre preparato
               </div>
               <button onClick={handleConfirm} disabled={pending}
-                style={{ width: '100%', height: 40, fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--bg-deep)', background: 'var(--arcane)', border: 'none', borderRadius: 'var(--r)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.5 : 1 }}>
+                style={{ width: '100%', height: 40, fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--bg-deep)', background: 'var(--arcane)', border: 'none', borderRadius: 'var(--r-sm)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.5 : 1 }}>
                 {pending ? 'Salvataggio…' : 'Conferma'}
               </button>
             </div>

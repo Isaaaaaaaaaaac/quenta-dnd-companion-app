@@ -23,12 +23,12 @@ export default function HpControls({ characterId, hpCurrent, hpMax }: Props) {
   const inp: React.CSSProperties = {
     width: 48, height: 32, padding: '0 6px', textAlign: 'center',
     background: 'var(--bg-card)', border: '1px solid var(--border-leather)',
-    borderRadius: 'var(--r)', color: 'var(--fg-1)',
+    borderRadius: 'var(--r-sm)', color: 'var(--fg-1)',
     fontFamily: 'var(--font-sans)', fontSize: '13px', outline: 'none',
   };
   const btn = (color: string, bg: string): React.CSSProperties => ({
     flex: 1, fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em',
-    height: 32, borderRadius: 'var(--r)', border: `1px solid ${color}`, color,
+    height: 32, borderRadius: 'var(--r-sm)', border: `1px solid ${color}`, color,
     background: bg, cursor: pending ? 'not-allowed' : 'pointer',
     opacity: pending ? 0.4 : 1, transition: 'all .2s',
   });

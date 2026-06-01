@@ -14,7 +14,7 @@ interface Props {
 const CARD: React.CSSProperties = {
   background: 'var(--bg-deep)',
   border: '1px solid var(--border-leather-dim)',
-  borderRadius: 'var(--r2)',
+  borderRadius: 'var(--r-lg)',
   padding: 'var(--s-2)',
 };
 
@@ -49,7 +49,7 @@ function ItemRow({ item, characterId }: { item: InventoryItem; characterId: stri
     <>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8,
-        padding: '5px var(--s-1)', borderRadius: 'var(--r)',
+        padding: '5px var(--s-1)', borderRadius: 'var(--r-sm)',
         opacity: isPending ? 0.5 : 1, transition: 'opacity .15s',
         background: item.equipped ? 'rgba(184,134,11,.04)' : 'transparent',
       }}>
@@ -77,7 +77,7 @@ function ItemRow({ item, characterId }: { item: InventoryItem; characterId: stri
             title={item.equipped ? 'Rimuovi' : 'Equipaggia'}
             style={{
               fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.05em',
-              padding: '1px 6px', height: 20, borderRadius: 'var(--r)', flexShrink: 0,
+              padding: '1px 6px', height: 20, borderRadius: 'var(--r-sm)', flexShrink: 0,
               border: item.equipped ? '1px solid var(--gold)' : '1px solid var(--border-leather)',
               color: item.equipped ? 'var(--gold)' : 'var(--fg-3)',
               background: item.equipped ? 'rgba(184,134,11,.08)' : 'transparent',
@@ -96,7 +96,7 @@ function ItemRow({ item, characterId }: { item: InventoryItem; characterId: stri
             title={item.attuned ? 'Rimuovi sintonia' : 'Sintonizza'}
             style={{
               fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.05em',
-              padding: '1px 6px', height: 20, borderRadius: 'var(--r)', flexShrink: 0,
+              padding: '1px 6px', height: 20, borderRadius: 'var(--r-sm)', flexShrink: 0,
               border: item.attuned ? '1px solid var(--arcane)' : '1px solid var(--border-leather)',
               color: item.attuned ? 'var(--arcane)' : 'var(--fg-3)',
               background: item.attuned ? 'rgba(91,33,182,.08)' : 'transparent',
@@ -153,7 +153,7 @@ export default function InventoryCard({ characterId, inventory, money }: Props) 
             style={{
               fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
               padding: '0 var(--s-1)', height: 24, lineHeight: '24px',
-              borderRadius: 'var(--r)',
+              borderRadius: 'var(--r-sm)',
               border: `1px solid ${tab === t ? 'var(--border-leather)' : 'transparent'}`,
               background: tab === t ? 'var(--bg-card)' : 'none',
               color: tab === t ? 'var(--fg-1)' : 'var(--fg-2)',

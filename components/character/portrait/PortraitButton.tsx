@@ -19,7 +19,7 @@ export default function PortraitButton({ characterId, characterName, classLabel,
         onClick={() => setOpen(true)}
         title="Clicca per cambiare il ritratto"
         style={{
-          width: 64, height: 64, borderRadius: 'var(--r)',
+          width: 64, height: 64, borderRadius: 'var(--r-sm)',
           border: '1px solid var(--border-leather-dim)', backgroundColor: 'var(--bg-card)',
           flexShrink: 0, overflow: 'hidden', position: 'relative',
           display: 'flex', alignItems: 'center', justifyContent: 'center',

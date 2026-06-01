@@ -91,7 +91,7 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
   // ── Styles ────────────────────────────────────────────────────────────────────
   const tabStyle = (active: boolean): React.CSSProperties => ({
     fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.07em',
-    padding: '0 16px', height: 32, borderRadius: 'var(--r)', cursor: 'pointer',
+    padding: '0 16px', height: 32, borderRadius: 'var(--r-sm)', cursor: 'pointer',
     border: active ? '1px solid var(--border-leather)' : '1px solid transparent',
     background: active ? 'var(--bg-card)' : 'none',
     color: active ? 'var(--fg-1)' : 'var(--fg-2)',
@@ -101,20 +101,20 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
   return (
     <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', width: '100%', maxWidth: 520, overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', width: '100%', maxWidth: 520, overflow: 'hidden' }}>
 
         {/* Header */}
         <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-leather)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase' }}>
             Aggiorna Ritratto
           </span>
-          <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
+          <button onClick={onClose} style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: '1px solid transparent', borderRadius: 'var(--r-sm)', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer' }}>✕</button>
         </div>
 
         <div style={{ padding: '20px' }}>
 
           {/* Preview */}
-          <div style={{ width: 120, height: 120, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', margin: '0 auto 20px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+          <div style={{ width: 120, height: 120, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', margin: '0 auto 20px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
             {preview
               ? <img src={preview} alt="Anteprima" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               : <span style={{ color: 'var(--fg-3)', fontSize: 40 }}>⚔</span>
@@ -135,7 +135,7 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
           {/* Banner budget (solo tab AI) */}
           {tab === 'ai' && budget !== null && (
             <div style={{
-              marginBottom: 12, padding: '8px 12px', borderRadius: 'var(--r)',
+              marginBottom: 12, padding: '8px 12px', borderRadius: 'var(--r-sm)',
               background: budget.pct >= 80 ? 'rgba(139,26,26,.1)' : 'rgba(74,124,78,.08)',
               border: `1px solid ${budget.pct >= 80 ? 'rgba(139,26,26,.35)' : 'rgba(74,124,78,.3)'}`,
               fontFamily: 'var(--font-sans)', fontSize: '11px', lineHeight: 1.5,
@@ -166,7 +166,7 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
               <button
                 onClick={() => fileRef.current?.click()}
                 disabled={pending}
-                style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.07em', height: 40, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-1)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.4 : 1 }}
+                style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.07em', height: 40, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-1)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.4 : 1 }}
               >
                 Seleziona file…
               </button>
@@ -183,12 +183,12 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
                 value={aiPrompt}
                 onChange={e => setAiPrompt(e.target.value)}
                 rows={4}
-                style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '12px', padding: '10px 12px', outline: 'none', resize: 'vertical', lineHeight: 1.6 }}
+                style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '12px', padding: '10px 12px', outline: 'none', resize: 'vertical', lineHeight: 1.6 }}
               />
               <button
                 onClick={handleGenerate}
                 disabled={pending || !aiPrompt.trim()}
-                style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.07em', fontWeight: 600, height: 40, borderRadius: 'var(--r)', border: '1px solid rgba(91,33,182,.4)', background: 'rgba(91,33,182,.08)', color: 'var(--arcane)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.4 : 1 }}
+                style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.07em', fontWeight: 600, height: 40, borderRadius: 'var(--r-sm)', border: '1px solid rgba(91,33,182,.4)', background: 'rgba(91,33,182,.08)', color: 'var(--arcane)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.4 : 1 }}
               >
                 {pending ? '✨ Generazione in corso…' : '✨ Genera Ritratto'}
               </button>
@@ -197,20 +197,20 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
 
           {/* Error */}
           {error && (
-            <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(139,26,26,.1)', border: '1px solid rgba(139,26,26,.3)', borderRadius: 'var(--r)', fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--danger)', lineHeight: 1.5 }}>
+            <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(139,26,26,.1)', border: '1px solid rgba(139,26,26,.3)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--danger)', lineHeight: 1.5 }}>
               ⚠ {error}
             </div>
           )}
 
           {/* Footer */}
           <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 20 }}>
-            <button onClick={onClose} style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', padding: '0 16px', height: 36, borderRadius: 'var(--r)', cursor: 'pointer' }}>
+            <button onClick={onClose} style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', padding: '0 16px', height: 36, borderRadius: 'var(--r-sm)', cursor: 'pointer' }}>
               Annulla
             </button>
             <button
               onClick={handleSave}
               disabled={!pendingUrl || pending}
-              style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', fontWeight: 600, color: 'var(--bg-deep)', background: pendingUrl ? 'var(--gold)' : 'var(--fg-3)', border: 'none', padding: '0 20px', height: 36, borderRadius: 'var(--r)', cursor: pendingUrl ? 'pointer' : 'not-allowed', opacity: pending ? 0.5 : 1, transition: 'all .2s' }}
+              style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', fontWeight: 600, color: 'var(--bg-deep)', background: pendingUrl ? 'var(--gold)' : 'var(--fg-3)', border: 'none', padding: '0 20px', height: 36, borderRadius: 'var(--r-sm)', cursor: pendingUrl ? 'pointer' : 'not-allowed', opacity: pending ? 0.5 : 1, transition: 'all .2s' }}
             >
               {pending ? 'Salvataggio…' : 'Salva Ritratto'}
             </button>

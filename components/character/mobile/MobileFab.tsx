@@ -51,7 +51,7 @@ function QuickInputModal({
       style={{ position: 'fixed', inset: 0, zIndex: 460, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, background: 'rgba(0,0,0,.65)' }}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--s-3)', width: '100%', maxWidth: 320 }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', padding: 'var(--s-3)', width: '100%', maxWidth: 320 }}>
         {/* header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: subtitle ? 4 : 'var(--s-2)' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 700, color: 'var(--fg-1)' }}>{title}</span>
@@ -67,7 +67,7 @@ function QuickInputModal({
             const sel = inputValue === String(n);
             return (
               <button key={n} onClick={() => onChangeInput(String(n))} style={{
-                height: 36, padding: '0 14px', borderRadius: 'var(--r)',
+                height: 36, padding: '0 14px', borderRadius: 'var(--r-sm)',
                 border: `1px solid ${sel ? 'var(--gold)' : 'var(--border-leather)'}`,
                 background: sel ? 'rgba(184,134,11,.12)' : 'none',
                 color: sel ? 'var(--gold)' : 'var(--fg-2)',
@@ -85,7 +85,7 @@ function QuickInputModal({
           autoFocus
           style={{
             width: '100%', height: 48, background: 'var(--bg-card)',
-            border: '1px solid var(--border-leather)', borderRadius: 'var(--r)',
+            border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)',
             color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '18px',
             outline: 'none', padding: '0 var(--s-2)', marginBottom: 'var(--s-2)',
             boxSizing: 'border-box', textAlign: 'center',
@@ -96,7 +96,7 @@ function QuickInputModal({
           onClick={onConfirm}
           disabled={!valid || isPending}
           style={{
-            width: '100%', height: 48, borderRadius: 'var(--r)',
+            width: '100%', height: 48, borderRadius: 'var(--r-sm)',
             background: valid ? confirmColor : 'var(--bg-card)',
             color: valid ? '#fff' : 'var(--fg-3)',
             border: 'none',
@@ -119,7 +119,7 @@ function ConditionPickerModal({ onClose, onSelect }: { onClose: () => void; onSe
       style={{ position: 'fixed', inset: 0, zIndex: 460, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, background: 'rgba(0,0,0,.65)' }}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--s-2)', width: '100%', maxWidth: 360, maxHeight: '72vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', padding: 'var(--s-2)', width: '100%', maxWidth: 360, maxHeight: '72vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s-2)', flexShrink: 0 }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 700, color: 'var(--fg-1)' }}>⚠ Aggiungi Condizione</span>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer', padding: 4 }}>✕</button>
@@ -130,7 +130,7 @@ function ConditionPickerModal({ onClose, onSelect }: { onClose: () => void; onSe
               key={c.key}
               onClick={() => onSelect(c.key)}
               style={{
-                height: 52, borderRadius: 'var(--r)',
+                height: 52, borderRadius: 'var(--r-sm)',
                 border: '1px solid var(--border-leather)', background: 'var(--bg-card)',
                 color: 'var(--fg-1)', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', gap: 8, padding: '0 12px',

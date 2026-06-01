@@ -22,7 +22,7 @@ export default function AddSpellButton({ characterId, currentSpells, casterClass
           fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
           color: 'var(--arcane)', background: 'rgba(91,33,182,.06)',
           border: '1px solid rgba(91,33,182,.35)', padding: '0 var(--s-1)',
-          height: 24, borderRadius: 'var(--r)', cursor: 'pointer', transition: 'all .2s', flexShrink: 0,
+          height: 24, borderRadius: 'var(--r-sm)', cursor: 'pointer', transition: 'all .2s', flexShrink: 0,
         }}
       >
         + Aggiungi

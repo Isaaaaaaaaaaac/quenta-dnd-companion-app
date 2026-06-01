@@ -100,7 +100,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       display: 'flex', alignItems: 'center', gap: 8,
                       width: '100%', background: 'none',
                       border: '1px solid var(--border-leather)',
-                      borderRadius: 'var(--r)', padding: '0 12px',
+                      borderRadius: 'var(--r-sm)', padding: '0 12px',
                       height: 36, cursor: 'pointer',
                       fontFamily: "var(--font-sans)",
                       fontSize: '12px', fontWeight: 500, letterSpacing: '.04em',

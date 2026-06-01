@@ -6,7 +6,7 @@
                + Public Sans (body UI / H4–H6 / label / eyebrow / button)
 
    COLORI: cool-slate backgrounds, sepia ink accents
-   RADIUS: --r 5px / --r2 9px
+   RADIUS: --r-sm 8px / --r-lg 12px
    SPACING: griglia 8px → --s-1 8px … --s-11 120px
 ───────────────────────────────────────────────────────────────── */
 
@@ -55,8 +55,8 @@
   --color-hp-critical: var(--hp-critical);
 
   /* Radius */
-  --radius-sm: var(--r);
-  --radius-md: var(--r2);
+  --radius-sm: var(--r-sm);
+  --radius-lg: var(--r-lg);
 
   /* Spacing */
   --spacing-1:  var(--s-1);
@@ -139,9 +139,9 @@
   --font-body:    var(--font-serif);
   --font-label:   var(--font-sans);
 
-  /* ── Radius ── */
-  --r:  5px;
-  --r2: 9px;
+  /* ── Radius — solo due valori ── */
+  --r-sm: 8px;
+  --r-lg: 12px;
 
   /* ── Spacing — griglia 8px (11 step) ── */
   --s-1:  8px;
@@ -283,7 +283,7 @@ input, textarea, select {
   background-color: var(--bg-inner);
   border: 1px solid var(--border-neutral);
   color: var(--fg-1);
-  border-radius: var(--r);
+  border-radius: var(--r-sm);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   appearance: none;
@@ -308,7 +308,7 @@ button {
   font-family: var(--font-sans);
   font-weight: 500;
   cursor: pointer;
-  border-radius: var(--r);
+  border-radius: var(--r-sm);
   transition: all var(--transition-fast);
   background: transparent;
   border: 1px solid transparent;
@@ -434,7 +434,7 @@ button {
     cursor: pointer;
     transition: all var(--transition-fast);
     text-decoration: none;
-    border-radius: var(--r);
+    border-radius: var(--r-sm);
     background: transparent;
   }
 
@@ -515,7 +515,7 @@ button {
     padding: var(--s-1) var(--s-1);
     outline: none;
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    border-radius: var(--r);
+    border-radius: var(--r-sm);
     appearance: none;
   }
   .field-input::placeholder {
@@ -552,7 +552,7 @@ button {
     text-transform: uppercase;
     padding: 3px 10px;
     border: 1px solid;
-    border-radius: var(--r);
+    border-radius: var(--r-sm);
     display: inline-block;
   }
 
@@ -568,7 +568,7 @@ button {
   .callout {
     border-left: 2px solid;
     padding: var(--s-2);
-    border-radius: 0 var(--r) var(--r) 0;
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
     display: flex;
     gap: var(--s-2);
     align-items: flex-start;
@@ -604,7 +604,7 @@ button {
   .card {
     background: var(--bg-card);
     border: 1px solid var(--border-leather);
-    border-radius: var(--r2);
+    border-radius: var(--r-lg);
     box-shadow: var(--shadow-card), var(--shadow-inset);
     transition: border-color var(--transition-fast);
   }
