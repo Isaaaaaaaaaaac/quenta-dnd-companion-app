@@ -13,9 +13,9 @@ export default function NavLinks({ isDm, isSuperAdmin }: Props) {
       fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, letterSpacing: '.04em',
       color: active || gold ? 'var(--gold)' : 'var(--fg-2)',
       textDecoration: 'none', padding: '0 8px', height: 32, lineHeight: '32px',
-      borderRadius: '5px',
-      border: `1px solid ${active ? 'rgba(184,134,11,.35)' : 'transparent'}`,
-      background: active ? 'rgba(184,134,11,.06)' : 'none',
+      borderRadius: 'var(--r-sm)',
+      border: `1px solid ${active ? 'var(--gold-border)' : 'transparent'}`,
+      background: active ? 'var(--gold-soft)' : 'none',
       transition: 'all .2s', display: 'inline-block',
     };
   };

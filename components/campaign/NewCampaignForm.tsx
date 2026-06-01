@@ -80,7 +80,7 @@ export default function NewCampaignForm() {
       </div>
 
       {/* Card note DM */}
-      <div className="card" style={{ padding: 32, borderColor: 'rgba(139,26,26,0.4)' }}>
+      <div className="card" style={{ padding: 32, borderColor: 'var(--danger-border)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
           <div style={{ width: 2, height: 16, backgroundColor: 'var(--danger)', opacity: 0.7 }} />
           <label className="field-label" style={{ color: 'var(--fg-1)', marginBottom: 0 }}>Note DM — private</label>
@@ -89,7 +89,7 @@ export default function NewCampaignForm() {
           className="field-input"
           value={dmNotes} onChange={e => setDmNotes(e.target.value)}
           rows={4} placeholder="Trame segrete, connessioni tra PNG, segreti che i giocatori non devono vedere…"
-          style={{ resize: 'vertical', borderColor: 'rgba(139,26,26,0.4)' }}
+          style={{ resize: 'vertical', borderColor: 'var(--danger-border)' }}
         />
       </div>
 

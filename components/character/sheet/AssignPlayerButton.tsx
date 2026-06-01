@@ -73,7 +73,7 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
           />
           <div style={{ display: 'flex', gap: 6 }}>
             <button onClick={handleAssign} disabled={loading || !input.trim()}
-              style={{ ...btnSm, flex: 1, height: 28, color: 'var(--gold)', borderColor: 'rgba(184,134,11,.35)', opacity: (loading || !input.trim()) ? 0.4 : 1 }}>
+              style={{ ...btnSm, flex: 1, height: 28, color: 'var(--gold)', borderColor: 'var(--gold-border)', opacity: (loading || !input.trim()) ? 0.4 : 1 }}>
               {loading ? '…' : 'Salva'}
             </button>
             <button onClick={() => setOpen(false)} style={{ ...btnSm, height: 28 }}>✕</button>

@@ -188,7 +188,7 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
 
       {/* ── Preview dettaglio prima di aggiungere ── */}
       {previewItem && (
-        <div className="mb-4 p-4" style={{ border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.08)' }}>
+        <div className="mb-4 p-4" style={{ border: '1px solid var(--gold)', backgroundColor: 'var(--gold-soft)' }}>
           <div className="flex justify-between items-start mb-2">
             <div>
               <div style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '1rem' }}>{previewItem.name}</div>
@@ -275,7 +275,7 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
                         display: 'flex', alignItems: 'center', gap: 8,
                         width: '100%', padding: '8px 12px', textAlign: 'left',
                         border: 'none', borderBottom: '1px solid var(--bg-card)',
-                        backgroundColor: isAdded ? 'rgba(184,134,11,0.08)' : 'transparent',
+                        backgroundColor: isAdded ? 'var(--gold-soft)' : 'transparent',
                         cursor: 'pointer',
                         color: isAdded ? 'var(--gold)' : 'var(--fg-1)',
                         fontFamily: 'var(--font-body)', fontSize: '0.9rem',

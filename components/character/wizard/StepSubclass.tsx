@@ -38,7 +38,7 @@ export default function StepSubclass({ data, update, onNext, onBack }: Props) {
                 display: 'block', width: '100%', textAlign: 'left',
                 padding: '16px', cursor: 'pointer',
                 border: `1px solid ${isSelected ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
-                backgroundColor: isSelected ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)',
+                backgroundColor: isSelected ? 'var(--gold-soft)' : 'var(--bg-deep)',
               }}>
               <div style={{
                 fontFamily: 'var(--font-label)', color: isSelected ? 'var(--gold)' : 'var(--fg-1)',

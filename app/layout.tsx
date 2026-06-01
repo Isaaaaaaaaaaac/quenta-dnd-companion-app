@@ -64,7 +64,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   fontSize: '11px', fontWeight: 600,
                   background: 'var(--gold)', color: 'var(--bg-deep)',
                   padding: '0 8px', height: 32, lineHeight: '32px',
-                  borderRadius: '5px', minWidth: 32, textAlign: 'center',
+                  borderRadius: 'var(--r-sm)', minWidth: 32, textAlign: 'center',
                   marginLeft: 4, flexShrink: 0,
                 }}>
                   {initials}
@@ -75,7 +75,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     fontSize: '11px', fontWeight: 500, letterSpacing: '.04em',
                     color: 'var(--fg-2)', background: 'none',
                     border: '1px solid var(--border-leather)', padding: '0 8px',
-                    height: 32, lineHeight: '30px', borderRadius: '5px',
+                    height: 32, lineHeight: '30px', borderRadius: 'var(--r-sm)',
                     cursor: 'pointer', transition: 'all .2s',
                   }}>
                     Esci

@@ -125,7 +125,7 @@ export default function StepHP({ data, update, onNext, onBack }: Props) {
       </div>
 
       {/* Totale */}
-      <div className="p-4 border text-center mb-6" style={{ borderColor: allLocked ? 'var(--gold)' : 'var(--border-leather-dim)', backgroundColor: 'rgba(184,134,11,0.08)' }}>
+      <div className="p-4 border text-center mb-6" style={{ borderColor: allLocked ? 'var(--gold)' : 'var(--border-leather-dim)', backgroundColor: 'var(--gold-soft)' }}>
         <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', letterSpacing: '0.12em' }}>
           PUNTI FERITA TOTALI
         </div>

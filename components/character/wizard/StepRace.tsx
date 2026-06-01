@@ -115,7 +115,7 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
                     style={{
                       display: 'block', width: '100%', textAlign: 'left', padding: '12px',
                       border: `1px solid ${subraceKey === sub.key ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
-                      backgroundColor: subraceKey === sub.key ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)',
+                      backgroundColor: subraceKey === sub.key ? 'var(--gold-soft)' : 'var(--bg-deep)',
                       cursor: 'pointer',
                     }}>
                     <div style={{ fontFamily: 'var(--font-label)', color: subraceKey === sub.key ? 'var(--gold)' : 'var(--fg-1)', marginBottom: '4px' }}>
@@ -148,7 +148,7 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
                     <button key={stat} onClick={() => !isDisabled && toggleChoice(stat)} disabled={isDisabled}
                       style={{
                         padding: '8px', border: `1px solid ${isSelected ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
-                        backgroundColor: isSelected ? 'rgba(184,134,11,0.08)' : isDisabled ? 'var(--bg-deep)' : 'var(--bg-card)',
+                        backgroundColor: isSelected ? 'var(--gold-soft)' : isDisabled ? 'var(--bg-deep)' : 'var(--bg-card)',
                         color: isDisabled ? 'var(--border-leather)' : 'var(--fg-1)', cursor: isDisabled ? 'not-allowed' : 'pointer',
                         fontFamily: 'var(--font-label)', fontSize: '0.8rem', textAlign: 'center',
                       }}>
@@ -163,7 +163,7 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
 
           {/* Riepilogo bonus */}
           {getBonusDisplay()!.length > 0 && (
-            <div className="p-3" style={{ backgroundColor: 'rgba(184,134,11,0.08)', border: '1px solid var(--border-leather-dim)' }}>
+            <div className="p-3" style={{ backgroundColor: 'var(--gold-soft)', border: '1px solid var(--border-leather-dim)' }}>
               <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', letterSpacing: '0.08em', marginBottom: '6px' }}>
                 BONUS RAZZIALI
               </div>

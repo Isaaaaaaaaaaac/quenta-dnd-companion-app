@@ -48,7 +48,7 @@ export default function StepSkills({ data, update, onNext, onBack }: Props) {
                 display: 'flex', alignItems: 'center', gap: '12px',
                 width: '100%', padding: '8px 12px', textAlign: 'left',
                 border: `1px solid ${isSelected ? 'var(--gold)' : isAvailable ? 'var(--border-leather-dim)' : 'var(--bg-card)'}`,
-                backgroundColor: isSelected ? 'rgba(184,134,11,0.08)' : isAvailable ? 'var(--bg-card)' : 'transparent',
+                backgroundColor: isSelected ? 'var(--gold-soft)' : isAvailable ? 'var(--bg-card)' : 'transparent',
                 color: isAvailable ? 'var(--fg-1)' : 'var(--border-leather)',
                 cursor: isDisabled && !isSelected ? 'not-allowed' : 'pointer',
                 fontFamily: 'var(--font-body)', fontSize: '1rem',

@@ -62,7 +62,7 @@ export default function AdminPanel({ users }: { users: User[] }) {
           }}>
             {label}
             {count !== undefined && count > 0 && (
-              <span style={{ backgroundColor: 'var(--danger)', color: 'var(--fg-1)', borderRadius: '50%', padding: '1px 6px', fontSize: '7px' }}>
+              <span style={{ backgroundColor: 'var(--danger)', color: 'var(--fg-1)', borderRadius: 'var(--r-sm)', padding: '1px 6px', fontSize: '7px' }}>
                 {count}
               </span>
             )}
@@ -146,7 +146,7 @@ export default function AdminPanel({ users }: { users: User[] }) {
                 )}
                 {u.role !== 'superadmin' && (
                   <button onClick={() => handleDelete(u.id, u.email)} disabled={!!loading}
-                    className="btn btn-ghost" style={{ padding: '4px 10px', color: 'var(--fg-1)', borderColor: 'rgba(139,26,26,0.4)', fontSize: '8px' }}>
+                    className="btn btn-ghost" style={{ padding: '4px 10px', color: 'var(--fg-1)', borderColor: 'var(--danger-border)', fontSize: '8px' }}>
                     🗑
                   </button>
                 )}

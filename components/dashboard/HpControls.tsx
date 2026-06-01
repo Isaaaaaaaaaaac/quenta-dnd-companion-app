@@ -43,11 +43,11 @@ export default function HpControls({ characterId, hpCurrent, hpMax }: Props) {
         style={inp}
       />
       <button onClick={() => handle('damage')} disabled={pending}
-        style={btn('var(--danger)', 'rgba(139,26,26,.07)')}>Danno</button>
+        style={btn('var(--danger)', 'var(--danger-soft)')}>Danno</button>
       <button onClick={() => handle('heal')} disabled={pending}
-        style={btn('var(--hp-healthy)', 'rgba(74,124,78,.07)')}>Cura</button>
+        style={btn('var(--hp-healthy)', 'var(--success-soft)')}>Cura</button>
       <button onClick={() => handle('temp')} disabled={pending}
-        style={btn('var(--gold)', 'rgba(184,134,11,.06)')}>Temp</button>
+        style={btn('var(--gold)', 'var(--gold-soft)')}>Temp</button>
     </div>
   );
 }

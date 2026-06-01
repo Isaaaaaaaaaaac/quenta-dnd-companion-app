@@ -89,7 +89,7 @@ export default function StepSpells({ data, update, onNext, onBack }: Props) {
     padding: '12px 16px', cursor: 'pointer', fontSize: '0.85rem',
     fontFamily: 'var(--font-label)', letterSpacing: '0.04em',
     border: `1px solid ${active ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
-    backgroundColor: active ? 'rgba(184,134,11,0.08)' : 'transparent',
+    backgroundColor: active ? 'var(--gold-soft)' : 'transparent',
     color: active ? 'var(--gold)' : 'var(--fg-2)',
   });
 
