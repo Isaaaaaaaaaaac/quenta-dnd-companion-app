@@ -130,7 +130,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
   const clsFeatures = getNewFeatures(primaryClass?.classKey ?? '', newLevel);
 
   return (
-    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.75)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}
+    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'var(--modal-bg)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
 
       <div style={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--gold)', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflowY: 'auto', padding: '32px' }}>
@@ -164,7 +164,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
 
         {/* Nuove features di classe */}
         {clsFeatures.length > 0 && (
-          <div className="mb-5 p-3" style={{ backgroundColor: 'rgba(184,134,11,0.08)', border: '1px solid var(--border-leather-dim)' }}>
+          <div className="mb-5 p-3" style={{ backgroundColor: 'var(--gold-soft)', border: '1px solid var(--border-leather-dim)' }}>
             <div style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '0.65rem', letterSpacing: '0.06em', marginBottom: 6 }}>
               NUOVE CAPACITÀ AL LIVELLO {newLevel}
             </div>
@@ -176,7 +176,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
 
         {/* Bonus competenza aggiornato */}
         {newProf !== proficiencyBonus(character.level) && (
-          <div className="mb-5 p-3" style={{ backgroundColor: 'rgba(14,116,144,0.1)', border: '1px solid var(--info)' }}>
+          <div className="mb-5 p-3" style={{ backgroundColor: 'var(--info-soft)', border: '1px solid var(--info)' }}>
             <span style={{ color: 'var(--info)', fontFamily: 'var(--font-label)', fontSize: '0.75rem' }}>
               ✦ Bonus Competenza aumenta: +{proficiencyBonus(character.level)} → +{newProf}
             </span>
@@ -203,7 +203,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
                 </button>
               </div>
             ) : (
-              <div className="p-4 text-center mb-4" style={{ border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.08)' }}>
+              <div className="p-4 text-center mb-4" style={{ border: '1px solid var(--gold)', backgroundColor: 'var(--gold-soft)' }}>
                 <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', letterSpacing: '0.1em', marginBottom: 4 }}>PF GUADAGNATI — CONFERMATO</div>
                 <div style={{ fontFamily: 'var(--font-label)', fontSize: '3rem', color: 'var(--gold)', lineHeight: 1 }}>
                   +{hpGain}
@@ -239,7 +239,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
             <div className="flex gap-1 mb-5">
               {(['single', 'split', 'feat'] as AsiMode[]).map(mode => (
                 <button key={mode} onClick={() => resetAsi(mode)}
-                  style={{ flex: 1, border: `1px solid ${asiMode === mode ? 'var(--gold)' : 'var(--border-leather-dim)'}`, color: asiMode === mode ? 'var(--gold)' : 'var(--fg-2)', backgroundColor: asiMode === mode ? 'rgba(184,134,11,0.08)' : 'transparent', fontFamily: 'var(--font-label)', padding: '8px 4px', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.03em' }}>
+                  style={{ flex: 1, border: `1px solid ${asiMode === mode ? 'var(--gold)' : 'var(--border-leather-dim)'}`, color: asiMode === mode ? 'var(--gold)' : 'var(--fg-2)', backgroundColor: asiMode === mode ? 'var(--gold-soft)' : 'transparent', fontFamily: 'var(--font-label)', padding: '8px 4px', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.03em' }}>
                   {mode === 'single' ? '+2 a una' : mode === 'split' ? '+1/+1 a due' : '⚑ Talento'}
                 </button>
               ))}
@@ -281,7 +281,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
 
                 {/* Talento selezionato */}
                 {selectedFeat && (
-                  <div className="mb-3 p-3" style={{ border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.08)' }}>
+                  <div className="mb-3 p-3" style={{ border: '1px solid var(--gold)', backgroundColor: 'var(--gold-soft)' }}>
                     <div className="flex justify-between items-start">
                       <div>
                         <div style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '0.95rem' }}>{selectedFeat.name}</div>
@@ -415,7 +415,7 @@ function StatGrid({ stats, selected, onSelect, increment, maxSelected }: {
           <button key={stat} onClick={() => !isMax && !isFull && onSelect(stat)} disabled={isMax}
             style={{
               border: `1px solid ${isSel ? 'var(--gold)' : isMax ? 'var(--bg-card)' : 'var(--border-leather-dim)'}`,
-              backgroundColor: isSel ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)',
+              backgroundColor: isSel ? 'var(--gold-soft)' : 'var(--bg-deep)',
               color: isMax ? 'var(--border-leather)' : 'var(--fg-1)',
               padding: '10px 6px', textAlign: 'center',
               fontFamily: 'var(--font-label)',

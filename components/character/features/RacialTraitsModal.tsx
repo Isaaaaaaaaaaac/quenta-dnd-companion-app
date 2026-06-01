@@ -78,7 +78,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
   const hasChoices = visibleTraits.some(t => t.choice);
 
   return (
-    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 250, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 250, background: 'var(--modal-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
       <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', width: '100%', maxWidth: 960, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
@@ -114,7 +114,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
                   {trait.choice && <span style={{ fontSize: 10 }}>⚡</span>}
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: 'var(--fg-1)', flex: 1 }}>{trait.name}</span>
                   {trait.subraceOnly && (
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--fg-3)', border: '1px solid var(--border-leather)', borderRadius: 2, padding: '1px 5px' }}>Sottorazza</span>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--fg-3)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '1px 5px' }}>Sottorazza</span>
                   )}
                   <button onClick={() => handlePin(trait)} title={localPinned.has(`racial:${trait.key}`) ? 'Rimuovi pin' : 'Pinna sulla scheda'}
                     style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, opacity: localPinned.has(`racial:${trait.key}`) ? 1 : 0.25, transition: 'opacity .2s', padding: 2, flexShrink: 0 }}>
@@ -149,7 +149,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
                                   const next = isSelected ? selected.filter(s => s !== k) : canSelect ? [...selected, k] : selected;
                                   setChoice(trait.key, next);
                                 }}
-                                style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', border: isSelected ? '1px solid var(--gold)' : '1px solid var(--border-leather)', color: isSelected ? 'var(--gold)' : canSelect ? 'var(--fg-2)' : 'var(--fg-3)', background: isSelected ? 'rgba(184,134,11,.08)' : 'none', cursor: canSelect || isSelected ? 'pointer' : 'not-allowed', opacity: !canSelect && !isSelected ? 0.35 : 1 }}>
+                                style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', border: isSelected ? '1px solid var(--gold)' : '1px solid var(--border-leather)', color: isSelected ? 'var(--gold)' : canSelect ? 'var(--fg-2)' : 'var(--fg-3)', background: isSelected ? 'var(--gold-soft)' : 'none', cursor: canSelect || isSelected ? 'pointer' : 'not-allowed', opacity: !canSelect && !isSelected ? 0.35 : 1 }}>
                                 {STAT_NAMES[k]}
                               </button>
                             );
@@ -173,7 +173,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
                             return (
                               <button key={skill}
                                 onClick={() => setChoice(trait.key, isSel ? selected.filter(s => s !== skill) : canSel ? [...selected, skill] : selected)}
-                                style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', padding: '0 8px', height: 22, borderRadius: 'var(--r-sm)', border: isSel ? '1px solid var(--gold)' : '1px solid var(--border-leather)', color: isSel ? 'var(--gold)' : canSel ? 'var(--fg-2)' : 'var(--fg-3)', background: isSel ? 'rgba(184,134,11,.08)' : 'none', cursor: canSel || isSel ? 'pointer' : 'not-allowed', opacity: !canSel && !isSel ? 0.35 : 1 }}>
+                                style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', padding: '0 8px', height: 22, borderRadius: 'var(--r-sm)', border: isSel ? '1px solid var(--gold)' : '1px solid var(--border-leather)', color: isSel ? 'var(--gold)' : canSel ? 'var(--fg-2)' : 'var(--fg-3)', background: isSel ? 'var(--gold-soft)' : 'none', cursor: canSel || isSel ? 'pointer' : 'not-allowed', opacity: !canSel && !isSel ? 0.35 : 1 }}>
                                 {skill}
                               </button>
                             );

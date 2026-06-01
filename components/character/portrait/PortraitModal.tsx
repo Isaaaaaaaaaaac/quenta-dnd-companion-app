@@ -99,7 +99,7 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
   });
 
   return (
-    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'var(--modal-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
       <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', width: '100%', maxWidth: 520, overflow: 'hidden' }}>
 
@@ -120,7 +120,7 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
               : <span style={{ color: 'var(--fg-3)', fontSize: 40 }}>⚔</span>
             }
             {pending && (
-              <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,10,9,.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold)', fontSize: 12, fontFamily: 'var(--font-sans)' }}>
+              <div style={{ position: 'absolute', inset: 0, background: 'var(--modal-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold)', fontSize: 12, fontFamily: 'var(--font-sans)' }}>
                 Caricamento…
               </div>
             )}
@@ -136,8 +136,8 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
           {tab === 'ai' && budget !== null && (
             <div style={{
               marginBottom: 12, padding: '8px 12px', borderRadius: 'var(--r-sm)',
-              background: budget.pct >= 80 ? 'rgba(139,26,26,.1)' : 'rgba(74,124,78,.08)',
-              border: `1px solid ${budget.pct >= 80 ? 'rgba(139,26,26,.35)' : 'rgba(74,124,78,.3)'}`,
+              background: budget.pct >= 80 ? 'var(--danger-soft)' : 'var(--success-soft)',
+              border: `1px solid ${budget.pct >= 80 ? 'var(--danger-border)' : 'var(--success-border)'}`,
               fontFamily: 'var(--font-sans)', fontSize: '11px', lineHeight: 1.5,
               color: budget.pct >= 80 ? 'var(--danger)' : 'var(--fg-2)',
             }}>
@@ -188,7 +188,7 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
               <button
                 onClick={handleGenerate}
                 disabled={pending || !aiPrompt.trim()}
-                style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.07em', fontWeight: 600, height: 40, borderRadius: 'var(--r-sm)', border: '1px solid rgba(91,33,182,.4)', background: 'rgba(91,33,182,.08)', color: 'var(--arcane)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.4 : 1 }}
+                style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.07em', fontWeight: 600, height: 40, borderRadius: 'var(--r-sm)', border: '1px solid var(--arcane-border)', background: 'var(--arcane-soft)', color: 'var(--arcane)', cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.4 : 1 }}
               >
                 {pending ? '✨ Generazione in corso…' : '✨ Genera Ritratto'}
               </button>
@@ -197,7 +197,7 @@ export default function PortraitModal({ characterId, characterName, classLabel, 
 
           {/* Error */}
           {error && (
-            <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(139,26,26,.1)', border: '1px solid rgba(139,26,26,.3)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--danger)', lineHeight: 1.5 }}>
+            <div style={{ marginTop: 12, padding: '8px 12px', background: 'var(--danger-soft)', border: '1px solid var(--danger-border)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--danger)', lineHeight: 1.5 }}>
               ⚠ {error}
             </div>
           )}

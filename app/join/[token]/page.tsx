@@ -27,7 +27,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
         }}>
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-            background: 'linear-gradient(90deg, transparent, var(--danger), transparent)',
+            background: 'var(--danger-border)',
             opacity: 0.6,
           }} />
           <div style={{ fontFamily: 'var(--font-label)', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--fg-1)', marginBottom: 16 }}>
@@ -59,7 +59,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
         {/* Top accent */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-          background: 'linear-gradient(90deg, transparent, var(--gold), transparent)',
+          background: 'var(--gold-border)',
           opacity: 0.5,
         }} />
 

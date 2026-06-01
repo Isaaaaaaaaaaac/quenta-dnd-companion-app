@@ -46,7 +46,7 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
   }
 
   return (
-    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'var(--modal-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
       <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', padding: 'var(--s-3)', width: '100%', maxWidth: 440 }}>
 
@@ -87,7 +87,7 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
               style={{
                 fontFamily: 'var(--font-sans)', fontSize: '11px', letterSpacing: '.04em',
                 padding: 'var(--s-2)', borderRadius: 'var(--r-sm)',
-                border: '1px solid rgba(91,33,182,.4)', background: 'rgba(91,33,182,.06)',
+                border: '1px solid var(--arcane-border)', background: 'var(--arcane-soft)',
                 color: 'var(--arcane)', cursor: 'pointer',
                 textAlign: 'left', lineHeight: 1.5, transition: 'all .2s',
               }}

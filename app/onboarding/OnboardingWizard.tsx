@@ -36,7 +36,7 @@ export default function OnboardingWizard({ userId, userName }: Props) {
         {/* Top accent */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-          background: 'linear-gradient(90deg, transparent, var(--gold), transparent)',
+          background: 'var(--gold-border)',
           opacity: 0.5,
         }} />
 
@@ -144,7 +144,7 @@ function ChoiceButton({ icon, title, desc, onClick, highlight }: {
       onClick={onClick}
       style={{
         width: '100%', textAlign: 'left', cursor: 'pointer',
-        backgroundColor: highlight ? 'rgba(184,134,11,0.05)' : 'var(--bg-card)',
+        backgroundColor: highlight ? 'var(--gold-soft)' : 'var(--bg-card)',
         border: `1px solid ${highlight ? 'var(--gold)' : 'var(--border-leather)'}`,
         padding: 24, transition: 'border-color 0.2s ease',
       }}

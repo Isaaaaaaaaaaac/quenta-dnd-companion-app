@@ -57,7 +57,7 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
   };
 
   return (
-    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 250, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 250, background: 'var(--modal-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
       <div style={{ ...CARD, width: '100%', maxWidth: 960, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
@@ -80,7 +80,7 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
                     fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
                     padding: '0 12px', height: 28, borderRadius: 'var(--r-sm)',
                     border: activeClass === c.classKey ? '1px solid var(--gold)' : '1px solid var(--border-leather)',
-                    background: activeClass === c.classKey ? 'rgba(184,134,11,.08)' : 'none',
+                    background: activeClass === c.classKey ? 'var(--gold-soft)' : 'none',
                     color: activeClass === c.classKey ? 'var(--gold)' : 'var(--fg-2)',
                     cursor: 'pointer', transition: 'all .2s',
                   }}>
@@ -133,9 +133,9 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
                       </button>
                     )}
                     {feat.improvesAt && feat.improvesAt.some(l => l <= classLevel) && (
-                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--info)', border: '1px solid rgba(14,116,144,.35)', borderRadius: 2, padding: '1px 5px' }}>Potenziato</span>
+                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--info)', border: '1px solid var(--info-border)', borderRadius: 'var(--r-sm)', padding: '1px 5px' }}>Potenziato</span>
                     )}
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-3)', border: '1px solid var(--border-leather)', borderRadius: 2, padding: '1px 6px' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-3)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '1px 6px' }}>
                       Lv {feat.unlockLevel}
                     </span>
                   </div>
@@ -152,7 +152,7 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
                     {/* Cerchi visuali */}
                     <div style={{ display: 'flex', gap: 3 }}>
                       {Array.from({ length: resource.maximum }).map((_, i) => (
-                        <div key={i} style={{ width: 10, height: 10, borderRadius: '50%', border: `1.5px solid ${feat.resetType === 'short' ? 'var(--info)' : 'var(--arcane)'}`, background: i < resource.current ? (feat.resetType === 'short' ? 'var(--info)' : 'var(--arcane)') : 'transparent', transition: 'background .2s' }} />
+                        <div key={i} style={{ width: 10, height: 10, borderRadius: 'var(--r-sm)', border: `1.5px solid ${feat.resetType === 'short' ? 'var(--info)' : 'var(--arcane)'}`, background: i < resource.current ? (feat.resetType === 'short' ? 'var(--info)' : 'var(--arcane)') : 'transparent', transition: 'background .2s' }} />
                       ))}
                     </div>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)' }}>
@@ -162,13 +162,13 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
                       <button
                         onClick={() => handleUseResource(resource.characterId, feat.resourceKey!, -1)}
                         disabled={resource.current <= 0 || isPending}
-                        style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', border: '1px solid rgba(139,26,26,.4)', color: 'var(--danger)', background: 'rgba(139,26,26,.07)', cursor: resource.current <= 0 ? 'not-allowed' : 'pointer', opacity: resource.current <= 0 ? 0.35 : 1 }}>
+                        style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', border: '1px solid var(--danger-border)', color: 'var(--danger)', background: 'var(--danger-soft)', cursor: resource.current <= 0 ? 'not-allowed' : 'pointer', opacity: resource.current <= 0 ? 0.35 : 1 }}>
                         Usa
                       </button>
                       <button
                         onClick={() => handleUseResource(resource.characterId, feat.resourceKey!, +1)}
                         disabled={resource.current >= resource.maximum || isPending}
-                        style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', border: '1px solid rgba(74,124,78,.4)', color: 'var(--hp-healthy)', background: 'rgba(74,124,78,.07)', cursor: resource.current >= resource.maximum ? 'not-allowed' : 'pointer', opacity: resource.current >= resource.maximum ? 0.35 : 1 }}>
+                        style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', border: '1px solid var(--success-border)', color: 'var(--hp-healthy)', background: 'var(--success-soft)', cursor: resource.current >= resource.maximum ? 'not-allowed' : 'pointer', opacity: resource.current >= resource.maximum ? 0.35 : 1 }}>
                         +1
                       </button>
                     </div>

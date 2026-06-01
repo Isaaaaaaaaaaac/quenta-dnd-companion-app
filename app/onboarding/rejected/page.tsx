@@ -16,7 +16,7 @@ export default function RejectedPage() {
         {/* Top accent */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-          background: 'linear-gradient(90deg, transparent, var(--danger), transparent)',
+          background: 'var(--danger-border)',
           opacity: 0.6,
         }} />
 
@@ -31,7 +31,7 @@ export default function RejectedPage() {
           Contatta l'amministratore per maggiori informazioni.
         </p>
 
-        <div style={{ borderTop: '1px solid rgba(139,26,26,0.3)', marginBottom: 32 }} />
+        <div style={{ borderTop: '1px solid var(--danger-border)', marginBottom: 32 }} />
 
         <form action={async () => { 'use server'; await signOut({ redirectTo: '/sign-in' }); }}>
           <button type="submit" className="btn btn-ghost" style={{ width: '100%' }}>

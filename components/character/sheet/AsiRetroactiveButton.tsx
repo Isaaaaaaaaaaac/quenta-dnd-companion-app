@@ -102,7 +102,7 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
     <button key={stat} onClick={() => !isDisabled && (isSelected ? setAsiSingle(null) : setAsiSingle(stat))} disabled={isDisabled}
       style={{
         border: `1px solid ${isSelected ? 'var(--gold)' : 'var(--border-leather)'}`,
-        backgroundColor: isSelected ? 'rgba(184,134,11,0.08)' : 'var(--bg-card)',
+        backgroundColor: isSelected ? 'var(--gold-soft)' : 'var(--bg-card)',
         color: isDisabled ? 'var(--fg-3)' : 'var(--fg-1)',
         padding: '10px 8px', textAlign: 'center' as const,
         fontFamily: 'var(--font-body)', cursor: isDisabled ? 'not-allowed' : 'pointer',
@@ -115,7 +115,7 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
   );
 
   return (
-    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'var(--modal-bg)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
       onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="card" style={{ width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto', padding: 32, borderColor: 'var(--gold)' }}>
 
@@ -154,7 +154,7 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
               const isSel = asiSingle === stat;
               return (
                 <button key={stat} onClick={() => !isMax && setAsiSingle(isSel ? null : stat)} disabled={isMax}
-                  style={{ border: `1px solid ${isSel ? 'var(--gold)' : 'var(--border-leather)'}`, backgroundColor: isSel ? 'rgba(184,134,11,0.08)' : 'var(--bg-card)', color: isMax ? 'var(--fg-3)' : 'var(--fg-1)', padding: '10px 8px', textAlign: 'center', cursor: isMax ? 'not-allowed' : 'pointer' }}>
+                  style={{ border: `1px solid ${isSel ? 'var(--gold)' : 'var(--border-leather)'}`, backgroundColor: isSel ? 'var(--gold-soft)' : 'var(--bg-card)', color: isMax ? 'var(--fg-3)' : 'var(--fg-1)', padding: '10px 8px', textAlign: 'center', cursor: isMax ? 'not-allowed' : 'pointer' }}>
                   <div style={{ fontFamily: 'var(--font-label)', fontSize: '7px', letterSpacing: '0.3em', color: 'var(--fg-3)', marginBottom: 4 }}>{STAT_LABELS[stat]}</div>
                   <div style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', fontWeight: 700, color: isSel ? 'var(--gold)' : 'var(--fg-1)' }}>
                     {isMax ? 'MAX' : isSel ? `${val} → ${val + 2}` : val}
@@ -183,7 +183,7 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
                   if (!asiSplitA) { setAsiSplitA(stat); return; }
                   if (!asiSplitB) { setAsiSplitB(stat); }
                 }} disabled={isMax || full}
-                  style={{ border: `1px solid ${isSel ? 'var(--gold)' : 'var(--border-leather)'}`, backgroundColor: isSel ? 'rgba(184,134,11,0.08)' : 'var(--bg-card)', color: (isMax || full) ? 'var(--fg-3)' : 'var(--fg-1)', padding: '10px 8px', textAlign: 'center', cursor: (isMax || full) ? 'not-allowed' : 'pointer', opacity: full ? 0.4 : 1 }}>
+                  style={{ border: `1px solid ${isSel ? 'var(--gold)' : 'var(--border-leather)'}`, backgroundColor: isSel ? 'var(--gold-soft)' : 'var(--bg-card)', color: (isMax || full) ? 'var(--fg-3)' : 'var(--fg-1)', padding: '10px 8px', textAlign: 'center', cursor: (isMax || full) ? 'not-allowed' : 'pointer', opacity: full ? 0.4 : 1 }}>
                   <div style={{ fontFamily: 'var(--font-label)', fontSize: '7px', letterSpacing: '0.3em', color: 'var(--fg-3)', marginBottom: 4 }}>{STAT_LABELS[stat]}</div>
                   <div style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', fontWeight: 700, color: isSel ? 'var(--gold)' : 'var(--fg-1)' }}>
                     {isMax ? 'MAX' : isSel ? `${val} → ${val + 1}` : val}
@@ -220,7 +220,7 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
         )}
 
         {selectedFeat && (
-          <div style={{ marginBottom: 24, padding: '16px 20px', border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.05)' }}>
+          <div style={{ marginBottom: 24, padding: '16px 20px', border: '1px solid var(--gold)', backgroundColor: 'var(--gold-soft)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
               <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.85rem', color: 'var(--gold)' }}>{selectedFeat.name}</span>
               <button onClick={() => setSelectedFeat(null)} style={{ border: 'none', color: 'var(--fg-3)', backgroundColor: 'transparent', cursor: 'pointer' }}>✕</button>

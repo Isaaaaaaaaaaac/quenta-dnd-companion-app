@@ -50,7 +50,7 @@ export default function SpellSectionTabs({ knownSpells, activeSpellSlots, isPrep
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', color: 'var(--fg-2)' }}>Livello {slot.slotLevel}</span>
             <div style={{ display: 'flex', gap: 4 }}>
               {Array.from({ length: slot.total }).map((_, idx) => (
-                <div key={idx} style={{ width: 12, height: 12, borderRadius: '50%', border: '1.5px solid rgba(91,33,182,.5)', backgroundColor: idx < available ? 'var(--arcane)' : 'transparent' }} />
+                <div key={idx} style={{ width: 12, height: 12, borderRadius: 'var(--r-sm)', border: '1.5px solid var(--arcane-border)', backgroundColor: idx < available ? 'var(--arcane)' : 'transparent' }} />
               ))}
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function SpellSectionTabs({ knownSpells, activeSpellSlots, isPrep
       {knownSpells.length > 0 && (
         <>
           {activeSpellSlots.length > 0 && (
-            <div style={{ height: '.5px', background: 'linear-gradient(to right, transparent, rgba(184,134,11,.35), transparent)', margin: '8px 0' }} />
+            <div style={{ height: '1px', background: 'var(--border-leather-dim)', margin: '8px 0' }} />
           )}
 
           {isPreparedCaster && (

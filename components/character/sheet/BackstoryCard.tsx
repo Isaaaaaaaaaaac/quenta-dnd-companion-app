@@ -64,11 +64,11 @@ export default function BackstoryCard({
           }}>
             <span style={{
               fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600,
-              letterSpacing: '.1em', color: 'rgba(184,134,11,.5)', textTransform: 'uppercase',
+              letterSpacing: '.1em', color: 'var(--gold-dim)', textTransform: 'uppercase',
             }}>
               Narrativa
             </span>
-            <span style={{ flex: 1, height: '.5px', background: 'rgba(184,134,11,.15)' }} />
+            <span style={{ flex: 1, height: '.5px', background: 'var(--gold-border)' }} />
           </div>
 
           {hasNarrative ? (
@@ -86,7 +86,7 @@ export default function BackstoryCard({
                 }}>
                   <span style={{
                     fontFamily: 'var(--font-sans)', fontSize: '7px', fontWeight: 600,
-                    letterSpacing: '.08em', color: 'rgba(184,134,11,.4)',
+                    letterSpacing: '.08em', color: 'var(--gold-border)',
                     textTransform: 'uppercase',
                     display: 'flex', alignItems: 'center', gap: 3,
                     marginBottom: 3,
@@ -130,11 +130,11 @@ export default function BackstoryCard({
           }}>
             <span style={{
               fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600,
-              letterSpacing: '.1em', color: 'rgba(184,134,11,.5)', textTransform: 'uppercase',
+              letterSpacing: '.1em', color: 'var(--gold-dim)', textTransform: 'uppercase',
             }}>
               Storia del Personaggio
             </span>
-            <span style={{ flex: 1, height: '.5px', background: 'rgba(184,134,11,.15)' }} />
+            <span style={{ flex: 1, height: '.5px', background: 'var(--gold-border)' }} />
           </div>
 
           {hasBackstory ? (
@@ -156,19 +156,19 @@ export default function BackstoryCard({
                     height: 28, padding: '0 var(--s-2)',
                     fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600,
                     letterSpacing: '.06em',
-                    color: 'var(--gold)', background: 'rgba(184,134,11,.07)',
-                    border: '1px solid rgba(184,134,11,.3)',
+                    color: 'var(--gold)', background: 'var(--gold-soft)',
+                    border: '1px solid var(--gold-border)',
                     borderRadius: 'var(--r-sm)', cursor: 'pointer',
                     transition: 'all .18s',
                     display: 'flex', alignItems: 'center', gap: 5,
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.background = 'rgba(184,134,11,.14)';
+                    e.currentTarget.style.background = 'var(--gold-soft)';
                     e.currentTarget.style.borderColor = 'var(--gold-dim)';
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.background = 'rgba(184,134,11,.07)';
-                    e.currentTarget.style.borderColor = 'rgba(184,134,11,.3)';
+                    e.currentTarget.style.background = 'var(--gold-soft)';
+                    e.currentTarget.style.borderColor = 'var(--gold-border)';
                   }}
                 >
                   <span style={{ fontSize: 11 }}>📖</span>
@@ -202,14 +202,14 @@ export default function BackstoryCard({
                   height: 28, padding: '0 var(--s-2)',
                   fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600,
                   letterSpacing: '.06em',
-                  color: 'var(--arcane)', background: 'rgba(91,33,182,.07)',
-                  border: '1px solid rgba(91,33,182,.3)',
+                  color: 'var(--arcane)', background: 'var(--arcane-soft)',
+                  border: '1px solid var(--arcane-border)',
                   borderRadius: 'var(--r-sm)', cursor: 'pointer',
                   transition: 'all .18s',
                   display: 'flex', alignItems: 'center', gap: 5,
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(91,33,182,.12)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(91,33,182,.07)'; }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'var(--arcane-soft)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'var(--arcane-soft)'; }}
               >
                 ✦ {isOwner ? 'Aggiungi la tua storia' : 'Scrivi il backstory'}
               </button>

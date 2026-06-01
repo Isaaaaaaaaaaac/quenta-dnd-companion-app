@@ -13,11 +13,11 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
   const pct = Math.min(100, (totalAllTime / budgetEur) * 100);
   const remaining = Math.max(0, budgetEur - totalAllTime);
 
-  const barColor = pct >= 90 ? 'var(--danger)' : pct >= 80 ? '#8a7a2a' : 'var(--hp-healthy)';
+  const barColor = pct >= 90 ? 'var(--danger)' : pct >= 80 ? 'var(--warning)' : 'var(--hp-healthy)';
 
   return (
     <div style={{
-      background: 'var(--bg-deep)', border: `1px solid ${isWarning ? 'rgba(139,26,26,.5)' : 'var(--border-leather-dim)'}`,
+      background: 'var(--bg-deep)', border: `1px solid ${isWarning ? 'var(--danger-border)' : 'var(--border-leather-dim)'}`,
       borderRadius: 'var(--r-lg)', padding: 'var(--s-3)', marginBottom: 'var(--s-4)',
     }}>
       {/* Header */}
@@ -26,7 +26,7 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
           ✨ Utilizzo Gemini API — Generazione Ritratti
         </div>
         {isWarning && (
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.06em', color: 'var(--danger)', background: 'rgba(139,26,26,.1)', border: '1px solid rgba(139,26,26,.3)', borderRadius: 'var(--r-sm)', padding: '2px 10px' }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.06em', color: 'var(--danger)', background: 'var(--danger-soft)', border: '1px solid var(--danger-border)', borderRadius: 'var(--r-sm)', padding: '2px 10px' }}>
             ⚠ Crediti in esaurimento
           </div>
         )}
@@ -42,8 +42,8 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
             €{totalAllTime.toFixed(2)} / €{budgetEur.toFixed(2)} ({pct.toFixed(0)}%)
           </span>
         </div>
-        <div style={{ height: 8, background: 'var(--bg-elevated)', borderRadius: 4, overflow: 'hidden' }}>
-          <div style={{ height: '100%', width: `${pct}%`, background: barColor, borderRadius: 4, transition: 'width .4s ease' }} />
+        <div style={{ height: 8, background: 'var(--bg-elevated)', borderRadius: 'var(--r-sm)', overflow: 'hidden' }}>
+          <div style={{ height: '100%', width: `${pct}%`, background: barColor, borderRadius: 'var(--r-sm)', transition: 'width .4s ease' }} />
         </div>
         <div style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', marginTop: 6 }}>
           Rimanenti stimati: <strong style={{ color: remaining < 2 ? 'var(--danger)' : 'var(--fg-1)' }}>€{remaining.toFixed(2)}</strong>

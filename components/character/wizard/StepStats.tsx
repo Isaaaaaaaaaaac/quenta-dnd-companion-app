@@ -183,7 +183,7 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
           {diceDisplay.map((die, i) => (
             <div key={i} style={{
               width: '52px', height: '52px', border: `2px solid ${die.dropped ? 'var(--danger)' : 'var(--gold)'}`,
-              backgroundColor: die.dropped ? 'var(--bg-deep)' : 'rgba(184,134,11,0.08)',
+              backgroundColor: die.dropped ? 'var(--bg-deep)' : 'var(--gold-soft)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontFamily: 'var(--font-label)', fontSize: '1.4rem',
               color: die.dropped ? 'var(--danger)' : 'var(--fg-1)',
@@ -215,7 +215,7 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
                   title={entry.roll.dice.map((d, di) => di === entry.roll.dropped ? `[${d}]` : `${d}`).join(' + ') + ` = ${entry.roll.total}${isAssigned ? ` → ${entry.assignedTo?.toUpperCase()}` : ''}`}
                   style={{
                     border: `2px solid ${isSel ? 'var(--gold)' : isAssigned ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
-                    backgroundColor: isSel ? 'rgba(184,134,11,0.12)' : isAssigned ? 'rgba(184,134,11,0.06)' : 'var(--bg-card)',
+                    backgroundColor: isSel ? 'var(--gold-soft)' : isAssigned ? 'var(--gold-soft)' : 'var(--bg-card)',
                     color: isAssigned ? 'var(--gold)' : 'var(--fg-1)',
                     fontFamily: 'var(--font-label)', padding: '6px 12px',
                     cursor: 'pointer',
@@ -255,7 +255,7 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
               onClick={() => isTarget && assignToStat(stat)}
               style={{
                 border: `1px solid ${isTarget ? 'var(--gold)' : hasValue ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
-                backgroundColor: isTarget ? 'rgba(184,134,11,0.08)' : hasValue ? 'var(--bg-card)' : 'var(--bg-deep)',
+                backgroundColor: isTarget ? 'var(--gold-soft)' : hasValue ? 'var(--bg-card)' : 'var(--bg-deep)',
                 padding: '12px 6px', textAlign: 'center',
                 cursor: isTarget ? 'pointer' : 'default',
                 transition: 'border-color 0.15s, background-color 0.15s',

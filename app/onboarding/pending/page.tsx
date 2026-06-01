@@ -23,7 +23,7 @@ export default async function PendingPage() {
         {/* Top accent */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-          background: 'linear-gradient(90deg, transparent, var(--info), transparent)',
+          background: 'var(--info-border)',
           opacity: 0.5,
         }} />
 

@@ -41,7 +41,7 @@ const inp: React.CSSProperties = {
   fontSize: '0.9rem',
   padding: '7px 12px',
   outline: 'none',
-  borderRadius: 0,
+  borderRadius: 'var(--r-sm)',
   appearance: 'none' as const,
 };
 
@@ -135,7 +135,7 @@ export default function TabWeapons({ sheet, weapons, setWeapons, equippedArmorKe
         </div>
 
         {/* CA box */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px', backgroundColor: 'rgba(184,134,11,0.06)', border: '1px solid var(--gold)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px', backgroundColor: 'var(--gold-soft)', border: '1px solid var(--gold)' }}>
           <span style={{ ...lbl, marginBottom: 0, letterSpacing: '0.1em' }}>CA Calcolata</span>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: '2rem', fontWeight: 700, color: 'var(--gold)', lineHeight: 1 }}>{computedAC}</span>
           <span style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontSize: '0.875rem', fontStyle: 'italic' }}>
@@ -150,7 +150,7 @@ export default function TabWeapons({ sheet, weapons, setWeapons, equippedArmorKe
 
         {weapons.map(w => (
           <div key={w.id} style={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', padding: '20px', marginBottom: 12, position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', opacity: 0.3 }} />
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-border)', opacity: 0.3 }} />
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 16px', marginBottom: 16 }}>
               <div style={{ gridColumn: '1 / -1' }}>

@@ -125,9 +125,9 @@ export default function MobileNavDrawer({
                   color: active
                     ? 'var(--gold)'
                     : item.gold
-                    ? 'rgba(184,134,11,.6)'
+                    ? 'var(--gold)'
                     : 'var(--fg-1)',
-                  background: active ? 'rgba(184,134,11,.08)' : 'none',
+                  background: active ? 'var(--gold-soft)' : 'none',
                   borderLeft: `2px solid ${active ? 'var(--gold)' : 'transparent'}`,
                   fontFamily: 'var(--font-sans)',
                   fontSize: '14px',
@@ -136,7 +136,7 @@ export default function MobileNavDrawer({
                   transition: 'all .18s',
                 }}
                 onMouseEnter={e => {
-                  if (!active) e.currentTarget.style.background = 'rgba(184,134,11,.04)';
+                  if (!active) e.currentTarget.style.background = 'var(--gold-soft)';
                 }}
                 onMouseLeave={e => {
                   if (!active) e.currentTarget.style.background = 'none';

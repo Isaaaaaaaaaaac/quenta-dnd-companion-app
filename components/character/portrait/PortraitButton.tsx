@@ -34,7 +34,7 @@ export default function PortraitButton({ characterId, characterName, classLabel,
         {/* Overlay "modifica" al hover */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'rgba(12,10,9,.6)',
+          background: 'var(--modal-bg)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           opacity: 0, transition: 'opacity .2s',
           fontSize: 18,

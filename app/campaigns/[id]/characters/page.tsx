@@ -78,7 +78,7 @@ function CharCard({ character }: { character: Character }) {
   return (
     <a href={`/characters/${character.id}`} style={{ textDecoration: 'none', display: 'block' }}>
       <div className="card" style={{ padding: 24, position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', opacity: 0.4 }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-border)', opacity: 0.4 }} />
 
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
           <div style={{ flex: 1, minWidth: 0, paddingRight: 12 }}>

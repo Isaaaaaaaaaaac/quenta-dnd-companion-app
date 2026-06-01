@@ -27,8 +27,8 @@ export default function PendingRestBanner({
 
   const isShort = pendingRest === 'short';
   const accent = isShort ? 'var(--info)' : 'var(--arcane)';
-  const bgColor = isShort ? 'rgba(14,116,144,.08)' : 'rgba(91,33,182,.08)';
-  const border = isShort ? 'rgba(14,116,144,.35)' : 'rgba(91,33,182,.35)';
+  const bgColor = isShort ? 'var(--info-soft)' : 'var(--arcane-soft)';
+  const border = isShort ? 'var(--info-border)' : 'var(--arcane-border)';
 
   return (
     <>

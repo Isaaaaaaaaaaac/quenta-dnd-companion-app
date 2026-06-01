@@ -28,7 +28,7 @@ export default function PinnedActiveResources({ characterId, features, resources
         display: 'flex', alignItems: 'center', gap: 'var(--s-1)', marginBottom: 'var(--s-1)',
       }}>
         ⚡ Risorse Attive
-        <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
+        <span style={{ flex: 1, height: '.5px', background: 'var(--border-leather-dim)' }} />
       </div>
 
       {features.map(f => {
@@ -51,7 +51,7 @@ export default function PinnedActiveResources({ characterId, features, resources
               <>
                 <div style={{ display: 'flex', gap: 3, flexShrink: 0 }}>
                   {Array.from({ length: resource.maximum }).map((_, i) => (
-                    <div key={i} style={{ width: 9, height: 9, borderRadius: '50%', border: `1.5px solid ${accentColor}`, background: i < resource.current ? accentColor : 'transparent', opacity: i < resource.current ? 1 : 0.3, transition: 'background .2s' }} />
+                    <div key={i} style={{ width: 9, height: 9, borderRadius: 'var(--r-sm)', border: `1.5px solid ${accentColor}`, background: i < resource.current ? accentColor : 'transparent', opacity: i < resource.current ? 1 : 0.3, transition: 'background .2s' }} />
                   ))}
                 </div>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', color: resource.current === 0 ? 'var(--fg-3)' : 'var(--fg-2)', minWidth: 28, textAlign: 'center' }}>
@@ -63,10 +63,10 @@ export default function PinnedActiveResources({ characterId, features, resources
                 <div style={{ display: 'flex', gap: 3, flexShrink: 0 }}>
                   <button onClick={() => startTransition(() => useClassResource(characterId, f.resourceKey!, -1))}
                     disabled={resource.current <= 0 || isPending}
-                    style={{ width: 22, height: 22, borderRadius: 'var(--r-sm)', border: '1px solid rgba(139,26,26,.4)', color: 'var(--danger)', background: 'rgba(139,26,26,.07)', cursor: resource.current <= 0 ? 'not-allowed' : 'pointer', opacity: resource.current <= 0 ? 0.25 : 1, fontSize: 10, fontFamily: 'var(--font-sans)' }}>−</button>
+                    style={{ width: 22, height: 22, borderRadius: 'var(--r-sm)', border: '1px solid var(--danger-border)', color: 'var(--danger)', background: 'var(--danger-soft)', cursor: resource.current <= 0 ? 'not-allowed' : 'pointer', opacity: resource.current <= 0 ? 0.25 : 1, fontSize: 10, fontFamily: 'var(--font-sans)' }}>−</button>
                   <button onClick={() => startTransition(() => useClassResource(characterId, f.resourceKey!, +1))}
                     disabled={resource.current >= resource.maximum || isPending}
-                    style={{ width: 22, height: 22, borderRadius: 'var(--r-sm)', border: '1px solid rgba(74,124,78,.4)', color: 'var(--hp-healthy)', background: 'rgba(74,124,78,.07)', cursor: resource.current >= resource.maximum ? 'not-allowed' : 'pointer', opacity: resource.current >= resource.maximum ? 0.25 : 1, fontSize: 10, fontFamily: 'var(--font-sans)' }}>+</button>
+                    style={{ width: 22, height: 22, borderRadius: 'var(--r-sm)', border: '1px solid var(--success-border)', color: 'var(--hp-healthy)', background: 'var(--success-soft)', cursor: resource.current >= resource.maximum ? 'not-allowed' : 'pointer', opacity: resource.current >= resource.maximum ? 0.25 : 1, fontSize: 10, fontFamily: 'var(--font-sans)' }}>+</button>
                 </div>
               </>
             ) : (

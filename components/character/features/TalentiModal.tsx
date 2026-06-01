@@ -78,7 +78,7 @@ function checkPrerequisite(prereq: string | undefined, stats: CharacterStats, fe
 
 // ─── Stili ────────────────────────────────────────────────────────────────────
 const OVERLAY: React.CSSProperties = {
-  position: 'fixed', inset: 0, zIndex: 250, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)',
+  position: 'fixed', inset: 0, zIndex: 250, background: 'var(--modal-bg)',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
 };
 const MODAL: React.CSSProperties = {
@@ -185,7 +185,7 @@ export default function TalentiModal({ characterId, currentFeats, asiHistory, st
                     <div style={{ flex: 1 }}>
                       <div style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: owned ? 'var(--gold)' : 'var(--fg-1)', marginBottom: 2 }}>
                         {feat.name}
-                        {owned && <span style={{ marginLeft: 8, fontSize: '9px', color: 'var(--gold)', border: '1px solid rgba(184,134,11,.35)', borderRadius: 2, padding: '1px 5px' }}>Acquisito</span>}
+                        {owned && <span style={{ marginLeft: 8, fontSize: '9px', color: 'var(--gold)', border: '1px solid var(--gold-border)', borderRadius: 'var(--r-sm)', padding: '1px 5px' }}>Acquisito</span>}
                       </div>
                       {feat.prerequisite && (
                         <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: ok ? 'var(--fg-3)' : 'var(--danger)', marginBottom: 4 }}>
@@ -206,9 +206,9 @@ export default function TalentiModal({ characterId, currentFeats, asiHistory, st
                       style={{
                         fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', flexShrink: 0,
                         width: 64, height: 24, borderRadius: 'var(--r-sm)',
-                        border: owned ? '1px solid rgba(139,26,26,.4)' : blocked ? '1px solid var(--border-leather)' : '1px solid rgba(184,134,11,.4)',
+                        border: owned ? '1px solid var(--danger-border)' : blocked ? '1px solid var(--border-leather)' : '1px solid var(--gold-border)',
                         color: owned ? 'var(--danger)' : blocked ? 'var(--fg-3)' : 'var(--gold)',
-                        background: owned ? 'rgba(139,26,26,.06)' : 'transparent',
+                        background: owned ? 'var(--danger-soft)' : 'transparent',
                         cursor: (!owned && blocked) ? 'not-allowed' : 'pointer', transition: 'all .2s',
                       }}>
                       {owned ? 'Rimuovi' : '+ Aggiungi'}

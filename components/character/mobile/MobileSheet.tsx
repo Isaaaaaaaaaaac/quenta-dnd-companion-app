@@ -95,7 +95,7 @@ function SH({ children }: { children: React.ReactNode }) {
       marginBottom: 'var(--s-1)',
     }}>
       {children}
-      <span style={{ flex: 1, height: .5, background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
+      <span style={{ flex: 1, height: .5, background: 'var(--border-leather-dim)' }} />
     </div>
   );
 }
@@ -152,7 +152,7 @@ export default function MobileSheet({
       }}>
         {/* Portrait */}
         <div style={{
-          width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+          width: 40, height: 40, borderRadius: 'var(--r-sm)', flexShrink: 0,
           overflow: 'hidden', border: '1.5px solid var(--border-leather-dim)',
           background: 'var(--bg-card)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -183,8 +183,8 @@ export default function MobileSheet({
             {hpCurrent}
             <span style={{ fontSize: 12, color: 'var(--fg-2)', fontWeight: 400 }}>/{hpMax}</span>
           </div>
-          <div style={{ width: 60, height: 4, background: 'var(--bg-card)', borderRadius: 2, marginTop: 4, marginLeft: 'auto' }}>
-            <div style={{ height: '100%', width: `${hpPct}%`, background: hpColor, borderRadius: 2, transition: 'width .5s, background .6s' }} />
+          <div style={{ width: 60, height: 4, background: 'var(--bg-card)', borderRadius: 'var(--r-sm)', marginTop: 4, marginLeft: 'auto' }}>
+            <div style={{ height: '100%', width: `${hpPct}%`, background: hpColor, borderRadius: 'var(--r-sm)', transition: 'width .5s, background .6s' }} />
           </div>
         </div>
       </div>
@@ -249,8 +249,8 @@ export default function MobileSheet({
                   / {hpMax} max{hpTemp > 0 ? ` (+${hpTemp} temp)` : ''}
                 </span>
               </div>
-              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden', marginBottom: 'var(--s-1)' }}>
-                <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpColor, borderRadius: 2, transition: 'width .5s ease, background .6s' }} />
+              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 'var(--r-sm)', overflow: 'hidden', marginBottom: 'var(--s-1)' }}>
+                <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpColor, borderRadius: 'var(--r-sm)', transition: 'width .5s ease, background .6s' }} />
               </div>
               <HpControls characterId={characterId} hpCurrent={hpCurrent} hpMax={hpMax} />
               <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginTop: 'var(--s-1)' }}>
@@ -260,7 +260,7 @@ export default function MobileSheet({
                 </strong>
               </div>
               {hpCurrent === 0 && (
-                <div style={{ marginTop: 'var(--s-1)', paddingTop: 'var(--s-1)', borderTop: '1px solid rgba(139,26,26,0.4)' }}>
+                <div style={{ marginTop: 'var(--s-1)', paddingTop: 'var(--s-1)', borderTop: '1px solid var(--danger-border)' }}>
                   <DeathSavesTracker characterId={characterId} sheet={sheet} />
                 </div>
               )}
@@ -374,7 +374,7 @@ export default function MobileSheet({
                   return (
                     <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
-                        <div style={{ width: 8, height: 8, borderRadius: '50%', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
+                        <div style={{ width: 8, height: 8, borderRadius: 'var(--r-sm)', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
                         <span style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{ABILITY_NAMES[key]}</span>
                       </div>
                       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)' }}>
@@ -395,7 +395,7 @@ export default function MobileSheet({
                   const bonus = skillBonus(stats[skill.ability as Ability], level, sk.proficient, sk.expertise);
                   return (
                     <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                      <div style={{ width: 7, height: 7, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                      <div style={{ width: 7, height: 7, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                       <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '12px' }}>{skill.name}</span>
                       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>
                         {ABILITY_SHORT[skill.ability as Ability]}
@@ -429,8 +429,8 @@ export default function MobileSheet({
                   {carriedKg.toFixed(1)} / {carryMax} kg
                 </span>
               </div>
-              <div style={{ height: 4, backgroundColor: 'var(--bg-elevated)', borderRadius: 2, overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: `${carryPct}%`, backgroundColor: carryOverloaded ? 'var(--danger)' : 'var(--gold)', borderRadius: 2, opacity: 0.7 }} />
+              <div style={{ height: 4, backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--r-sm)', overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${carryPct}%`, backgroundColor: carryOverloaded ? 'var(--danger)' : 'var(--gold)', borderRadius: 'var(--r-sm)', opacity: 0.7 }} />
               </div>
             </div>
 
@@ -457,9 +457,9 @@ export default function MobileSheet({
 
             {/* Note DM (solo per DM) */}
             {sheet.dmNotes && isDm && (
-              <div style={{ ...CARD, border: '1px solid rgba(139,26,26,0.4)' }}>
+              <div style={{ ...CARD, border: '1px solid var(--danger-border)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--s-1)' }}>
-                  <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 1 }} />
+                  <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 'var(--r-sm)' }} />
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
                 </div>
                 <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-2)', lineHeight: 1.6, whiteSpace: 'pre-wrap', margin: 0 }}>
@@ -539,8 +539,8 @@ export default function MobileSheet({
                       {canLevelUp ? '⬆ Level Up!' : `${xpPct}%`}
                     </span>
                   </div>
-                  <div style={{ height: 4, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${xpPct}%`, background: 'linear-gradient(to right, var(--gold), var(--gold))', borderRadius: 2 }} />
+                  <div style={{ height: 4, backgroundColor: 'var(--bg-card)', borderRadius: 'var(--r-sm)', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${xpPct}%`, background: 'var(--gold)', borderRadius: 'var(--r-sm)' }} />
                   </div>
                 </div>
               </div>

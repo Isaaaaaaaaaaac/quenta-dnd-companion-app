@@ -20,7 +20,7 @@ const lbl: React.CSSProperties = {
 const inp: React.CSSProperties = {
   backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)',
   color: 'var(--fg-1)', fontFamily: 'var(--font-body)',
-  fontSize: '0.9rem', padding: '7px 12px', outline: 'none', borderRadius: 0,
+  fontSize: '0.9rem', padding: '7px 12px', outline: 'none', borderRadius: 'var(--r-sm)',
 };
 const sectionLbl: React.CSSProperties = {
   fontFamily: 'var(--font-label)', fontSize: '8px', letterSpacing: '0.1em',

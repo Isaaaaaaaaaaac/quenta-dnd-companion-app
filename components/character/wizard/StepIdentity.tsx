@@ -9,7 +9,7 @@ export const wizInp: React.CSSProperties = {
   backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)',
   color: 'var(--fg-1)', outline: 'none',
   fontFamily: 'var(--font-body)', fontSize: '0.95rem',
-  width: '100%', padding: '8px 12px', borderRadius: 0,
+  width: '100%', padding: '8px 12px', borderRadius: 'var(--r-sm)',
 };
 export const wizLbl: React.CSSProperties = {
   display: 'block', fontFamily: 'var(--font-label)', fontSize: '8px',
@@ -123,7 +123,7 @@ export default function StepIdentity({ data, update, onNext }: Props) {
             <label style={{ ...wizLbl, color: 'var(--fg-1)', marginBottom: 0 }}>Note DM (private)</label>
           </div>
           <textarea value={data.dmNotes} onChange={e => update({ dmNotes: e.target.value })}
-            rows={2} className="field-input" style={{ resize: 'vertical', borderColor: 'rgba(139,26,26,0.4)' }}
+            rows={2} className="field-input" style={{ resize: 'vertical', borderColor: 'var(--danger-border)' }}
             placeholder="Visibili solo al DM…" />
         </div>
       </div>

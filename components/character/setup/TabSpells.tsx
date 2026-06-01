@@ -173,7 +173,7 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
     <div className="space-y-5">
 
       {/* ── Intestazione: tipo di incantatore e regole ── */}
-      <div className="p-3" style={{ backgroundColor: 'rgba(184,134,11,0.08)', border: '1px solid var(--border-leather)' }}>
+      <div className="p-3" style={{ backgroundColor: 'var(--gold-soft)', border: '1px solid var(--border-leather)' }}>
         <div className="flex flex-wrap gap-2 items-center mb-2">
           <span style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '0.8rem' }}>
             {casterTypeLabel(classKey)}
@@ -289,7 +289,7 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
                     display: 'flex', alignItems: 'center', gap: 8,
                     width: '100%', padding: '8px 10px', textAlign: 'left', cursor: 'pointer',
                     border: `1px solid ${s.prepared ? 'var(--gold)' : 'var(--border-leather)'}`,
-                    backgroundColor: s.prepared ? 'rgba(184,134,11,0.08)' : 'transparent',
+                    backgroundColor: s.prepared ? 'var(--gold-soft)' : 'transparent',
                   }}>
                   <span style={{ color: s.prepared ? 'var(--gold)' : 'var(--border-leather)', fontSize: '0.8rem' }}>
                     {s.prepared ? '◆' : '◇'}
@@ -373,7 +373,7 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
                         display: 'flex', alignItems: 'center', gap: 8,
                         width: '100%', padding: '6px 10px', textAlign: 'left',
                         border: `1px solid ${isKnown ? 'var(--gold)' : 'var(--border-leather)'}`,
-                        backgroundColor: isKnown ? 'rgba(184,134,11,0.08)' : 'transparent',
+                        backgroundColor: isKnown ? 'var(--gold-soft)' : 'transparent',
                         cursor: blocked ? 'not-allowed' : 'pointer',
                         opacity: blocked ? 0.4 : 1,
                       }}>

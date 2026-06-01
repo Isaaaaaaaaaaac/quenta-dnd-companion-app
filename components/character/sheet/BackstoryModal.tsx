@@ -68,7 +68,7 @@ export default function BackstoryModal({
     <div
       style={{
         position: 'fixed', inset: 0,
-        background: 'rgba(4,3,2,.88)', backdropFilter: 'blur(6px)',
+        background: 'var(--modal-bg)',
         zIndex: 300,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}

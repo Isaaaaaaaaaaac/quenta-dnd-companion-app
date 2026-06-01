@@ -20,7 +20,7 @@ interface Props {
 // ─── Stili costanti ────────────────────────────────────────────────────────────
 const OVERLAY: React.CSSProperties = {
   position: 'fixed', inset: 0, zIndex: 200,
-  backgroundColor: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)',
+  backgroundColor: 'var(--modal-bg)',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
 };
 const MODAL: React.CSSProperties = {
@@ -28,7 +28,7 @@ const MODAL: React.CSSProperties = {
   borderRadius: 'var(--r-lg)', width: '100%', maxWidth: 900, maxHeight: '90vh',
   display: 'flex', flexDirection: 'column', overflow: 'hidden',
 };
-const CHIP = (active: boolean, color = 'var(--arcane)', bg = 'rgba(91,33,182,.08)'): React.CSSProperties => ({
+const CHIP = (active: boolean, color = 'var(--arcane)', bg = 'var(--arcane-soft)'): React.CSSProperties => ({
   fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
   padding: '0 10px', height: 24, borderRadius: 'var(--r-sm)', cursor: 'pointer',
   border: active ? `1px solid ${color}` : '1px solid var(--border-leather)',
@@ -43,7 +43,7 @@ const PREPARED_CLASSES = ['cleric', 'druid', 'paladin', 'wizard'] as const;
 // ─── Sub-components ────────────────────────────────────────────────────────────
 function SchoolBadge({ school }: { school: string }) {
   return (
-    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, color: 'var(--arcane)', opacity: .8, letterSpacing: '.04em', padding: '1px 5px', border: '1px solid rgba(91,33,182,.3)', borderRadius: 2, flexShrink: 0 }}>
+    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, color: 'var(--arcane)', opacity: .8, letterSpacing: '.04em', padding: '1px 5px', border: '1px solid var(--arcane-border)', borderRadius: 'var(--r-sm)', flexShrink: 0 }}>
       {(SCHOOLS_IT[school] ?? school).slice(0, 5).toUpperCase()}
     </span>
   );
@@ -75,7 +75,7 @@ function SpellRow({ spell, inSel, onAdd }: { spell: SpellEntry; inSel: boolean; 
           {spell.ritual        && <span style={{ fontSize: 8, color: 'var(--gold)',     fontFamily: 'var(--font-sans)', fontWeight: 600 }}>R</span>}
           <SchoolBadge school={spell.school} />
           <button onClick={e => { e.stopPropagation(); onAdd(); }} disabled={inSel}
-            style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', width: 52, height: 22, borderRadius: 'var(--r-sm)', border: `1px solid ${inSel ? 'var(--border-leather)' : 'rgba(91,33,182,.4)'}`, color: inSel ? 'var(--fg-3)' : 'var(--arcane)', background: inSel ? 'transparent' : 'rgba(91,33,182,.06)', cursor: inSel ? 'default' : 'pointer', transition: 'all .2s' }}>
+            style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', width: 52, height: 22, borderRadius: 'var(--r-sm)', border: `1px solid ${inSel ? 'var(--border-leather)' : 'var(--arcane-border)'}`, color: inSel ? 'var(--fg-3)' : 'var(--arcane)', background: inSel ? 'transparent' : 'var(--arcane-soft)', cursor: inSel ? 'default' : 'pointer', transition: 'all .2s' }}>
             {inSel ? '✓' : '+ Apprendi'}
           </button>
         </div>
@@ -225,7 +225,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
                 const count = preparedCount[cls] ?? 0;
                 const atLimit = count >= limit;
                 return (
-                  <div key={cls} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: atLimit ? 'var(--danger)' : 'var(--fg-2)', border: `1px solid ${atLimit ? 'rgba(139,26,26,.4)' : 'var(--border-leather)'}`, borderRadius: 'var(--r-sm)', padding: '2px 8px' }}>
+                  <div key={cls} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: atLimit ? 'var(--danger)' : 'var(--fg-2)', border: `1px solid ${atLimit ? 'var(--danger-border)' : 'var(--border-leather)'}`, borderRadius: 'var(--r-sm)', padding: '2px 8px' }}>
                     {cls.charAt(0).toUpperCase() + cls.slice(1)}: <strong style={{ color: atLimit ? 'var(--danger)' : 'var(--gold)' }}>{count}/{limit}</strong> preparati
                     {atLimit && ' (limite raggiunto)'}
                   </div>
@@ -249,7 +249,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
               {Object.keys(SCHOOLS_IT).map(k => <option key={k} value={k}>{SCHOOLS_IT[k]}</option>)}
             </select>
             {casterClassKeys.length > 0 && (
-              <button style={CHIP(classOnly, 'var(--gold)', 'rgba(184,134,11,.06)')} onClick={() => setClassOnly(c => !c)}>
+              <button style={CHIP(classOnly, 'var(--gold)', 'var(--gold-soft)')} onClick={() => setClassOnly(c => !c)}>
                 Solo {casterClassKeys.map(k => k.charAt(0).toUpperCase() + k.slice(1)).join(' · ')}
               </button>
             )}
@@ -283,7 +283,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
                   <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '11px', color: 'var(--fg-2)', cursor: 'pointer' }}>
                     <input type="checkbox" checked={hbConc} onChange={e => setHbConc(e.target.checked)} /> Concentrazione
                   </label>
-                  <button onClick={addHomebrew} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--arcane)', background: 'rgba(91,33,182,.06)', border: '1px solid rgba(91,33,182,.35)', borderRadius: 'var(--r-sm)', height: 32, cursor: 'pointer' }}>Aggiungi Homebrew</button>
+                  <button onClick={addHomebrew} style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em', color: 'var(--arcane)', background: 'var(--arcane-soft)', border: '1px solid var(--arcane-border)', borderRadius: 'var(--r-sm)', height: 32, cursor: 'pointer' }}>Aggiungi Homebrew</button>
                 </div>
               )}
             </div>
@@ -312,7 +312,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
 
                   {/* Badge dominio */}
                   {isDomain && (
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--gold)', border: '1px solid rgba(184,134,11,.35)', borderRadius: 2, padding: '1px 4px', flexShrink: 0 }}>Dom.</span>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--gold)', border: '1px solid var(--gold-border)', borderRadius: 'var(--r-sm)', padding: '1px 4px', flexShrink: 0 }}>Dom.</span>
                   )}
 
                   {/* Toggle preparato */}
@@ -320,7 +320,7 @@ export default function SpellSearchModal({ characterId, currentSpells, casterCla
                     <button
                       onClick={() => togglePrepared(sp)}
                       title={atLimit ? 'Limite raggiunto' : sp.prepared ? 'Rimuovi dalla preparazione' : 'Prepara'}
-                      style={{ width: 20, height: 20, borderRadius: '50%', border: `1.5px solid ${sp.prepared ? 'var(--arcane)' : atLimit ? 'rgba(139,26,26,.5)' : 'var(--fg-3)'}`, background: sp.prepared ? 'var(--arcane)' : 'transparent', cursor: atLimit && !sp.prepared ? 'not-allowed' : 'pointer', flexShrink: 0, transition: 'all .2s', opacity: atLimit && !sp.prepared ? 0.4 : 1 }}
+                      style={{ width: 20, height: 20, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sp.prepared ? 'var(--arcane)' : atLimit ? 'var(--danger-border)' : 'var(--fg-3)'}`, background: sp.prepared ? 'var(--arcane)' : 'transparent', cursor: atLimit && !sp.prepared ? 'not-allowed' : 'pointer', flexShrink: 0, transition: 'all .2s', opacity: atLimit && !sp.prepared ? 0.4 : 1 }}
                     />
                   )}
 

@@ -61,7 +61,7 @@ function CreationOption({ icon, title, subtitle, desc, tags, onClick, highlight 
       onClick={onClick}
       style={{
         width: '100%', textAlign: 'left', cursor: 'pointer',
-        backgroundColor: highlight ? 'rgba(184,134,11,0.05)' : 'var(--bg-deep)',
+        backgroundColor: highlight ? 'var(--gold-soft)' : 'var(--bg-deep)',
         border: `1px solid ${highlight ? 'var(--gold)' : 'var(--border-leather)'}`,
         padding: 28,
         transition: 'border-color 0.2s ease',
@@ -72,7 +72,7 @@ function CreationOption({ icon, title, subtitle, desc, tags, onClick, highlight 
       {highlight && (
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-          background: 'linear-gradient(90deg, transparent, var(--gold), transparent)',
+          background: 'var(--gold-border)',
           opacity: 0.5,
         }} />
       )}

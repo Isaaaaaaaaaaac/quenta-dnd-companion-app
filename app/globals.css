@@ -105,11 +105,15 @@
   --danger:        #A8331C;
   --danger-strong: #8B2010;
   --danger-bg:     #2A0F08;
+  --danger-soft:   rgba(168,51,28,0.10);
+  --danger-border: rgba(168,51,28,0.40);
 
   /* ── Semantic — Success ── */
   --success:        #6B8E3D;
   --success-strong: #4A6B2A;
   --success-bg:     #15200E;
+  --success-soft:   rgba(107,142,61,0.10);
+  --success-border: rgba(107,142,61,0.40);
 
   /* ── Semantic — Warning ── */
   --warning:        #C9701F;
@@ -120,11 +124,21 @@
   --arcane:        #8A5CC4;
   --arcane-strong: #6B3FA0;
   --arcane-bg:     #1E1530;
+  --arcane-soft:   rgba(138,92,196,0.10);
+  --arcane-border: rgba(138,92,196,0.40);
 
   /* ── Semantic — Info ── */
   --info:        #6B9AC4;
   --info-strong: #4A7AAA;
   --info-bg:     #0F1A28;
+  --info-soft:   rgba(107,154,196,0.10);
+  --info-border: rgba(107,154,196,0.35);
+
+  /* ── Gold accent border ── */
+  --gold-border: rgba(188,142,79,0.35);
+
+  /* ── Modal overlay ── */
+  --modal-bg: rgba(0,0,0,0.85);
 
   /* ── HP states ── */
   --hp-healthy:  #6B8E3D;

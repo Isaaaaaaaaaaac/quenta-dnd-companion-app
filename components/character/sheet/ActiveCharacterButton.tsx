@@ -23,7 +23,7 @@ export default function ActiveCharacterButton({ characterId, isActive, currentAc
   if (isActive) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-        <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--hp-healthy)', flexShrink: 0 }} />
+        <div style={{ width: 7, height: 7, borderRadius: 'var(--r-sm)', background: 'var(--hp-healthy)', flexShrink: 0 }} />
         <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--hp-healthy)', textTransform: 'uppercase' }}>
           Attivo
         </span>
@@ -46,7 +46,7 @@ export default function ActiveCharacterButton({ characterId, isActive, currentAc
       </button>
 
       {showConfirm && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(12,10,9,.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'var(--modal-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
           <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', padding: 'var(--s-3)', maxWidth: 360, width: '100%' }}>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--fg-1)', lineHeight: 1.6, marginBottom: 'var(--s-2)' }}>
               {currentActiveName

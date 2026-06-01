@@ -47,8 +47,8 @@ const CARD: React.CSSProperties = {
   padding: 'var(--s-2)',
 };
 const DV: React.CSSProperties = {
-  height: '.5px',
-  background: 'linear-gradient(to right, transparent, rgba(184,134,11,.35), transparent)',
+  height: '1px',
+  background: 'var(--border-leather-dim)',
   margin: 'var(--s-1) 0',
 };
 const IR: React.CSSProperties = {
@@ -65,7 +65,7 @@ function SectionTitle({ children, mb = true }: { children: React.ReactNode; mb?:
       marginBottom: mb ? 'var(--s-1)' : 0,
     }}>
       {children}
-      <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
+      <span style={{ flex: 1, height: '.5px', background: 'var(--border-leather-dim)' }} />
     </div>
   );
 }
@@ -254,8 +254,8 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
               <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em' }}>Livello {level}</span>
               <span>{char.xp.toLocaleString('it-IT')}{nextXp ? ` / ${nextXp.toLocaleString('it-IT')}` : ''} XP</span>
             </div>
-            <div style={{ height: 4, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden', border: '1px solid var(--border-leather)' }}>
-              <div style={{ height: '100%', width: `${xpPct}%`, background: 'linear-gradient(to right, var(--gold), var(--gold))', borderRadius: 2 }} />
+            <div style={{ height: 4, backgroundColor: 'var(--bg-card)', borderRadius: 'var(--r-sm)', overflow: 'hidden', border: '1px solid var(--border-leather)' }}>
+              <div style={{ height: '100%', width: `${xpPct}%`, background: 'var(--gold)', borderRadius: 'var(--r-sm)' }} />
             </div>
             <XpControls characterId={char.id} />
             <LevelUpButton character={char as Character} canLevelUp={canLevelUp} />
@@ -351,7 +351,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                 <Divider />
                 <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 'var(--s-1)', marginBottom: 4 }}>
                   📌 Pinnate
-                  <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
+                  <span style={{ flex: 1, height: '.5px', background: 'var(--border-leather-dim)' }} />
                 </div>
                 <PinnedPassiveSection features={pinnedPassive} />
               </>
@@ -424,7 +424,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                 return (
                   <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
-                      <div style={{ width: 8, height: 8, borderRadius: '50%', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
+                      <div style={{ width: 8, height: 8, borderRadius: 'var(--r-sm)', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
                       <span style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{ABILITY_NAMES[key]}</span>
                     </div>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)' }}>
@@ -455,7 +455,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
                           <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                            <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                            <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
                             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
@@ -483,7 +483,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
                           <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                            <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                            <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
                             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
@@ -543,15 +543,15 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   / {char.hpMax} max{char.hpTemp > 0 ? ` (+${char.hpTemp} temp)` : ''}
                 </span>
               </div>
-              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden', marginBottom: 'var(--s-1)' }}>
-                <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpColor, borderRadius: 2, transition: 'width .5s ease, background .6s' }} />
+              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 'var(--r-sm)', overflow: 'hidden', marginBottom: 'var(--s-1)' }}>
+                <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpColor, borderRadius: 'var(--r-sm)', transition: 'width .5s ease, background .6s' }} />
               </div>
               <HpControls characterId={char.id} hpCurrent={char.hpCurrent} hpMax={char.hpMax} />
               <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginTop: 'var(--s-1)' }}>
                 Dado Vita <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '12px', color: 'var(--fg-1)' }}>d{hitDie} × {level}</strong>
               </div>
               {char.hpCurrent === 0 && (
-                <div style={{ marginTop: 'var(--s-1)', paddingTop: 'var(--s-1)', borderTop: '1px solid rgba(139,26,26,0.4)' }}>
+                <div style={{ marginTop: 'var(--s-1)', paddingTop: 'var(--s-1)', borderTop: '1px solid var(--danger-border)' }}>
                   <DeathSavesTracker characterId={char.id} sheet={sheet} />
                 </div>
               )}
@@ -640,8 +640,8 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                 {carriedKg.toFixed(1)} / {carryMax} kg
               </span>
             </div>
-            <div style={{ height: 4, backgroundColor: 'var(--bg-elevated)', borderRadius: 2, overflow: 'hidden' }}>
-              <div style={{ height: '100%', width: `${carryPct}%`, backgroundColor: carryOverloaded ? 'var(--danger)' : 'var(--gold)', borderRadius: 2, opacity: 0.7 }} />
+            <div style={{ height: 4, backgroundColor: 'var(--bg-elevated)', borderRadius: 'var(--r-sm)', overflow: 'hidden' }}>
+              <div style={{ height: '100%', width: `${carryPct}%`, backgroundColor: carryOverloaded ? 'var(--danger)' : 'var(--gold)', borderRadius: 'var(--r-sm)', opacity: 0.7 }} />
             </div>
           </div>
 
@@ -708,9 +708,9 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
 
           {/* Note DM */}
           {sheet.dmNotes && isDm && (
-            <div style={{ ...CARD, border: '1px solid rgba(139,26,26,0.4)' }}>
+            <div style={{ ...CARD, border: '1px solid var(--danger-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--s-1)' }}>
-                <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 1 }} />
+                <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 'var(--r-sm)' }} />
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
               </div>
               <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-2)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{sheet.dmNotes}</p>
@@ -741,7 +741,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
                           <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                            <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                            <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
                             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
@@ -770,7 +770,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
                           <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                            <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                            <div style={{ width: 6, height: 6, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
                             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
@@ -817,9 +817,9 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
 
           {/* Note DM */}
           {sheet.dmNotes && isDm && (
-            <div style={{ ...CARD, border: '1px solid rgba(139,26,26,0.4)' }}>
+            <div style={{ ...CARD, border: '1px solid var(--danger-border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--s-1)' }}>
-                <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 1 }} />
+                <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 'var(--r-sm)' }} />
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
               </div>
               <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-2)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{sheet.dmNotes}</p>

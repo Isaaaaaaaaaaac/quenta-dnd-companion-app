@@ -31,7 +31,7 @@ export default function DeathSavesTracker({ characterId, sheet }: Props) {
               onClick={() => update(key, saves[key] < 3 ? saves[key] + 1 : 0)}>
               {[0, 1, 2].map(i => (
                 <div key={i} style={{
-                  width: 14, height: 14, borderRadius: '50%',
+                  width: 14, height: 14, borderRadius: 'var(--r-sm)',
                   backgroundColor: i < saves[key] ? color : 'transparent',
                   border: `2px solid ${color}`,
                   transition: 'background-color 0.15s ease',

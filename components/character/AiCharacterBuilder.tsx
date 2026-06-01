@@ -227,7 +227,7 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
             <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
               <div style={{
                 maxWidth: '85%', padding: '10px 14px',
-                backgroundColor: msg.role === 'user' ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)',
+                backgroundColor: msg.role === 'user' ? 'var(--gold-soft)' : 'var(--bg-deep)',
                 border: `1px solid ${msg.role === 'user' ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
                 fontFamily: 'var(--font-body)', color: 'var(--fg-1)', fontSize: '0.95rem',
                 whiteSpace: 'pre-wrap', lineHeight: 1.6,
@@ -249,7 +249,7 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
 
       {/* Anteprima scheda generata */}
       {parsedChar && (
-        <div className="mb-4 p-4" style={{ border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.08)' }}>
+        <div className="mb-4 p-4" style={{ border: '1px solid var(--gold)', backgroundColor: 'var(--gold-soft)' }}>
           <div className="flex items-center justify-between mb-2">
             <div>
               <div style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '1.1rem' }}>{parsedChar.name}</div>

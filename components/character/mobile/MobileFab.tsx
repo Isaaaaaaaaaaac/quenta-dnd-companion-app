@@ -69,7 +69,7 @@ function QuickInputModal({
               <button key={n} onClick={() => onChangeInput(String(n))} style={{
                 height: 36, padding: '0 14px', borderRadius: 'var(--r-sm)',
                 border: `1px solid ${sel ? 'var(--gold)' : 'var(--border-leather)'}`,
-                background: sel ? 'rgba(184,134,11,.12)' : 'none',
+                background: sel ? 'var(--gold-soft)' : 'none',
                 color: sel ? 'var(--gold)' : 'var(--fg-2)',
                 fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: sel ? 600 : 400,
                 cursor: 'pointer', transition: 'all .15s',
@@ -98,7 +98,7 @@ function QuickInputModal({
           style={{
             width: '100%', height: 48, borderRadius: 'var(--r-sm)',
             background: valid ? confirmColor : 'var(--bg-card)',
-            color: valid ? '#fff' : 'var(--fg-3)',
+            color: valid ? 'var(--fg-1)' : 'var(--fg-3)',
             border: 'none',
             fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 600,
             cursor: (!valid || isPending) ? 'not-allowed' : 'pointer',
@@ -137,7 +137,7 @@ function ConditionPickerModal({ onClose, onSelect }: { onClose: () => void; onSe
                 fontFamily: 'var(--font-sans)', fontSize: '12px',
                 transition: 'background .15s',
               }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(184,134,11,.06)'}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--gold-soft)'}
               onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-card)'}
             >
               <span style={{ fontSize: 16, flexShrink: 0 }}>{c.icon}</span>
@@ -167,14 +167,14 @@ export default function MobileFab({
   const [isPending, startTransition] = useTransition();
 
   const actions: Action[] = [
-    { id: 'damage',    icon: '💢', label: 'Aggiungi danno',           bg: 'rgba(139,26,26,.18)',  color: '#c45858' },
-    { id: 'heal',      icon: '❤️', label: 'Recupera PF',              bg: 'rgba(74,124,78,.18)',  color: 'var(--hp-healthy)' },
-    { id: 'condition', icon: '⚠',  label: 'Aggiungi Condizione',      bg: 'rgba(91,33,182,.18)',  color: 'var(--arcane)' },
-    ...(canCast ? [{ id: 'spell' as ModalId, icon: '✨', label: 'Aggiungi Incantesimo', bg: 'rgba(14,116,144,.18)', color: 'var(--info)' }] : []),
-    { id: 'equipment', icon: '⚔',  label: 'Aggiungi Equipaggiamento', bg: 'rgba(184,134,11,.18)', color: 'var(--gold)' },
+    { id: 'damage',    icon: '💢', label: 'Aggiungi danno',           bg: 'var(--danger-soft)',  color: 'var(--danger)' },
+    { id: 'heal',      icon: '❤️', label: 'Recupera PF',              bg: 'var(--success-soft)',  color: 'var(--hp-healthy)' },
+    { id: 'condition', icon: '⚠',  label: 'Aggiungi Condizione',      bg: 'var(--arcane-soft)',  color: 'var(--arcane)' },
+    ...(canCast ? [{ id: 'spell' as ModalId, icon: '✨', label: 'Aggiungi Incantesimo', bg: 'var(--info-soft)', color: 'var(--info)' }] : []),
+    { id: 'equipment', icon: '⚔',  label: 'Aggiungi Equipaggiamento', bg: 'var(--gold-soft)', color: 'var(--gold)' },
     ...(isDm ? [
-      { id: 'xp'   as ModalId, icon: '⭐', label: 'Assegna XP',      bg: 'rgba(184,134,11,.12)', color: 'var(--gold)' },
-      { id: 'item' as ModalId, icon: '🎁', label: 'Assegna Oggetto',  bg: 'rgba(184,134,11,.12)', color: 'var(--gold)' },
+      { id: 'xp'   as ModalId, icon: '⭐', label: 'Assegna XP',      bg: 'var(--gold-soft)', color: 'var(--gold)' },
+      { id: 'item' as ModalId, icon: '🎁', label: 'Assegna Oggetto',  bg: 'var(--gold-soft)', color: 'var(--gold)' },
     ] : []),
   ];
 
@@ -234,7 +234,7 @@ export default function MobileFab({
         <button
           onClick={() => setOpen(o => !o)}
           style={{
-            width: 56, height: 56, borderRadius: '50%',
+            width: 56, height: 56, borderRadius: 'var(--r-sm)',
             background: open ? 'var(--bg-elevated)' : 'var(--gold)',
             color: open ? 'var(--fg-1)' : 'var(--bg-deep)',
             border: open ? '1px solid var(--border-leather-dim)' : 'none',
@@ -264,7 +264,7 @@ export default function MobileFab({
             <span style={{
               background: 'var(--bg-deep)',
               border: '1px solid var(--border-leather)',
-              borderRadius: 20, padding: '6px 14px',
+              borderRadius: 'var(--r-lg)', padding: '6px 14px',
               fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600,
               color: 'var(--fg-1)',
               whiteSpace: 'nowrap',
@@ -274,7 +274,7 @@ export default function MobileFab({
             </span>
             {/* Icon circle */}
             <div style={{
-              width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
+              width: 44, height: 44, borderRadius: 'var(--r-sm)', flexShrink: 0,
               background: action.bg,
               border: `1.5px solid ${action.color}66`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -297,7 +297,7 @@ export default function MobileFab({
           onClose={closeModal} onConfirm={handleDamage}
           isPending={isPending}
           confirmLabel="Applica danno"
-          confirmColor="rgba(139,26,26,.9)"
+          confirmColor="var(--danger)"
         />
       )}
 
@@ -311,7 +311,7 @@ export default function MobileFab({
           onClose={closeModal} onConfirm={handleHeal}
           isPending={isPending}
           confirmLabel="Applica guarigione"
-          confirmColor="rgba(74,124,78,.9)"
+          confirmColor="var(--success)"
         />
       )}
 
@@ -324,7 +324,7 @@ export default function MobileFab({
           onClose={closeModal} onConfirm={handleXp}
           isPending={isPending}
           confirmLabel="Assegna XP"
-          confirmColor="rgba(184,134,11,.9)"
+          confirmColor="var(--gold)"
         />
       )}
 

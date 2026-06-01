@@ -151,7 +151,7 @@ function CharacterCard({ character, campaignId }: { character: CharacterWithRela
   return (
     <div className="card" style={{ position: 'relative', overflow: 'hidden' }}>
       {/* Top accent */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', opacity: 0.4 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-border)', opacity: 0.4 }} />
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', padding: '24px 24px 16px' }}>

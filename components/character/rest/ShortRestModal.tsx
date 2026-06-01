@@ -70,7 +70,7 @@ export default function ShortRestModal({ characterId, classes, conModifier, hitD
   };
 
   return (
-    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'var(--modal-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
       <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', padding: 'var(--s-3)', width: '100%', maxWidth: 420 }}>
 
@@ -120,14 +120,14 @@ export default function ShortRestModal({ characterId, classes, conModifier, hitD
             {diceToSpend > 0 && (
               <div style={{ display: 'flex', gap: 'var(--s-1)', marginBottom: 'var(--s-2)' }}>
                 <button onClick={rollDice}
-                  style={{ flex: 1, fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em', height: 36, borderRadius: 'var(--r-sm)', border: '1px solid var(--info)', color: 'var(--info)', background: 'rgba(14,116,144,.07)', cursor: 'pointer' }}>
+                  style={{ flex: 1, fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em', height: 36, borderRadius: 'var(--r-sm)', border: '1px solid var(--info)', color: 'var(--info)', background: 'var(--info-soft)', cursor: 'pointer' }}>
                   🎲 Tira i Dadi
                 </button>
               </div>
             )}
 
             {rolledHp !== null && (
-              <div style={{ background: 'rgba(74,124,78,.1)', border: '1px solid rgba(74,124,78,.3)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) var(--s-2)', marginBottom: 'var(--s-2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ background: 'var(--success-soft)', border: '1px solid var(--success-border)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1) var(--s-2)', marginBottom: 'var(--s-2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)' }}>PF recuperati</span>
                 <span style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 700, color: 'var(--hp-healthy)' }}>+{rolledHp}</span>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)' }}>{hpCurrent} → {hpAfter}</span>

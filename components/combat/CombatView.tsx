@@ -81,7 +81,7 @@ function CombatSidebar({ state, characters, onJumpTo }: {
           <div key={p.characterId} onClick={() => onJumpTo(i)} style={{
             padding: '10px 12px', cursor: 'pointer',
             borderBottom: '1px solid var(--border-leather)',
-            backgroundColor: isCurrent ? 'rgba(184,134,11,0.08)' : 'transparent',
+            backgroundColor: isCurrent ? 'var(--gold-soft)' : 'transparent',
             borderLeft: `2px solid ${isCurrent ? 'var(--gold)' : 'transparent'}`,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -160,7 +160,7 @@ function CombatCard({
   };
 
   return (
-    <div style={{ border: `1px solid ${isCurrent ? 'var(--gold)' : 'var(--border-leather)'}`, backgroundColor: isCurrent ? 'rgba(184,134,11,0.05)' : 'var(--bg-deep)', marginBottom: 8, transition: 'border-color 0.2s ease' }}>
+    <div style={{ border: `1px solid ${isCurrent ? 'var(--gold)' : 'var(--border-leather)'}`, backgroundColor: isCurrent ? 'var(--gold-soft)' : 'var(--bg-deep)', marginBottom: 8, transition: 'border-color 0.2s ease' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: `1px solid ${isCurrent ? 'var(--border-leather)' : 'var(--border-leather)'}`, cursor: 'pointer' }}
@@ -198,19 +198,19 @@ function CombatCard({
             <div style={{ display: 'flex', gap: 8 }}>
               <div style={{ display: 'flex', gap: 4, flex: 1 }}>
                 <input type="number" value={dmgInput} onChange={e => setDmgInput(e.target.value)}
-                  placeholder="Danno" min={1} style={{ ...inpStyle, borderColor: 'rgba(139,26,26,0.6)' }}
+                  placeholder="Danno" min={1} style={{ ...inpStyle, borderColor: 'var(--danger-border)' }}
                   onKeyDown={e => e.key === 'Enter' && handleDmg()} />
                 <button onClick={handleDmg} className="btn btn-ghost" style={{ padding: '4px 10px', borderColor: 'var(--danger)', color: 'var(--fg-1)' }}>DMG</button>
               </div>
               <div style={{ display: 'flex', gap: 4, flex: 1 }}>
                 <input type="number" value={healInput} onChange={e => setHealInput(e.target.value)}
-                  placeholder="Cura" min={1} style={{ ...inpStyle, borderColor: 'rgba(14,116,144,0.6)' }}
+                  placeholder="Cura" min={1} style={{ ...inpStyle, borderColor: 'var(--info-border)' }}
                   onKeyDown={e => e.key === 'Enter' && handleHeal()} />
                 <button onClick={handleHeal} className="btn btn-ghost" style={{ padding: '4px 10px', borderColor: 'var(--info)', color: 'var(--fg-1)' }}>CURA</button>
               </div>
             </div>
             {participant.concentrating && (
-              <div style={{ marginTop: 8, padding: '4px 10px', border: '1px solid rgba(91,33,182,0.5)', backgroundColor: 'rgba(91,33,182,0.06)', fontFamily: 'var(--font-body)', color: 'var(--fg-1)', fontSize: '0.8rem', fontStyle: 'italic' }}>
+              <div style={{ marginTop: 8, padding: '4px 10px', border: '1px solid var(--arcane-border)', backgroundColor: 'var(--arcane-soft)', fontFamily: 'var(--font-body)', color: 'var(--fg-1)', fontSize: '0.8rem', fontStyle: 'italic' }}>
                 ⚠ Concentrazione: {participant.concentrating} — TS COS se subisce danno
               </div>
             )}
@@ -285,7 +285,7 @@ function CombatCard({
                     <div className="label" style={{ marginBottom: 4, fontSize: '6.5px' }}>Lv {s.slotLevel}</div>
                     <div style={{ display: 'flex', gap: 3, justifyContent: 'center' }}>
                       {Array.from({ length: s.total }).map((_, i) => (
-                        <span key={i} style={{ width: 7, height: 7, borderRadius: '50%', display: 'inline-block', backgroundColor: i < (s.total - s.used) ? 'var(--arcane)' : 'var(--bg-elevated)', border: '1px solid var(--border-leather)' }} />
+                        <span key={i} style={{ width: 7, height: 7, borderRadius: 'var(--r-sm)', display: 'inline-block', backgroundColor: i < (s.total - s.used) ? 'var(--arcane)' : 'var(--bg-elevated)', border: '1px solid var(--border-leather)' }} />
                       ))}
                     </div>
                   </div>

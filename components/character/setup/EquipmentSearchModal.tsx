@@ -88,7 +88,7 @@ const CAT_COLORS: Record<string, { bg: string; color: string; border: string }> 
   'Arma':      { bg:'rgba(139,58,26,.18)', color:'#c47a50', border:'rgba(139,58,26,.35)' },
   'Armatura':  { bg:'rgba(42,74,106,.18)', color:'#6aa3cc', border:'rgba(42,74,106,.35)' },
   'Scudo':     { bg:'rgba(42,74,106,.18)', color:'#6aa3cc', border:'rgba(42,74,106,.35)' },
-  'Magico':      { bg:'rgba(91,33,182,.15)',  color:'#9b6edd', border:'rgba(91,33,182,.35)' },
+  'Magico':      { bg:'var(--arcane-soft)',  color:'#9b6edd', border:'var(--arcane-border)' },
   'Pergamena':   { bg:'rgba(74,58,16,.25)',   color:'#b8a050', border:'rgba(74,58,16,.5)'  },
   'Pozione':     { bg:'rgba(26,74,58,.2)',    color:'#50b898', border:'rgba(26,74,58,.4)'  },
   'Comune':      { bg:'rgba(48,45,42,.4)',    color:'var(--fg-2)', border:'rgba(48,45,42,.8)'  },
@@ -206,7 +206,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
     if (!query) return text;
     const idx = text.toLowerCase().indexOf(query.toLowerCase());
     if (idx < 0) return text;
-    return text.slice(0, idx) + '<mark style="background:rgba(184,134,11,.25);color:var(--gold);border-radius:2px">' + text.slice(idx, idx + query.length) + '</mark>' + text.slice(idx + query.length);
+    return text.slice(0, idx) + '<mark style="background:var(--gold-border);color:var(--gold);border-radius:2px">' + text.slice(idx, idx + query.length) + '</mark>' + text.slice(idx + query.length);
   }
 
   const ItemRow = ({ item }: { item: DbItem }) => {
@@ -219,7 +219,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
         padding: '0 var(--s-2)', gap: 'var(--s-1)', cursor: 'pointer',
         transition: 'background .15s',
         borderLeft: `2px solid ${isSelected ? 'var(--gold)' : 'transparent'}`,
-        backgroundColor: isSelected ? 'rgba(184,134,11,.05)' : 'transparent',
+        backgroundColor: isSelected ? 'var(--gold-soft)' : 'transparent',
       }}
         onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'var(--bg-card)'; }}
         onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = 'transparent'; }}
@@ -234,7 +234,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
           {item.wt > 0 ? `${item.wt}kg` : '—'}
         </span>
         {!isSelected ? (
-          <button onClick={e => { e.stopPropagation(); toggleItem(item); }} style={{ width: 24, height: 24, borderRadius: '50%', border: '1px solid var(--border-leather)', background: 'none', color: 'var(--fg-2)', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>+</button>
+          <button onClick={e => { e.stopPropagation(); toggleItem(item); }} style={{ width: 24, height: 24, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'none', color: 'var(--fg-2)', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>+</button>
         ) : (
           <div onClick={e => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
             <button onClick={() => changeQty(item.id, -1)} style={{ width: 24, height: 24, borderRadius: 'var(--r-sm)', border: '1px solid var(--border-leather)', background: 'none', color: 'var(--fg-2)', fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>−</button>
@@ -247,7 +247,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
   };
 
   return (
-    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(4,3,2,.84)', backdropFilter: 'blur(4px)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    <div className="modal-overlay" style={{ position: 'fixed', inset: 0, background: 'var(--modal-bg)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
 
       <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r-lg)', width: '100%', maxWidth: 800, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -267,7 +267,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
             <span style={{ color: 'var(--fg-3)', fontSize: 15, flexShrink: 0 }}>🔍</span>
             <input ref={inputRef} value={query} onChange={e => setQuery(e.target.value)} placeholder="Cerca tra tutti gli oggetti…" autoFocus
               style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--fg-1)' }} />
-            {query && <button onClick={() => { setQuery(''); inputRef.current?.focus(); }} style={{ width: 24, height: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', color: 'var(--fg-3)', fontSize: 13, cursor: 'pointer', borderRadius: '50%' }}>✕</button>}
+            {query && <button onClick={() => { setQuery(''); inputRef.current?.focus(); }} style={{ width: 24, height: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', color: 'var(--fg-3)', fontSize: 13, cursor: 'pointer', borderRadius: 'var(--r-sm)' }}>✕</button>}
           </div>
         </div>
 
@@ -276,7 +276,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
           {CATS.map(({ label, cat }) => {
             const isOn = activeChip === cat;
             return (
-              <button key={cat} onClick={() => setActiveChip(isOn ? '' : cat)} style={{ fontFamily: 'var(--font-sans)', fontSize: 9, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', height: 24, padding: '0 var(--s-1)', borderRadius: 'var(--r-sm)', border: `1px solid ${isOn ? 'var(--gold-dim)' : 'var(--border-leather)'}`, background: isOn ? 'rgba(184,134,11,.12)' : 'none', color: isOn ? 'var(--gold)' : 'var(--fg-2)', cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0, transition: 'all .18s' }}>
+              <button key={cat} onClick={() => setActiveChip(isOn ? '' : cat)} style={{ fontFamily: 'var(--font-sans)', fontSize: 9, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', height: 24, padding: '0 var(--s-1)', borderRadius: 'var(--r-sm)', border: `1px solid ${isOn ? 'var(--gold-dim)' : 'var(--border-leather)'}`, background: isOn ? 'var(--gold-soft)' : 'none', color: isOn ? 'var(--gold)' : 'var(--fg-2)', cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0, transition: 'all .18s' }}>
                 {label}
               </button>
             );
@@ -321,7 +321,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
               {filtered.map(item => <ItemRow key={item.id} item={item} />)}
 
               {/* Custom item */}
-              <div onClick={() => setCustomOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', height: 44, padding: '0 var(--s-2)', gap: 'var(--s-1)', cursor: 'pointer', color: 'var(--arcane)', opacity: .7, borderTop: '1px dashed rgba(91,33,182,.25)', transition: 'opacity .15s' }}
+              <div onClick={() => setCustomOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', height: 44, padding: '0 var(--s-2)', gap: 'var(--s-1)', cursor: 'pointer', color: 'var(--arcane)', opacity: .7, borderTop: '1px dashed var(--arcane-border)', transition: 'opacity .15s' }}
                 onMouseEnter={e => e.currentTarget.style.opacity = '1'}
                 onMouseLeave={e => e.currentTarget.style.opacity = '.7'}>
                 <span style={{ fontSize: 12 }}>✦</span>
@@ -330,7 +330,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
               </div>
 
               {customOpen && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)', padding: 'var(--s-1) var(--s-2) var(--s-2)', background: 'rgba(91,33,182,.04)', borderTop: '1px solid rgba(91,33,182,.2)' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)', padding: 'var(--s-1) var(--s-2) var(--s-2)', background: 'var(--arcane-soft)', borderTop: '1px solid var(--arcane-border)' }}>
                   <input value={customName} onChange={e => setCustomName(e.target.value)} placeholder="Nome oggetto…"
                     style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none' }} />
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
@@ -345,7 +345,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
                     <input value={customQty} onChange={e => setCustomQty(e.target.value)} type="number" placeholder="Quantità" min="1"
                       style={{ height: 32, background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: '0 var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--fg-1)', outline: 'none' }} />
-                    <button onClick={addCustom} disabled={!customName.trim()} style={{ height: 32, fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--arcane)', background: 'rgba(91,33,182,.07)', border: '1px solid rgba(91,33,182,.3)', borderRadius: 'var(--r-sm)', cursor: customName.trim() ? 'pointer' : 'not-allowed', opacity: customName.trim() ? 1 : 0.5 }}>
+                    <button onClick={addCustom} disabled={!customName.trim()} style={{ height: 32, fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 600, letterSpacing: '.07em', textTransform: 'uppercase', color: 'var(--arcane)', background: 'var(--arcane-soft)', border: '1px solid var(--arcane-border)', borderRadius: 'var(--r-sm)', cursor: customName.trim() ? 'pointer' : 'not-allowed', opacity: customName.trim() ? 1 : 0.5 }}>
                       ✦ Aggiungi
                     </button>
                   </div>
@@ -359,7 +359,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
             <div style={{ padding: 'var(--s-2) var(--s-2) var(--s-1)' }}>
               <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--gold)', display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
                 Selezione
-                <span style={{ flex: 1, height: .5, background: 'linear-gradient(to right, var(--gold-dim), transparent)' }} />
+                <span style={{ flex: 1, height: .5, background: 'var(--border-leather-dim)' }} />
               </div>
             </div>
             <div style={{ flex: 1, overflowY: 'auto', padding: '0 var(--s-1)', display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -372,7 +372,7 @@ export default function EquipmentSearchModal({ characterId, currentInventory, cu
                   <span style={{ fontSize: 11, flexShrink: 0 }}>{item.ico}</span>
                   <span style={{ flex: 1, fontSize: 12, color: 'var(--fg-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</span>
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, fontWeight: 600, color: 'var(--gold)', flexShrink: 0 }}>×{qty}</span>
-                  <button onClick={() => setSel(prev => { const next = { ...prev }; delete next[id]; return next; })} style={{ width: 16, height: 16, border: 'none', background: 'none', color: 'var(--fg-3)', fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', borderRadius: '50%', flexShrink: 0 }}>✕</button>
+                  <button onClick={() => setSel(prev => { const next = { ...prev }; delete next[id]; return next; })} style={{ width: 16, height: 16, border: 'none', background: 'none', color: 'var(--fg-3)', fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', borderRadius: 'var(--r-sm)', flexShrink: 0 }}>✕</button>
                 </div>
               ))}
             </div>

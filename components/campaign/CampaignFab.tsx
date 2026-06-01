@@ -60,7 +60,7 @@ function XpModal({
             <button key={amount} onClick={() => setVal(String(amount))} style={{
               height: 34, padding: '0 12px', borderRadius: 'var(--r-sm)',
               border: `1px solid ${val === String(amount) ? 'var(--gold)' : 'var(--border-leather)'}`,
-              background: val === String(amount) ? 'rgba(184,134,11,.12)' : 'none',
+              background: val === String(amount) ? 'var(--gold-soft)' : 'none',
               color: val === String(amount) ? 'var(--gold)' : 'var(--fg-2)',
               fontFamily: 'var(--font-sans)', fontSize: '12px',
               cursor: 'pointer', transition: 'all .15s',
@@ -83,8 +83,8 @@ function XpModal({
           disabled={!valid || isPending}
           style={{
             width: '100%', height: 48, borderRadius: 'var(--r-sm)',
-            background: valid ? 'rgba(184,134,11,.85)' : 'var(--bg-card)',
-            color: valid ? '#000' : 'var(--fg-3)',
+            background: valid ? 'var(--gold)' : 'var(--bg-card)',
+            color: valid ? 'var(--bg-deep)' : 'var(--fg-3)',
             border: 'none', fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 600,
             cursor: (!valid || isPending) ? 'not-allowed' : 'pointer',
             opacity: (!valid || isPending) ? 0.55 : 1, transition: 'all .2s',
@@ -100,11 +100,11 @@ function XpModal({
 // ─── main component ───────────────────────────────────────────
 
 const ACTIONS: Action[] = [
-  { id: 'combat',     icon: '🗡',  label: 'Inizia Combat',           bg: 'rgba(139,26,26,.18)',  color: '#c45858' },
-  { id: 'rest-short', icon: '☽',   label: 'Riposo Breve (party)',     bg: 'rgba(14,116,144,.18)', color: 'var(--info)' },
-  { id: 'rest-long',  icon: '☾',   label: 'Riposo Lungo (party)',     bg: 'rgba(91,33,182,.18)',  color: 'var(--arcane)' },
-  { id: 'xp',         icon: '⭐',  label: 'Assegna XP al gruppo',     bg: 'rgba(184,134,11,.18)', color: 'var(--gold)' },
-  { id: 'new-char',   icon: '⚔',   label: 'Aggiungi Personaggio',     bg: 'rgba(184,134,11,.12)', color: 'var(--gold)' },
+  { id: 'combat',     icon: '🗡',  label: 'Inizia Combat',           bg: 'var(--danger-soft)',  color: 'var(--danger)' },
+  { id: 'rest-short', icon: '☽',   label: 'Riposo Breve (party)',     bg: 'var(--info-soft)', color: 'var(--info)' },
+  { id: 'rest-long',  icon: '☾',   label: 'Riposo Lungo (party)',     bg: 'var(--arcane-soft)',  color: 'var(--arcane)' },
+  { id: 'xp',         icon: '⭐',  label: 'Assegna XP al gruppo',     bg: 'var(--gold-soft)', color: 'var(--gold)' },
+  { id: 'new-char',   icon: '⚔',   label: 'Aggiungi Personaggio',     bg: 'var(--gold-soft)', color: 'var(--gold)' },
   { id: 'settings',   icon: '⚙',   label: 'Impostazioni campagna',    bg: 'rgba(48,45,42,.4)',    color: 'var(--fg-2)' },
   { id: 'members',    icon: '👥',  label: 'Gestisci Membri',          bg: 'rgba(48,45,42,.4)',    color: 'var(--fg-2)' },
 ];
@@ -192,7 +192,7 @@ export default function CampaignFab({ campaignId, campaign, dmUserId, characters
         <button
           onClick={() => setOpen(o => !o)}
           style={{
-            width: 56, height: 56, borderRadius: '50%',
+            width: 56, height: 56, borderRadius: 'var(--r-sm)',
             background: open ? 'var(--bg-elevated)' : 'var(--gold)',
             color: open ? 'var(--fg-1)' : 'var(--bg-deep)',
             border: open ? '1px solid var(--border-leather-dim)' : 'none',
@@ -216,7 +216,7 @@ export default function CampaignFab({ campaignId, campaign, dmUserId, characters
           >
             <span style={{
               background: 'var(--bg-deep)', border: '1px solid var(--border-leather)',
-              borderRadius: 20, padding: '6px 14px',
+              borderRadius: 'var(--r-lg)', padding: '6px 14px',
               fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600,
               color: 'var(--fg-1)', whiteSpace: 'nowrap',
               boxShadow: '0 2px 10px rgba(0,0,0,.35)',
@@ -224,7 +224,7 @@ export default function CampaignFab({ campaignId, campaign, dmUserId, characters
               {action.label}
             </span>
             <div style={{
-              width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
+              width: 44, height: 44, borderRadius: 'var(--r-sm)', flexShrink: 0,
               background: action.bg,
               border: `1.5px solid ${action.color}66`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',

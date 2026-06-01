@@ -93,7 +93,7 @@ export default function SetupWizard({ character, onClose }: Props) {
 
   return (
     <div style={{
-      position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)',
+      position: 'fixed', inset: 0, backgroundColor: 'var(--modal-bg)',
       zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
     }}
       onClick={e => e.target === e.currentTarget && onClose()}>
@@ -106,7 +106,7 @@ export default function SetupWizard({ character, onClose }: Props) {
         position: 'relative', overflow: 'hidden',
       }}>
         {/* Gold top accent */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', opacity: 0.5 }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-border)', opacity: 0.5 }} />
 
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px', borderBottom: '1px solid var(--border-leather)', flexShrink: 0 }}>

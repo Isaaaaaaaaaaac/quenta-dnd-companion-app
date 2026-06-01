@@ -272,7 +272,7 @@ export default function ManualCharacterForm({ campaignId }: Props) {
             const total = mod + (hasProficiency ? prof : 0);
             return (
               <button type="button" key={key} onClick={() => toggleSt(key)}
-                style={{ border: `1px solid ${hasProficiency ? 'var(--gold)' : 'var(--border-leather-dim)'}`, backgroundColor: hasProficiency ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)', padding: '8px', textAlign: 'center', cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: '0.75rem', color: 'var(--fg-1)' }}>
+                style={{ border: `1px solid ${hasProficiency ? 'var(--gold)' : 'var(--border-leather-dim)'}`, backgroundColor: hasProficiency ? 'var(--gold-soft)' : 'var(--bg-deep)', padding: '8px', textAlign: 'center', cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: '0.75rem', color: 'var(--fg-1)' }}>
                 <div style={{ fontSize: '0.6rem', color: hasProficiency ? 'var(--gold)' : 'var(--fg-2)', marginBottom: 2 }}>{short}</div>
                 <div>{total >= 0 ? `+${total}` : total}</div>
                 <div style={{ fontSize: '0.5rem', color: hasProficiency ? 'var(--gold)' : 'var(--border-leather)', marginTop: 2 }}>
@@ -294,7 +294,7 @@ export default function ManualCharacterForm({ campaignId }: Props) {
             const bonus = abilityModifier(stats[skill.ability]) + (hasProficiency ? prof : 0);
             return (
               <button type="button" key={skill.key} onClick={() => toggleSkill(skill.key)}
-                style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '6px 10px', textAlign: 'left', border: `1px solid ${hasProficiency ? 'var(--gold)' : 'var(--bg-card)'}`, backgroundColor: hasProficiency ? 'rgba(184,134,11,0.06)' : 'transparent', cursor: 'pointer', marginBottom: 1 }}>
+                style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '6px 10px', textAlign: 'left', border: `1px solid ${hasProficiency ? 'var(--gold)' : 'var(--bg-card)'}`, backgroundColor: hasProficiency ? 'var(--gold-soft)' : 'transparent', cursor: 'pointer', marginBottom: 1 }}>
                 <span style={{ color: hasProficiency ? 'var(--gold)' : 'var(--border-leather)', fontSize: '0.7rem' }}>{hasProficiency ? '◆' : '◇'}</span>
                 <span style={{ flex: 1, color: 'var(--fg-1)', fontFamily: 'var(--font-body)', fontSize: '0.9rem' }}>{skill.name}</span>
                 <span style={{ color: 'var(--border-leather-dim)', fontFamily: 'var(--font-label)', fontSize: '0.65rem' }}>({skill.ability.toUpperCase()})</span>

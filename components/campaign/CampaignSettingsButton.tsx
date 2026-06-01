@@ -37,7 +37,7 @@ export default function CampaignSettingsButton({ campaign }: { campaign: Campaig
       </button>
 
       {open && (
-        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'var(--modal-bg)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
           onClick={e => e.target === e.currentTarget && setOpen(false)}>
           <div className="card" style={{ width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto', padding: 32, borderColor: 'var(--gold)' }}>
 
@@ -66,12 +66,12 @@ export default function CampaignSettingsButton({ campaign }: { campaign: Campaig
                 <label className="field-label">Immagine di copertina (URL)</label>
                 <input className="field-input" value={coverUrl} onChange={e => setCoverUrl(e.target.value)} placeholder="https://…" />
               </div>
-              <div style={{ borderTop: '1px solid rgba(139,26,26,0.3)', paddingTop: 20 }}>
+              <div style={{ borderTop: '1px solid var(--danger-border)', paddingTop: 20 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                   <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7 }} />
                   <label className="field-label" style={{ color: 'var(--fg-1)', marginBottom: 0 }}>Note DM — private</label>
                 </div>
-                <textarea className="field-input" value={dmNotes} onChange={e => setDmNotes(e.target.value)} rows={3} style={{ resize: 'vertical', borderColor: 'rgba(139,26,26,0.4)' }} />
+                <textarea className="field-input" value={dmNotes} onChange={e => setDmNotes(e.target.value)} rows={3} style={{ resize: 'vertical', borderColor: 'var(--danger-border)' }} />
               </div>
             </div>
 

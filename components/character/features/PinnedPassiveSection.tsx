@@ -33,7 +33,7 @@ export default function PinnedPassiveSection({ features }: Props) {
                 cursor: f.description ? 'pointer' : 'default',
                 transition: 'background .15s',
               }}
-              onMouseEnter={e => { if (f.description) e.currentTarget.style.background = 'rgba(184,134,11,.04)'; }}
+              onMouseEnter={e => { if (f.description) e.currentTarget.style.background = 'var(--gold-soft)'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
             >
               <span style={{ fontSize: 10, flexShrink: 0, color: 'var(--gold)', opacity: .7 }}>

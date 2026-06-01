@@ -51,7 +51,7 @@ function ItemRow({ item, characterId }: { item: InventoryItem; characterId: stri
         display: 'flex', alignItems: 'center', gap: 8,
         padding: '5px var(--s-1)', borderRadius: 'var(--r-sm)',
         opacity: isPending ? 0.5 : 1, transition: 'opacity .15s',
-        background: item.equipped ? 'rgba(184,134,11,.04)' : 'transparent',
+        background: item.equipped ? 'var(--gold-soft)' : 'transparent',
       }}>
         {/* Icona categoria */}
         <span style={{ fontSize: 11, flexShrink: 0, width: 16, textAlign: 'center' }}>
@@ -80,7 +80,7 @@ function ItemRow({ item, characterId }: { item: InventoryItem; characterId: stri
               padding: '1px 6px', height: 20, borderRadius: 'var(--r-sm)', flexShrink: 0,
               border: item.equipped ? '1px solid var(--gold)' : '1px solid var(--border-leather)',
               color: item.equipped ? 'var(--gold)' : 'var(--fg-3)',
-              background: item.equipped ? 'rgba(184,134,11,.08)' : 'transparent',
+              background: item.equipped ? 'var(--gold-soft)' : 'transparent',
               cursor: isPending ? 'not-allowed' : 'pointer', transition: 'all .2s',
             }}
           >
@@ -99,7 +99,7 @@ function ItemRow({ item, characterId }: { item: InventoryItem; characterId: stri
               padding: '1px 6px', height: 20, borderRadius: 'var(--r-sm)', flexShrink: 0,
               border: item.attuned ? '1px solid var(--arcane)' : '1px solid var(--border-leather)',
               color: item.attuned ? 'var(--arcane)' : 'var(--fg-3)',
-              background: item.attuned ? 'rgba(91,33,182,.08)' : 'transparent',
+              background: item.attuned ? 'var(--arcane-soft)' : 'transparent',
               cursor: isPending ? 'not-allowed' : 'pointer', transition: 'all .2s',
             }}
           >
@@ -134,7 +134,7 @@ export default function InventoryCard({ characterId, inventory, money }: Props) 
           display: 'flex', alignItems: 'center', gap: 'var(--s-1)', flex: 1,
         }}>
           Equipaggiamento
-          <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
+          <span style={{ flex: 1, height: '.5px', background: 'var(--border-leather-dim)' }} />
         </div>
         <AddEquipmentButton characterId={characterId} inventory={inventory} money={money} />
       </div>

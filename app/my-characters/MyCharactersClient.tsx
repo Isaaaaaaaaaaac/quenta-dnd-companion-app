@@ -85,7 +85,7 @@ export default function MyCharactersClient({ data, userId }: Props) {
                     {isActive && (
                       <div style={{
                         position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-                        background: 'linear-gradient(90deg, transparent, var(--gold), transparent)',
+                        background: 'var(--gold-border)',
                         opacity: 0.5,
                       }} />
                     )}

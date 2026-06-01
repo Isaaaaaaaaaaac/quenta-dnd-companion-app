@@ -61,7 +61,7 @@ export default function CombatStartButton({ campaignId, characters }: Props) {
       </button>
 
       {open && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.85)' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--modal-bg)' }}>
           <div className="card" style={{ width: '90%', maxWidth: 680, maxHeight: '85vh', display: 'flex', flexDirection: 'column', borderColor: 'var(--danger)' }}>
 
             {/* Header */}
@@ -93,7 +93,7 @@ export default function CombatStartButton({ campaignId, characters }: Props) {
                     <div key={char.id} onClick={() => toggleChar(char.id)} style={{
                       display: 'flex', alignItems: 'center', gap: 16,
                       padding: '12px 16px', cursor: 'pointer',
-                      backgroundColor: isSelected ? 'rgba(139,26,26,0.08)' : 'var(--bg-card)',
+                      backgroundColor: isSelected ? 'var(--danger-soft)' : 'var(--bg-card)',
                       border: `1px solid ${isSelected ? 'var(--danger)' : 'var(--border-leather)'}`,
                       transition: 'border-color 0.2s ease',
                     }}>

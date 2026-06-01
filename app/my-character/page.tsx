@@ -112,7 +112,7 @@ export default async function MyCharacterPage() {
 
       {/* Header card */}
       <div className="card" style={{ padding: 32, position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', opacity: 0.5 }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-border)', opacity: 0.5 }} />
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
           <div>
             <div className="eyebrow" style={{ marginBottom: 10 }}>{classLabel}</div>
@@ -259,7 +259,7 @@ export default async function MyCharacterPage() {
                 <div style={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
                   {Array.from({ length: s.total }).map((_, i) => (
                     <span key={i} style={{
-                      width: 10, height: 10, borderRadius: '50%', display: 'inline-block',
+                      width: 10, height: 10, borderRadius: 'var(--r-sm)', display: 'inline-block',
                       border: '1px solid var(--border-leather)',
                       backgroundColor: i < (s.total - s.used) ? 'var(--arcane)' : 'var(--bg-elevated)',
                     }} />
@@ -340,7 +340,7 @@ function CenteredCard({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
       <div className="card" style={{ padding: 48, maxWidth: 480, width: '100%', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', opacity: 0.4 }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'var(--gold-border)', opacity: 0.4 }} />
         {children}
       </div>
     </div>
@@ -359,7 +359,7 @@ function Section({ label, children }: { label: string; children: React.ReactNode
 function StatPanel({ label, accent, children }: { label: string; accent: string; children: React.ReactNode }) {
   return (
     <div className="card" style={{ padding: 32, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${accent}, transparent)`, opacity: 0.4 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: accent }} />
       <div className="label" style={{ marginBottom: 12 }}>{label}</div>
       {children}
     </div>
