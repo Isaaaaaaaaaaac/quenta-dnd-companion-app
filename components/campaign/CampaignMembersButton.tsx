@@ -59,63 +59,60 @@ export default function CampaignMembersButton({ campaignId, dmUserId }: Props) {
 
   return (
     <>
-      <button onClick={() => setOpen(true)}
-        style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.75rem', padding: '7px 14px', cursor: 'pointer' }}>
-        👥 Membri
+      <button onClick={() => setOpen(true)} className="btn btn-ghost" style={{ padding: '7px 14px' }}>
+        Membri
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
-          <div style={{ backgroundColor: '#1a1410', border: '1px solid #5a4020', width: '90%', maxWidth: 560, maxHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.8)' }}>
+          <div className="card" style={{ width: '90%', maxWidth: 560, maxHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
 
-            <div className="flex items-center justify-between p-4" style={{ borderBottom: '1px solid #5a4020' }}>
-              <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1rem' }}>👥 Gestione Membri</div>
-              <button onClick={() => setOpen(false)} style={{ border: 'none', background: 'none', color: '#6a5040', cursor: 'pointer', fontSize: '1.1rem' }}>✕</button>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px', borderBottom: '1px solid var(--border-leather)' }}>
+              <div>
+                <div className="eyebrow" style={{ marginBottom: 4 }}>Campagna</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 700, color: 'var(--fg-1)' }}>Gestione Membri</div>
+              </div>
+              <button onClick={() => setOpen(false)} style={{ backgroundColor: 'transparent', border: 'none', color: 'var(--fg-3)', cursor: 'pointer', fontSize: '1.1rem' }}>✕</button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-6">
+            <div style={{ flex: 1, overflowY: 'auto', padding: 28, display: 'flex', flexDirection: 'column', gap: 32 }}>
 
               {/* Link invito */}
               <div>
-                <div style={{ fontFamily: 'Cinzel, serif', fontSize: '0.65rem', color: '#5a4020', letterSpacing: '0.08em', marginBottom: 8 }}>LINK INVITO</div>
-                <div style={{ backgroundColor: '#221c14', border: '1px solid #3a3020', padding: '10px 12px', fontFamily: 'Crimson Text, serif', color: '#a08060', fontSize: '0.85rem', wordBreak: 'break-all', marginBottom: 8 }}>
+                <div className="label" style={{ marginBottom: 12 }}>Link invito</div>
+                <div style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', padding: '10px 14px', fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.85rem', wordBreak: 'break-all', marginBottom: 10 }}>
                   {inviteUrl || 'Caricamento…'}
                 </div>
-                <div className="flex gap-2">
-                  <button onClick={handleCopy} disabled={!invitation}
-                    style={{ border: '1px solid #c8922a', color: '#c8922a', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', padding: '5px 14px', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={handleCopy} disabled={!invitation} className="btn btn-secondary" style={{ padding: '6px 14px' }}>
                     {copied ? '✓ Copiato!' : '📋 Copia link'}
                   </button>
-                  <button onClick={handleRegenerate} disabled={loading}
-                    style={{ border: '1px solid #5a4020', color: '#6a5040', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', padding: '5px 14px', cursor: 'pointer' }}>
-                    🔄 Rigenera
+                  <button onClick={handleRegenerate} disabled={loading} className="btn btn-ghost" style={{ padding: '6px 14px' }}>
+                    Rigenera
                   </button>
                 </div>
-                <p style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontSize: '0.75rem', fontStyle: 'italic', marginTop: 6 }}>
-                  Rigenerare il link invalida quello precedente — i nuovi accessi usano il nuovo link.
+                <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontSize: '0.8rem', fontStyle: 'italic', marginTop: 8 }}>
+                  Rigenerare il link invalida quello precedente.
                 </p>
               </div>
 
               {/* Membri */}
               <div>
-                <div style={{ fontFamily: 'Cinzel, serif', fontSize: '0.65rem', color: '#5a4020', letterSpacing: '0.08em', marginBottom: 8 }}>
-                  GIOCATORI ({members.length})
-                </div>
+                <div className="label" style={{ marginBottom: 12 }}>Giocatori ({members.length})</div>
                 {members.length === 0 ? (
-                  <p style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontStyle: 'italic', fontSize: '0.85rem' }}>Nessun giocatore ancora.</p>
+                  <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontStyle: 'italic', fontSize: '0.875rem' }}>Nessun giocatore ancora.</p>
                 ) : (
-                  <div className="space-y-2">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                     {members.map(m => (
-                      <div key={m.userId} className="flex items-center justify-between" style={{ border: '1px solid #3a3020', backgroundColor: '#1e1810', padding: '10px 12px' }}>
+                      <div key={m.userId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid var(--border-leather)', backgroundColor: 'var(--bg-card)', padding: '12px 16px' }}>
                         <div>
-                          <div style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3', fontSize: '0.85rem' }}>{m.user?.name || m.user?.email}</div>
-                          <div style={{ color: '#6a5040', fontFamily: 'Crimson Text, serif', fontSize: '0.75rem' }}>{m.user?.email}</div>
+                          <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-1)', fontSize: '0.9rem', marginBottom: 2 }}>{m.user?.name || m.user?.email}</div>
+                          <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontSize: '0.8rem', fontStyle: 'italic' }}>{m.user?.email}</div>
                           {m.activeCharacterId && (
-                            <div style={{ color: '#4a7c4e', fontFamily: 'Cinzel, serif', fontSize: '0.6rem', marginTop: 2 }}>✦ Personaggio attivo assegnato</div>
+                            <div style={{ fontFamily: 'var(--font-label)', fontSize: '7px', letterSpacing: '0.3em', color: 'var(--info)', marginTop: 4 }}>✦ personaggio attivo assegnato</div>
                           )}
                         </div>
-                        <button onClick={() => handleRemove(m.userId)}
-                          style={{ border: '1px solid #8b2020', color: '#8b2020', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', padding: '4px 10px', cursor: 'pointer' }}>
+                        <button onClick={() => handleRemove(m.userId)} className="btn btn-ghost" style={{ padding: '4px 10px', color: 'var(--fg-1)', borderColor: 'var(--danger)' }}>
                           Rimuovi
                         </button>
                       </div>
@@ -124,27 +121,19 @@ export default function CampaignMembersButton({ campaignId, dmUserId }: Props) {
                 )}
               </div>
 
-              {/* Richieste cambio personaggio */}
+              {/* Switch requests */}
               {switchRequests.length > 0 && (
                 <div>
-                  <div style={{ fontFamily: 'Cinzel, serif', fontSize: '0.65rem', color: '#8a7a2a', letterSpacing: '0.08em', marginBottom: 8 }}>
-                    RICHIESTE CAMBIO PERSONAGGIO ({switchRequests.length})
-                  </div>
-                  <div className="space-y-2">
+                  <div className="label" style={{ marginBottom: 12, color: 'var(--gold)' }}>Richieste cambio personaggio ({switchRequests.length})</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                     {switchRequests.map(req => (
-                      <div key={req.id} style={{ border: '1px solid #5a4020', backgroundColor: '#221c14', padding: '10px 12px' }}>
-                        <div style={{ fontFamily: 'Crimson Text, serif', color: '#a08060', fontSize: '0.85rem', marginBottom: 8 }}>
-                          Cambio personaggio attivo richiesto
+                      <div key={req.id} style={{ border: '1px solid var(--border-leather)', backgroundColor: 'var(--bg-card)', padding: '12px 16px' }}>
+                        <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.875rem', fontStyle: 'italic', marginBottom: 10 }}>
+                          Richiesta cambio personaggio attivo
                         </div>
-                        <div className="flex gap-2">
-                          <button onClick={() => handleApproveSwitch(req)}
-                            style={{ border: '1px solid #4a7c4e', color: '#4a7c4e', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', padding: '4px 10px', cursor: 'pointer' }}>
-                            ✓ Approva
-                          </button>
-                          <button onClick={() => handleRejectSwitch(req)}
-                            style={{ border: '1px solid #8b2020', color: '#8b2020', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', padding: '4px 10px', cursor: 'pointer' }}>
-                            ✕ Rifiuta
-                          </button>
+                        <div style={{ display: 'flex', gap: 8 }}>
+                          <button onClick={() => handleApproveSwitch(req)} className="btn btn-ghost" style={{ padding: '4px 12px', color: 'var(--fg-1)', borderColor: 'var(--info)' }}>✓ Approva</button>
+                          <button onClick={() => handleRejectSwitch(req)} className="btn btn-ghost" style={{ padding: '4px 12px', color: 'var(--fg-1)', borderColor: 'var(--danger)' }}>✕ Rifiuta</button>
                         </div>
                       </div>
                     ))}

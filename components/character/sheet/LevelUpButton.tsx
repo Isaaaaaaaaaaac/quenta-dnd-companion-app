@@ -4,33 +4,26 @@ import { useState } from 'react';
 import LevelUpWizard from '@/components/character/LevelUpWizard';
 import type { Character } from '@/lib/db/schema';
 
-interface Props {
-  character: Character;
-  canLevelUp: boolean;
-}
+interface Props { character: Character; canLevelUp: boolean; }
 
 export default function LevelUpButton({ character, canLevelUp }: Props) {
   const [open, setOpen] = useState(false);
-  const level = character.level;
-
-  if (level >= 20) return null;
+  if (character.level >= 20) return null;
 
   return (
     <>
       <button onClick={() => setOpen(true)}
         style={{
-          border: `1px solid ${canLevelUp ? '#c8922a' : '#5a4020'}`,
-          color: canLevelUp ? '#c8922a' : '#5a4020',
-          backgroundColor: canLevelUp ? '#2a2010' : 'transparent',
-          fontFamily: 'Cinzel, serif', fontSize: '0.7rem', padding: '6px 12px',
-          cursor: 'pointer', letterSpacing: '0.04em',
+          width: '100%', fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.09em',
+          height: 32, marginTop: 'var(--sp-1)', borderRadius: 'var(--r)',
+          border: `1px solid ${canLevelUp ? 'rgba(184,134,11,.6)' : 'rgba(184,134,11,.35)'}`,
+          background: canLevelUp ? 'rgba(184,134,11,.1)' : 'rgba(184,134,11,.04)',
+          color: 'var(--gold)', cursor: 'pointer', transition: 'all .2s',
+          boxShadow: canLevelUp ? '0 0 16px rgba(184,134,11,.15)' : 'none',
         }}>
-        {canLevelUp ? '⬆ Level Up!' : `→ Lv ${level + 1}`}
+        ↑ Aumenta Livello
       </button>
-
-      {open && (
-        <LevelUpWizard character={character} onClose={() => setOpen(false)} />
-      )}
+      {open && <LevelUpWizard character={character} onClose={() => setOpen(false)} />}
     </>
   );
 }

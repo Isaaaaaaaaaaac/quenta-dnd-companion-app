@@ -1,38 +1,84 @@
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import { getDb } from '@/lib/db/client';
 import { auth } from '@/auth';
 import {
   characters, characterConditions, characterSpellSlots, characterResources,
-  campaigns, type CharacterSheet,
+  campaigns, userCampaignMemberships, type CharacterSheet,
 } from '@/lib/db/schema';
 import {
   abilityModifier, proficiencyBonus, skillBonus,
   passivePerception, spellSaveDC, spellAttackBonus,
-  totalCarriedWeight, carryStatus, initiative, formatModifier, hpPercentage,
+  totalCarriedWeight, carryStatus, formatModifier, hpPercentage,
 } from '@/lib/rules/calculations';
 import { SKILLS, ABILITY_SHORT, ABILITY_NAMES, type Ability } from '@/lib/srd/skills';
 import { CONDITIONS } from '@/lib/srd/conditions';
-import { CLASSES } from '@/lib/srd/classes';
+import { CLASSES, SPELLCASTING_SUBCLASSES } from '@/lib/srd/classes';
 import { XP_THRESHOLDS, getXpForNextLevel } from '@/lib/srd/constants';
 
 import HpControls from '@/components/dashboard/HpControls';
 import ConditionBadge from '@/components/dashboard/ConditionBadge';
 import AddConditionButton from '@/components/dashboard/AddConditionButton';
-import SheetRestButtons from '@/components/character/sheet/SheetRestButtons';
 import LevelUpButton from '@/components/character/sheet/LevelUpButton';
-import SetupButton from '@/components/character/sheet/SetupButton';
 import AsiRetroactiveButton from '@/components/character/sheet/AsiRetroactiveButton';
 import AssignPlayerButton from '@/components/character/sheet/AssignPlayerButton';
-import type { Character } from '@/lib/db/schema';
+import ActiveCharacterButton from '@/components/character/sheet/ActiveCharacterButton';
 import XpControls from '@/components/dashboard/XpControls';
 import DeathSavesTracker from '@/components/character/sheet/DeathSavesTracker';
+import InventoryCard from '@/components/character/sheet/InventoryCard';
+import AddSpellButton from '@/components/character/sheet/AddSpellButton';
+import PortraitButton from '@/components/character/portrait/PortraitButton';
+import PendingRestBanner from '@/components/character/rest/PendingRestBanner';
+import SpellSectionTabs from '@/components/character/spell/SpellSectionTabs';
+import FeatureButton from '@/components/character/features/FeatureButton';
+import PinnedPassiveSection from '@/components/character/features/PinnedPassiveSection';
+import PinnedActiveResources from '@/components/character/features/PinnedActiveResources';
+import BackstoryCard from '@/components/character/sheet/BackstoryCard';
+import MobileSheet from '@/components/character/mobile/MobileSheet';
+import type { Character } from '@/lib/db/schema';
 
 export const dynamic = 'force-dynamic';
 
-type Params = { id: string };
+// ─── DS inline constants ───────────────────────────────────────────────────
+const CARD: React.CSSProperties = {
+  background: 'var(--bg-deep)',
+  border: '1px solid var(--border-leather-dim)',
+  borderRadius: 'var(--r2)',
+  padding: 'var(--sp-2)',
+};
+const DV: React.CSSProperties = {
+  height: '.5px',
+  background: 'linear-gradient(to right, transparent, rgba(184,134,11,.35), transparent)',
+  margin: 'var(--sp-1) 0',
+};
+const IR: React.CSSProperties = {
+  display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+  padding: '4px 0', borderBottom: '.5px solid var(--bg-elevated)', fontSize: '12px',
+};
 
-export default async function CharacterPage({ params }: { params: Promise<Params> }) {
+function SectionTitle({ children, mb = true }: { children: React.ReactNode; mb?: boolean }) {
+  return (
+    <div style={{
+      fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600,
+      letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase',
+      display: 'flex', alignItems: 'center', gap: 'var(--sp-1)',
+      marginBottom: mb ? 'var(--sp-1)' : 0,
+    }}>
+      {children}
+      <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
+    </div>
+  );
+}
+
+function Divider() { return <div style={DV} />; }
+
+const SCHOOL_ABBR: Record<string, string> = {
+  abjuration: 'Abj.', conjuration: 'Con.', divination: 'Div.',
+  enchantment: 'Inc.', evocation: 'Evo.', illusion: 'Ill.',
+  necromancy: 'Nec.', transmutation: 'Tra.',
+};
+
+export default async function CharacterPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const session = await auth();
   const isDm = session?.user?.email === process.env.NEXT_PUBLIC_DM_EMAIL;
@@ -41,7 +87,6 @@ export default async function CharacterPage({ params }: { params: Promise<Params
   const [char] = await db.select().from(characters).where(eq(characters.id, id));
   if (!char) notFound();
 
-  // Campagna di appartenenza (per breadcrumb)
   const campaign = char.campaignId
     ? (await db.select().from(campaigns).where(eq(campaigns.id, char.campaignId)))[0]
     : null;
@@ -52,6 +97,26 @@ export default async function CharacterPage({ params }: { params: Promise<Params
     db.select().from(characterResources).where(eq(characterResources.characterId, id)),
   ]);
 
+  // ── Membership: personaggio attivo + pending rest ──────────────────────────
+  const membership = (char.userId && char.campaignId)
+    ? (await db.select().from(userCampaignMemberships).where(
+        and(
+          eq(userCampaignMemberships.userId, char.userId),
+          eq(userCampaignMemberships.campaignId, char.campaignId)
+        )
+      ))[0]
+    : null;
+
+  const isActiveCharacter = membership?.activeCharacterId === char.id;
+
+  // Nome del PG attualmente attivo (per dialog di conferma)
+  let currentActiveName: string | null = null;
+  if (membership?.activeCharacterId && membership.activeCharacterId !== char.id) {
+    const [activeChar] = await db.select({ name: characters.name })
+      .from(characters).where(eq(characters.id, membership.activeCharacterId));
+    currentActiveName = activeChar?.name ?? null;
+  }
+
   const sheet = char.sheet as CharacterSheet;
   const level = char.level;
   const prof = proficiencyBonus(level);
@@ -61,14 +126,10 @@ export default async function CharacterPage({ params }: { params: Promise<Params
   const cls = CLASSES.find(c => c.key === sheet.classes?.[0]?.classKey);
 
   const hpPct = hpPercentage(char.hpCurrent, char.hpMax);
-  const hpBarColor = hpPct > 60 ? '#4a7c4e' : hpPct > 30 ? '#8a7a2a' : '#7a2a2a';
+  const hpColor = hpPct > 60 ? 'var(--hp-healthy)' : hpPct > 30 ? 'var(--hp-wounded)' : 'var(--danger)';
 
   const perceptionSkill = skillMap['perception'];
-  const passPerc = passivePerception(
-    stats.wis, level,
-    perceptionSkill?.proficient ?? false,
-    perceptionSkill?.expertise ?? false,
-  );
+  const passPerc = passivePerception(stats.wis, level, perceptionSkill?.proficient ?? false, perceptionSkill?.expertise ?? false);
 
   const castingAbility = cls?.spellcastingAbility as Ability | undefined;
   const castingScore = castingAbility ? stats[castingAbility] : 0;
@@ -77,13 +138,12 @@ export default async function CharacterPage({ params }: { params: Promise<Params
 
   const carriedKg = totalCarriedWeight(sheet.inventory ?? []);
   const carryMax = Math.floor(stats.str * 7.5);
-  const carryStatus_ = carryStatus(stats.str, carriedKg);
+  const carryPct = Math.min(100, carryMax > 0 ? (carriedKg / carryMax) * 100 : 0);
+  const carryOverloaded = carryStatus(stats.str, carriedKg) !== 'normal';
 
   const nextXp = getXpForNextLevel(level);
   const currentLevelXp = XP_THRESHOLDS[level] ?? 0;
-  const xpPct = nextXp
-    ? Math.min(100, Math.round(((char.xp - currentLevelXp) / (nextXp - currentLevelXp)) * 100))
-    : 100;
+  const xpPct = nextXp ? Math.min(100, Math.round(((char.xp - currentLevelXp) / (nextXp - currentLevelXp)) * 100)) : 100;
   const canLevelUp = nextXp !== null && char.xp >= nextXp;
 
   const classLabel = sheet.classes?.map(c => {
@@ -93,460 +153,725 @@ export default async function CharacterPage({ params }: { params: Promise<Params
 
   const hitDie = cls?.hitDie ?? 8;
 
-  // ─── UI helpers ────────────────────────────────────────────────────────────
+  // ── Caster detection ─────────────────────────────────────────────────────
+  // Raccoglie i classKey a cui il personaggio ha accesso per gli incantesimi.
+  // Include classi melee con archetipi che conferiscono magia (es. Mistificatore Arcano).
+  const casterClassKeys: string[] = [];
+  for (const c of sheet.classes ?? []) {
+    const classDef = CLASSES.find(cl => cl.key === c.classKey);
+    if (classDef && classDef.spellcastingType !== 'none') {
+      if (!casterClassKeys.includes(c.classKey)) casterClassKeys.push(c.classKey);
+    }
+    // Controlla archetipo incantatore su classi melee
+    const subclassSpells = SPELLCASTING_SUBCLASSES[c.classKey];
+    if (subclassSpells && c.subclass) {
+      const match = subclassSpells.find(s => s.subclassName === c.subclass);
+      if (match && !casterClassKeys.includes(match.spellList)) {
+        casterClassKeys.push(match.spellList);
+      }
+    }
+  }
+  const canCast = casterClassKeys.length > 0;
 
-  const sectionTitle = (text: string) => (
-    <h3 className="mb-3 pb-1" style={{ borderBottom: '1px solid #5a4020' }}>{text}</h3>
-  );
+  // Feature pinnate: passive (Col 1) vs attive con risorsa (Col 2)
+  const pinnedAll = sheet.pinnedFeatures ?? [];
+  const pinnedPassive = pinnedAll.filter(f => !f.resourceKey);
+  const pinnedActive  = pinnedAll.filter(f => !!f.resourceKey);
 
-  const statBox = (key: Ability) => {
-    const val = stats[key];
-    const mod = abilityModifier(val);
-    return (
-      <div key={key} className="text-center p-3 border" style={{ borderColor: '#5a4020', backgroundColor: '#2a2018' }}>
-        <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em' }}>
-          {ABILITY_SHORT[key]}
-        </div>
-        <div style={{ fontFamily: 'Cinzel, serif', fontSize: '1.8rem', color: '#e8d5a3', lineHeight: 1.1 }}>{val}</div>
-        <div style={{ fontFamily: 'Cinzel, serif', fontSize: '1rem', color: mod >= 0 ? '#c8922a' : '#8b2020' }}>
-          {formatModifier(mod)}
-        </div>
-        <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Crimson Text, serif', marginTop: '2px' }}>
-          {ABILITY_NAMES[key]}
-        </div>
-      </div>
-    );
-  };
+  // Archetipi con subclass valorizzata (per display sidebar)
+  const classesWithSubclass = (sheet.classes ?? []).filter(c => c.subclass);
 
-  const combatStat = (label: string, value: string | number) => (
-    <div className="text-center p-3 border" style={{ borderColor: '#5a4020', backgroundColor: '#2a2018' }}>
-      <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em', marginBottom: '4px' }}>
-        {label.toUpperCase()}
-      </div>
-      <div style={{ fontFamily: 'Cinzel, serif', fontSize: '1.5rem', color: '#e8d5a3', lineHeight: 1 }}>{value}</div>
-    </div>
-  );
+  const activeSpellSlots = spellSlots.filter(s => s.total > 0).sort((a, b) => a.slotLevel - b.slotLevel);
+  const knownSpells = sheet.knownSpells ?? [];
 
-  const savingThrowRow = (key: Ability) => {
-    const proficient = (savingThrows as Record<string, boolean>)[key] ?? false;
-    const bonus = abilityModifier(stats[key]) + (proficient ? prof : 0);
-    return (
-      <div key={key} className="flex items-center justify-between py-1"
-        style={{ borderBottom: '1px solid #2a2018', fontSize: '0.9rem' }}>
-        <div className="flex items-center gap-2">
-          <span style={{ color: proficient ? '#c8922a' : '#3a3020', fontSize: '0.7rem' }}>
-            {proficient ? '◆' : '◇'}
-          </span>
-          <span style={{ color: '#e8d5a3', fontFamily: 'Crimson Text, serif' }}>{ABILITY_NAMES[key]}</span>
-        </div>
-        <span style={{ fontFamily: 'Cinzel, serif', color: bonus >= 0 ? '#c8922a' : '#8b2020', fontSize: '0.9rem' }}>
-          {formatModifier(bonus)}
-        </span>
-      </div>
-    );
-  };
-
-  const skillRow = (skill: typeof SKILLS[number]) => {
-    const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
-    const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
-    return (
-      <div key={skill.key} className="flex items-center justify-between py-0.5"
-        style={{ borderBottom: '1px solid #221c14', fontSize: '0.85rem' }}>
-        <div className="flex items-center gap-2">
-          <span style={{ color: sk.expertise ? '#c8922a' : sk.proficient ? '#8a6010' : '#3a3020', fontSize: '0.65rem' }}>
-            {sk.expertise ? '◆◆' : sk.proficient ? '◆' : '◇'}
-          </span>
-          <span style={{ color: '#e8d5a3', fontFamily: 'Crimson Text, serif' }}>{skill.name}</span>
-          <span style={{ color: '#5a4020', fontSize: '0.7rem' }}>({ABILITY_SHORT[skill.ability]})</span>
-        </div>
-        <span style={{ fontFamily: 'Cinzel, serif', color: bonus >= 0 ? '#c8922a' : '#8b2020', minWidth: '28px', textAlign: 'right' }}>
-          {formatModifier(bonus)}
-        </span>
-      </div>
-    );
-  };
+  // Skills: left col = str+dex+int, right col = wis+cha
+  const leftAbilities: Ability[] = ['str', 'dex', 'int'];
+  const rightAbilities: Ability[] = ['wis', 'cha'];
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <>
+    {/* ── DESKTOP (≥ 768px) ────────────────────────────────── */}
+    <div className="desktop-layout" style={{ minWidth: 1100, padding: '16px 24px 48px' }}>
 
-      {/* ── Breadcrumb ── */}
+      {/* Banner pending rest — visibile al giocatore, non al DM */}
+      {!isDm && sheet.pendingRest && (
+        <PendingRestBanner
+          characterId={char.id}
+          pendingRest={sheet.pendingRest}
+          classes={sheet.classes ?? []}
+          conModifier={abilityModifier(stats.con)}
+          hitDiceUsed={sheet.hitDiceUsed ?? 0}
+          hpCurrent={char.hpCurrent}
+          hpMax={char.hpMax}
+          isPreparedCaster={['cleric','druid','paladin','wizard'].some(k => casterClassKeys.includes(k))}
+          currentSpells={knownSpells}
+          casterClassKeys={casterClassKeys}
+          characterStats={stats}
+        />
+      )}
+
+      {/* Breadcrumb */}
       {campaign && (
-        <div className="mb-4" style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', letterSpacing: '0.06em' }}>
-          <a href="/campaigns" style={{ color: '#5a4020', textDecoration: 'none' }}>Campagne</a>
-          {' / '}
-          <a href={`/campaigns/${campaign.id}`} style={{ color: '#5a4020', textDecoration: 'none' }}>{campaign.name}</a>
-          {' / '}
-          <span style={{ color: '#a08060' }}>{char.name}</span>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center', fontSize: '11px', color: 'var(--fg-3)', marginBottom: 'var(--sp-2)' }}>
+          <a href="/campaigns" style={{ color: 'var(--fg-2)' }}>Campagne</a>
+          <span>/</span>
+          <a href={`/campaigns/${campaign.id}`} style={{ color: 'var(--fg-2)' }}>{campaign.name}</a>
+          <span>/</span>
+          <span style={{ color: 'var(--fg-1)' }}>{char.name}</span>
         </div>
       )}
 
-      {/* ── Header ── */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6 p-4 border"
-        style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
+      {/* Layout: sidebar sinistra + pannello destro (3 col + backstory) */}
+      <div style={{ display: 'flex', gap: 'var(--sp-2)', alignItems: 'start' }}>
 
-        {/* Thumbnail */}
-        <div className="flex-shrink-0">
-          {sheet.portraitUrl ? (
-            <img src={sheet.portraitUrl} alt={char.name}
-              className="w-24 h-24 object-cover"
-              style={{ border: '2px solid #5a4020' }} />
-          ) : (
-            <div className="w-24 h-24 flex items-center justify-center"
-              style={{ border: '2px solid #5a4020', backgroundColor: '#2a2018' }}>
-              <span style={{ color: '#5a4020', fontSize: '2.5rem' }}>⚔</span>
-            </div>
-          )}
-        </div>
+        {/* ════ COL 1: Identity (sidebar fissa 232px) ════ */}
+        <div style={{ width: 232, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+          <div style={CARD}>
 
-        {/* Info */}
-        <div className="flex-1">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 style={{ marginBottom: '2px' }}>{char.name}</h1>
-              <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem' }}>
-                {sheet.race && `${sheet.race} · `}{classLabel}
-                {sheet.background && ` · ${sheet.background}`}
-              </div>
-              {sheet.alignment && (
-                <div style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>{sheet.alignment}</div>
-              )}
-            </div>
-            <div className="flex gap-2 flex-wrap justify-end">
-              {isDm && <AssignPlayerButton characterId={char.id} currentUserId={char.userId ?? null} />}
-              <AsiRetroactiveButton character={char as Character} />
-              <LevelUpButton character={char as Character} canLevelUp={canLevelUp} />
-              <SheetRestButtons characterId={char.id} />
-              <SetupButton character={char as Character} />
-            </div>
-          </div>
-
-          {/* XP bar */}
-          <div className="mt-3">
-            <div className="flex justify-between text-xs mb-1" style={{ color: '#a08060' }}>
-              <span style={{ fontFamily: 'Cinzel, serif' }}>Livello {level}</span>
-              <span>{char.xp.toLocaleString('it-IT')} XP {nextXp && `/ ${nextXp.toLocaleString('it-IT')}`}</span>
-            </div>
-            <div className="w-full h-1.5 border" style={{ borderColor: '#5a4020', backgroundColor: '#1a1410' }}>
-              <div className="h-full" style={{ width: `${xpPct}%`, backgroundColor: '#c8922a' }} />
-            </div>
-            <div className="mt-2"><XpControls characterId={char.id} /></div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── HP + Combat Stats ── */}
-      <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
-
-        {/* HP */}
-        <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Punti Ferita')}
-          <div className="flex justify-between items-baseline mb-1">
-            <span style={{ fontFamily: 'Cinzel, serif', fontSize: '2.5rem', color: '#c8922a', lineHeight: 1 }}>
-              {char.hpCurrent}
-            </span>
-            <span style={{ color: '#a08060', fontFamily: 'Crimson Text, serif' }}>
-              / {char.hpMax} max
-              {char.hpTemp > 0 && <span style={{ color: '#c8922a' }}> (+{char.hpTemp} temp)</span>}
-            </span>
-          </div>
-          <div className="w-full h-4 border mb-3" style={{ borderColor: '#5a4020', backgroundColor: '#1a1410' }}>
-            <div className="h-full" style={{ width: `${hpPct}%`, backgroundColor: hpBarColor, transition: 'width 0.3s' }} />
-          </div>
-          <HpControls characterId={char.id} hpCurrent={char.hpCurrent} hpMax={char.hpMax} />
-
-          {/* Dado vita */}
-          <div className="mt-3 pt-3" style={{ borderTop: '1px solid #3a3020' }}>
-            <div className="flex items-center gap-2">
-              <span style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em' }}>DADO VITA</span>
-              <span style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3' }}>d{hitDie} × {level}</span>
-            </div>
-          </div>
-
-          {/* Death saves — visibili solo a 0 HP */}
-          {char.hpCurrent === 0 && (
-            <div className="mt-3 pt-3" style={{ borderTop: '1px solid #8b2020' }}>
-              <DeathSavesTracker characterId={char.id} sheet={sheet} />
-            </div>
-          )}
-        </div>
-
-        {/* Combat stats */}
-        <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Statistiche di Combattimento')}
-          <div className="grid grid-cols-3 gap-2 mb-3">
-            {combatStat('CA', sheet.armorClass ?? (10 + abilityModifier(stats.dex)))}
-            {combatStat('Iniziativa', formatModifier(initiative(sheet)))}
-            {combatStat('Velocità', `${sheet.speed ?? cls?.key === 'monk' ? 9 : 9}m`)}
-            {combatStat('Bonus Comp.', formatModifier(prof))}
-            {combatStat('Perc. Passiva', passPerc)}
-            {combatStat('Ispirazione', sheet.dmNotes ? '·' : '—')}
-          </div>
-
-          {/* Bonus attacco base */}
-          <div className="text-sm" style={{ borderTop: '1px solid #3a3020', paddingTop: '8px' }}>
-            <div className="flex justify-between">
-              <span style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em' }}>ATK MISCHIA</span>
-              <span style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3' }}>
-                {formatModifier(abilityModifier(stats.str) + prof)}
-              </span>
-            </div>
-            <div className="flex justify-between mt-1">
-              <span style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em' }}>ATK A DISTANZA</span>
-              <span style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3' }}>
-                {formatModifier(abilityModifier(stats.dex) + prof)}
-              </span>
-            </div>
-          </div>
-
-          {/* Incantesimi */}
-          {spellDC !== null && (
-            <div className="mt-3 pt-3 text-sm" style={{ borderTop: '1px solid #3a3020' }}>
-              <div className="flex justify-between">
-                <span style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em' }}>CD INCANTESIMI</span>
-                <span style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3' }}>{spellDC}</span>
-              </div>
-              <div className="flex justify-between mt-1">
-                <span style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em' }}>ATK INCANTESIMI</span>
-                <span style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3' }}>{formatModifier(spellAtk!)}</span>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ── Condizioni ── */}
-      <div className="p-4 border mb-4" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-        {sectionTitle('Condizioni Attive')}
-        <div className="flex flex-wrap gap-2 items-center min-h-8">
-          {conditions.length === 0 && (
-            <span style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontStyle: 'italic', fontSize: '0.9rem' }}>Nessuna condizione</span>
-          )}
-          {conditions.map(c => {
-            const def = CONDITIONS.find(d => d.key === c.conditionKey);
-            return def ? (
-              <ConditionBadge key={c.id} conditionId={c.id} characterId={char.id} name={def.name} icon={def.icon} />
-            ) : null;
-          })}
-          <AddConditionButton characterId={char.id} />
-        </div>
-      </div>
-
-      {/* ── Caratteristiche + TS + Abilità ── */}
-      <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-3">
-
-        {/* Caratteristiche */}
-        <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Caratteristiche')}
-          <div className="grid grid-cols-3 gap-2 md:grid-cols-2">
-            {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(statBox)}
-          </div>
-        </div>
-
-        {/* Tiri Salvezza */}
-        <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Tiri Salvezza')}
-          {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(savingThrowRow)}
-        </div>
-
-        {/* Abilità */}
-        <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Abilità')}
-          <div className="max-h-80 overflow-y-auto">
-            {SKILLS.map(skillRow)}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Slot incantesimo ── */}
-      {spellSlots.length > 0 && (
-        <div className="p-4 border mb-4" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Slot Incantesimo')}
-          <div className="flex flex-wrap gap-3">
-            {spellSlots.sort((a, b) => a.slotLevel - b.slotLevel).map(slot => {
-              const available = slot.total - slot.used;
-              return (
-                <div key={slot.slotLevel} className="text-center p-2 border"
-                  style={{ borderColor: '#5a4020', backgroundColor: '#2a2018', minWidth: '64px' }}>
-                  <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em' }}>
-                    LV {slot.slotLevel}
-                  </div>
-                  <div style={{ fontFamily: 'Cinzel, serif', fontSize: '1.3rem', color: available > 0 ? '#e8d5a3' : '#3a3020' }}>
-                    {available}/{slot.total}
-                  </div>
-                  <div className="flex gap-0.5 justify-center mt-1">
-                    {Array.from({ length: slot.total }, (_, i) => (
-                      <div key={i} style={{
-                        width: '8px', height: '8px', borderRadius: '50%',
-                        backgroundColor: i < available ? '#c8922a' : '#3a3020',
-                        border: '1px solid #5a4020',
-                      }} />
-                    ))}
-                  </div>
+            {/* Portrait + Name */}
+            <div style={{ display: 'flex', gap: 'var(--sp-1)', alignItems: 'flex-start', marginBottom: 'var(--sp-2)' }}>
+              <PortraitButton
+                characterId={char.id}
+                characterName={char.name}
+                classLabel={classLabel}
+                portraitUrl={sheet.portraitUrl}
+              />
+              <div>
+                <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 600, color: 'var(--gold)', letterSpacing: '.06em', lineHeight: 1.1, marginBottom: 4 }}>
+                  {char.name.toUpperCase()}
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* ── Ricchezza + Inventario + Capacità ── */}
-      <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2">
-
-        {/* Denaro */}
-        <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Denaro')}
-          <div className="grid grid-cols-5 gap-1 text-center">
-            {(['pp', 'gp', 'ep', 'sp', 'cp'] as const).map(coin => {
-              const val = sheet.money?.[coin] ?? 0;
-              const colors: Record<string, string> = { pp: '#e8d5a3', gp: '#c8922a', ep: '#a0a0c0', sp: '#a0a0a0', cp: '#a06030' };
-              return (
-                <div key={coin} className="p-2 border" style={{ borderColor: '#5a4020', backgroundColor: '#2a2018' }}>
-                  <div style={{ fontSize: '0.6rem', color: colors[coin], fontFamily: 'Cinzel, serif', letterSpacing: '0.04em' }}>{coin.toUpperCase()}</div>
-                  <div style={{ fontFamily: 'Cinzel, serif', fontSize: '1.1rem', color: '#e8d5a3' }}>{val}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Capacità di trasporto */}
-        <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Capacità di Trasporto')}
-          <div className="flex justify-between text-sm mb-2" style={{ color: '#a08060' }}>
-            <span>Peso trasportato</span>
-            <span style={{ color: '#e8d5a3', fontFamily: 'Cinzel, serif' }}>
-              {carriedKg.toFixed(1)} / {carryMax} kg
-            </span>
-          </div>
-          <div className="w-full h-3 border" style={{ borderColor: '#5a4020', backgroundColor: '#1a1410' }}>
-            <div className="h-full" style={{
-              width: `${Math.min(100, (carriedKg / carryMax) * 100)}%`,
-              backgroundColor: carryStatus_ === 'normal' ? '#4a7c4e' : carryStatus_ === 'encumbered' ? '#8a7a2a' : '#8b2020',
-              transition: 'width 0.3s',
-            }} />
-          </div>
-          {carryStatus_ !== 'normal' && (
-            <div className="text-xs mt-1" style={{ color: '#8b2020', fontFamily: 'Crimson Text, serif' }}>
-              {carryStatus_ === 'encumbered' ? 'Sovraccarico — Velocità -3m' : 'Gravemente sovraccarico — Velocità -6m, svantaggio'}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ── Inventario ── */}
-      {(sheet.inventory?.length ?? 0) > 0 && (
-        <div className="p-4 border mb-4" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Inventario')}
-          <div className="space-y-1">
-            {sheet.inventory!.map(item => (
-              <div key={item.id} className="flex justify-between text-sm py-1"
-                style={{ borderBottom: '1px solid #2a2018' }}>
-                <div>
-                  <span style={{ color: '#e8d5a3', fontFamily: 'Crimson Text, serif' }}>{item.name}</span>
-                  {item.quantity > 1 && <span style={{ color: '#a08060' }}> ×{item.quantity}</span>}
-                  {item.notes && <span style={{ color: '#5a4020', marginLeft: '8px', fontStyle: 'italic' }}>{item.notes}</span>}
-                </div>
-                <span style={{ color: '#a08060', fontFamily: 'Crimson Text, serif' }}>
-                  {(item.weight * item.quantity).toFixed(1)} kg
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ── Storico ASI e Talenti ── */}
-      {((sheet.asiHistory?.length ?? 0) > 0 || (sheet.feats?.length ?? 0) > 0) && (
-        <div className="p-4 border mb-4" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Aumenti di Caratteristica & Talenti')}
-          <div className="space-y-2">
-            {sheet.asiHistory?.sort((a, b) => a.level - b.level).map((entry, i) => {
-              const STAT_SHORT: Record<string, string> = { str: 'FOR', dex: 'DES', con: 'COS', int: 'INT', wis: 'SAG', cha: 'CAR' };
-              const desc = entry.type === 'single' && entry.statA
-                ? `+2 ${STAT_SHORT[entry.statA] ?? entry.statA}`
-                : entry.type === 'split' && entry.statA && entry.statB
-                ? `+1 ${STAT_SHORT[entry.statA] ?? entry.statA} / +1 ${STAT_SHORT[entry.statB] ?? entry.statB}`
-                : entry.type === 'feat'
-                ? `Talento: ${entry.featName ?? '—'}`
-                : '—';
-              return (
-                <div key={i} className="flex justify-between items-center py-1"
-                  style={{ borderBottom: '1px solid #2a2018' }}>
-                  <span style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.04em' }}>
-                    LV {entry.level} · {entry.classKey}
+                <div style={{ fontSize: '11px', color: 'var(--fg-2)', lineHeight: 1.5 }}>{classLabel}</div>
+                {sheet.alignment && (
+                  <span style={{ display: 'inline-block', marginTop: 'var(--sp-1)', fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '2px var(--sp-1)' }}>
+                    {sheet.alignment}
                   </span>
-                  <span style={{ color: entry.type === 'feat' ? '#c8922a' : '#e8d5a3', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem' }}>
-                    {desc}
-                  </span>
-                </div>
-              );
-            })}
-            {sheet.feats?.map(feat => (
-              <div key={feat.key} className="p-2 mt-2" style={{ border: '1px solid #5a4020', backgroundColor: '#1e1810' }}>
-                <div className="flex justify-between">
-                  <span style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '0.85rem' }}>⚑ {feat.name}</span>
-                  <span style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.65rem' }}>Lv {feat.level}</span>
-                </div>
-                {feat.description && (
-                  <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.8rem', fontStyle: 'italic', marginTop: 4 }}>
-                    {feat.description}
-                  </p>
                 )}
               </div>
+            </div>
+
+            {/* XP bar */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: 'var(--fg-2)', marginBottom: 4 }}>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em' }}>Livello {level}</span>
+              <span>{char.xp.toLocaleString('it-IT')}{nextXp ? ` / ${nextXp.toLocaleString('it-IT')}` : ''} XP</span>
+            </div>
+            <div style={{ height: 4, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden', border: '1px solid var(--border-leather)' }}>
+              <div style={{ height: '100%', width: `${xpPct}%`, background: 'linear-gradient(to right, var(--gold), var(--gold))', borderRadius: 2 }} />
+            </div>
+            <XpControls characterId={char.id} />
+            <LevelUpButton character={char as Character} canLevelUp={canLevelUp} />
+
+            <Divider />
+
+            {/* Personaggio attivo */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--sp-1)' }}>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)' }}>Stato nel party</span>
+              {char.campaignId && (
+                <ActiveCharacterButton
+                  characterId={char.id}
+                  isActive={isActiveCharacter}
+                  currentActiveName={currentActiveName}
+                />
+              )}
+            </div>
+
+            <Divider />
+
+            {/* Identità */}
+            <SectionTitle>Identità</SectionTitle>
+            {[
+              ['Bonus Competenza', `+${prof}`],
+              ['Percezione Passiva', String(passPerc)],
+              ...(sheet.speed ? [['Velocità', `${sheet.speed}m`]] : []),
+            ].map(([l, v], idx, arr) => (
+              <div key={l} style={{ ...IR, ...(idx === arr.length - 1 ? { borderBottom: 'none' } : {}) }}>
+                <span style={{ color: 'var(--fg-2)', fontSize: '10px' }}>{l}</span>
+                <span style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', fontWeight: 600, color: 'var(--gold)' }}>{v}</span>
+              </div>
             ))}
+
+            <Divider />
+
+            {/* Archetipi (se presenti) */}
+            {classesWithSubclass.map(c => {
+              const cls = CLASSES.find(cl => cl.key === c.classKey);
+              return (
+                <div key={c.classKey} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 var(--sp-1)', height: 32, border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', marginBottom: 4, cursor: 'default' }}>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)' }}>
+                    {cls?.name ?? c.classKey}
+                  </span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--gold)', textAlign: 'right', maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {c.subclass}
+                  </span>
+                </div>
+              );
+            })}
+
+            {/* Feature links — traducti e interattivi */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <FeatureButton
+                mode="class"
+                label="Caratteristiche di Classe"
+                count={null}
+                characterClasses={sheet.classes ?? []}
+                resources={resources}
+                characterId={char.id}
+                pinnedFeatures={pinnedAll}
+              />
+              {sheet.race && (
+                <FeatureButton
+                  mode="racial"
+                  label="Tratti Razziali"
+                  count={null}
+                  characterId={char.id}
+                  raceKey={sheet.race}
+                  raceName={sheet.race}
+                  subraceKey={sheet.subrace}
+                  racialChoices={sheet.racialChoices ?? []}
+                  pinnedFeatures={pinnedAll}
+                />
+              )}
+              <FeatureButton
+                mode="feats"
+                label="Talenti"
+                count={sheet.feats?.length ?? 0}
+                characterId={char.id}
+                currentFeats={sheet.feats ?? []}
+                asiHistory={sheet.asiHistory ?? []}
+                stats={stats}
+                characterClasses={sheet.classes ?? []}
+                pinnedFeatures={pinnedAll}
+              />
+            </div>
+
+            <Divider />
+
+            {/* Feature pinnate passive */}
+            {pinnedPassive.length > 0 && (
+              <>
+                <Divider />
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 'var(--sp-1)', marginBottom: 4 }}>
+                  📌 Pinnate
+                  <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
+                </div>
+                <PinnedPassiveSection features={pinnedPassive} />
+              </>
+            )}
+
+            <Divider />
+
+            {/* Player row — solo DM */}
+            {isDm && <AssignPlayerButton characterId={char.id} currentUserId={char.userId ?? null} />}
+
+            {isDm && <Divider />}
+
+            {/* DM actions */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <AsiRetroactiveButton character={char as Character} />
+            </div>
           </div>
-        </div>
-      )}
 
-      {/* ── Background narrativo ── */}
-      {(sheet.backstory || sheet.personality || sheet.ideals || sheet.bonds || sheet.flaws) && (
-        <div className="p-4 border mb-4" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          {sectionTitle('Narrativa')}
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            {sheet.personality && (
+        </div>
+        {/* Fine sidebar ════════════════════════════════════════════════ */}
+
+        {/* ════ Pannello destro: grid 3 colonne + BackstoryCard ════ */}
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+        {/* ════ Storia: narrativa + backstory preview ════ */}
+        <BackstoryCard
+          characterId={char.id}
+          charName={char.name}
+          initialBackstory={sheet.backstory ?? ''}
+          personality={sheet.personality}
+          ideals={sheet.ideals}
+          bonds={sheet.bonds}
+          flaws={sheet.flaws}
+          isOwner={!isDm}
+        />
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--sp-2)', alignItems: 'start' }}>
+
+        {/* ════ COL 2: Chi sei — Caratteristiche + Salvezze + Abilità ════ */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+
+          {/* Caratteristiche */}
+          <div style={CARD}>
+            <SectionTitle>Caratteristiche</SectionTitle>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-1)' }}>
+              {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
+                const val = stats[key];
+                const mod = abilityModifier(val);
+                const isNeg = mod < 0;
+                const isZero = mod === 0;
+                return (
+                  <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1)', textAlign: 'center' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>{ABILITY_NAMES[key]}</span>
+                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 700, color: isNeg ? 'var(--danger)' : isZero ? 'var(--fg-2)' : 'var(--gold)', lineHeight: 1, display: 'block' }}>
+                      {formatModifier(mod)}
+                    </span>
+                    <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--sp-1)', minWidth: 24 }}>{val}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Tiri Salvezza */}
+          <div style={CARD}>
+            <SectionTitle>Tiri Salvezza</SectionTitle>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
+                const proficient = (savingThrows as Record<string, boolean>)[key] ?? false;
+                const bonus = abilityModifier(stats[key]) + (proficient ? prof : 0);
+                return (
+                  <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)' }}>
+                      <div style={{ width: 8, height: 8, borderRadius: '50%', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
+                      <span style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{ABILITY_NAMES[key]}</span>
+                    </div>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)' }}>
+                      {formatModifier(bonus)}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Abilità */}
+          <div style={CARD}>
+            <SectionTitle>Abilità</SectionTitle>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 var(--sp-1)' }}>
+              {/* Left: str + dex + int */}
               <div>
-                <div style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em', marginBottom: '4px' }}>TRATTO</div>
-                <p style={{ color: '#e8d5a3', fontFamily: 'IM Fell English, serif', fontStyle: 'italic' }}>{sheet.personality}</p>
+                {leftAbilities.map((ability, abilityIdx) => {
+                  const abilitySkills = SKILLS.filter(s => s.ability === ability);
+                  if (!abilitySkills.length) return null;
+                  return (
+                    <div key={ability}>
+                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--sp-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--sp-1)' }}>
+                        {ABILITY_SHORT[ability]}
+                      </div>
+                      {abilitySkills.map(skill => {
+                        const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
+                        const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
+                        return (
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--sp-1)', borderRadius: 'var(--r)' }}>
+                            <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                            <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
+                            <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
+                            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
+                              {formatModifier(bonus)}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
               </div>
-            )}
-            {sheet.ideals && (
+              {/* Right: wis + cha */}
               <div>
-                <div style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em', marginBottom: '4px' }}>IDEALE</div>
-                <p style={{ color: '#e8d5a3', fontFamily: 'IM Fell English, serif', fontStyle: 'italic' }}>{sheet.ideals}</p>
+                {rightAbilities.map((ability, abilityIdx) => {
+                  const abilitySkills = SKILLS.filter(s => s.ability === ability);
+                  if (!abilitySkills.length) return null;
+                  return (
+                    <div key={ability}>
+                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--sp-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--sp-1)' }}>
+                        {ABILITY_SHORT[ability]}
+                      </div>
+                      {abilitySkills.map(skill => {
+                        const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
+                        const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
+                        return (
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--sp-1)', borderRadius: 'var(--r)' }}>
+                            <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                            <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
+                            <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
+                            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
+                              {formatModifier(bonus)}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
               </div>
-            )}
-            {sheet.bonds && (
-              <div>
-                <div style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em', marginBottom: '4px' }}>LEGAME</div>
-                <p style={{ color: '#e8d5a3', fontFamily: 'IM Fell English, serif', fontStyle: 'italic' }}>{sheet.bonds}</p>
+            </div>
+          </div>
+
+        </div>
+
+        {/* ════ COL 3: In battaglia — Combattimento + HP + Condizioni + Attacchi ════ */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+
+          {/* Statistiche di Combattimento + HP */}
+          <div style={CARD}>
+            <SectionTitle>Statistiche di Combattimento</SectionTitle>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 'var(--sp-1)' }}>
+                {[
+                  ['C.A.', sheet.armorClass ?? (10 + abilityModifier(stats.dex))],
+                  ['Iniziativa', formatModifier(abilityModifier(stats.dex) + (sheet.initiativeBonus ?? 0))],
+                  ['Velocità', `${sheet.speed ?? 9}m`],
+                ].map(([l, v]) => (
+                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1)', textAlign: 'center' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
+                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
+                  </div>
+                ))}
               </div>
-            )}
-            {sheet.flaws && (
-              <div>
-                <div style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em', marginBottom: '4px' }}>DIFETTO</div>
-                <p style={{ color: '#e8d5a3', fontFamily: 'IM Fell English, serif', fontStyle: 'italic' }}>{sheet.flaws}</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-1)' }}>
+                {[
+                  ['Bonus Comp.', `+${prof}`],
+                  ['Perc. Passiva', passPerc],
+                  ...(spellDC !== null ? [['CD Incant.', spellDC], ['Att. Incant.', formatModifier(spellAtk!)]] : []),
+                ].map(([l, v]) => (
+                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1)', textAlign: 'center' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
+                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
+                  </div>
+                ))}
               </div>
-            )}
-            {sheet.backstory && (
-              <div className="md:col-span-2">
-                <div style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.05em', marginBottom: '4px' }}>STORIA</div>
-                <p style={{ color: '#e8d5a3', fontFamily: 'IM Fell English, serif', fontStyle: 'italic', whiteSpace: 'pre-wrap' }}>{sheet.backstory}</p>
+            </div>
+
+            {/* HP */}
+            <div style={{ marginTop: 'var(--sp-2)' }}>
+              <SectionTitle>Punti Ferita</SectionTitle>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--sp-1)', marginBottom: 'var(--sp-1)' }}>
+                <span style={{ fontFamily: 'var(--font-serif)', fontSize: '48px', fontWeight: 700, lineHeight: 1, color: hpColor, transition: 'color .4s' }}>{char.hpCurrent}</span>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--fg-2)' }}>
+                  / {char.hpMax} max{char.hpTemp > 0 ? ` (+${char.hpTemp} temp)` : ''}
+                </span>
               </div>
+              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden', marginBottom: 'var(--sp-1)' }}>
+                <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpColor, borderRadius: 2, transition: 'width .5s ease, background .6s' }} />
+              </div>
+              <HpControls characterId={char.id} hpCurrent={char.hpCurrent} hpMax={char.hpMax} />
+              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginTop: 'var(--sp-1)' }}>
+                Dado Vita <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '12px', color: 'var(--fg-1)' }}>d{hitDie} × {level}</strong>
+              </div>
+              {char.hpCurrent === 0 && (
+                <div style={{ marginTop: 'var(--sp-1)', paddingTop: 'var(--sp-1)', borderTop: '1px solid rgba(139,26,26,0.4)' }}>
+                  <DeathSavesTracker characterId={char.id} sheet={sheet} />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Condizioni */}
+          <div style={CARD}>
+            <SectionTitle>Condizioni Attive</SectionTitle>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-1)', alignItems: 'center', minHeight: 24 }}>
+              {conditions.length === 0 && (
+                <span style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)' }}>Nessuna condizione</span>
+              )}
+              {conditions.map(c => {
+                const def = CONDITIONS.find(d => d.key === c.conditionKey);
+                return def ? <ConditionBadge key={c.id} conditionId={c.id} characterId={char.id} name={def.name} icon={def.icon} /> : null;
+              })}
+              <AddConditionButton characterId={char.id} />
+            </div>
+          </div>
+
+          {/* Attacchi */}
+          <div style={CARD}>
+            <SectionTitle>Attacchi</SectionTitle>
+            {(sheet.weapons?.length ?? 0) === 0 ? (
+              <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)' }}>
+                Nessuna arma — aggiungi equipaggiamento nella scheda
+              </p>
+            ) : (
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+                <thead>
+                  <tr>
+                    {['Arma', 'Car.', 'Danno', 'Acc.'].map(h => (
+                      <th key={h} style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', textAlign: 'left', paddingBottom: 'var(--sp-1)', borderBottom: '1px solid var(--border-leather)', fontWeight: 400, textTransform: 'uppercase' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {(sheet.weapons ?? []).map(w => {
+                    const atkMod = abilityModifier(stats[w.attackStat]) + prof + (w.magicBonus ?? 0);
+                    const dmgMod = abilityModifier(stats[w.attackStat]) + (w.magicBonus ?? 0);
+                    return (
+                      <tr key={w.id}>
+                        <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', color: 'var(--fg-1)' }}>{w.name}{w.magic && w.magicBonus ? ` +${w.magicBonus}` : ''}</td>
+                        <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', color: 'var(--fg-2)', fontSize: '10px' }}>{w.attackStat.toUpperCase()}</td>
+                        <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', fontFamily: 'var(--font-sans)', color: 'var(--gold)', fontSize: '11px', fontWeight: 500 }}>
+                          {w.damageDice}{dmgMod !== 0 ? formatModifier(dmgMod) : ''}
+                        </td>
+                        <td style={{ padding: '5px 0', borderBottom: '.5px solid var(--bg-elevated)', fontFamily: 'var(--font-sans)', color: 'var(--hp-healthy)', fontSize: '11px' }}>
+                          {formatModifier(atkMod)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             )}
           </div>
-        </div>
-      )}
 
-      {/* ── Note DM ── */}
-      {sheet.dmNotes && (
-        <div className="p-4 border mb-4" style={{ borderColor: '#8b2020', backgroundColor: '#1a0a0a' }}>
-          {sectionTitle('Note DM (private)')}
-          <p style={{ color: '#e8d5a3', fontFamily: 'IM Fell English, serif', fontStyle: 'italic', whiteSpace: 'pre-wrap' }}>
-            {sheet.dmNotes}
-          </p>
+          {/* Risorse Attive pinnate */}
+          {pinnedActive.length > 0 && (
+            <PinnedActiveResources
+              characterId={char.id}
+              features={pinnedActive}
+              resources={resources}
+            />
+          )}
         </div>
-      )}
 
+        {/* ════ COL 4: Cosa hai — Inventario + Denaro + Incantesimi ════ */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+
+          {/* Inventario */}
+          <InventoryCard
+            characterId={char.id}
+            inventory={sheet.inventory ?? []}
+            money={sheet.money ?? { pp: 0, gp: 0, ep: 0, sp: 0, cp: 0 }}
+          />
+
+          {/* Capacità di Trasporto */}
+          <div style={CARD}>
+            <SectionTitle>Capacità di Trasporto</SectionTitle>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--sp-1)' }}>
+              <span>Peso trasportato</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: carryOverloaded ? 'var(--danger)' : 'var(--fg-1)' }}>
+                {carriedKg.toFixed(1)} / {carryMax} kg
+              </span>
+            </div>
+            <div style={{ height: 4, backgroundColor: 'var(--bg-elevated)', borderRadius: 2, overflow: 'hidden' }}>
+              <div style={{ height: '100%', width: `${carryPct}%`, backgroundColor: carryOverloaded ? 'var(--danger)' : 'var(--gold)', borderRadius: 2, opacity: 0.7 }} />
+            </div>
+          </div>
+
+          {/* Denaro */}
+          {sheet.money && (
+            <div style={CARD}>
+              <SectionTitle>Denaro</SectionTitle>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--sp-1)', marginBottom: 'var(--sp-1)' }}>
+                {([
+                  ['PP', 'var(--fg-1)', sheet.money.pp],
+                  ['PO', 'var(--gold)',    sheet.money.gp],
+                  ['PE', '#a0a0c8',               sheet.money.ep],
+                  ['PA', '#a8a8a8',               sheet.money.sp],
+                  ['PR', '#b06030',               sheet.money.cp],
+                ] as [string, string, number][]).map(([label, color, val]) => (
+                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1) 4px', textAlign: 'center' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
+                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-1)' }}>
+                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>+ Aggiungi</button>
+                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>Assegna Denaro</button>
+              </div>
+            </div>
+          )}
+
+          {/* Incantesimi */}
+          <div style={{ ...CARD, opacity: canCast ? 1 : 0.55 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--sp-1)' }}>
+              <SectionTitle mb={false}>Incantesimi</SectionTitle>
+              {canCast && (
+                <AddSpellButton
+                  characterId={char.id}
+                  currentSpells={knownSpells}
+                  casterClassKeys={casterClassKeys}
+                  characterClasses={sheet.classes ?? []}
+                  characterStats={stats}
+                />
+              )}
+            </div>
+
+            {/* Non-caster message */}
+            {!canCast && (
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', lineHeight: 1.6 }}>
+                Il tuo personaggio non possiede le capacità per lanciare incantesimi. Per iniziare a usare la magia, scegli una classe o un archetipo che conferisce questa capacità.
+              </p>
+            )}
+
+              {knownSpells.length === 0 && activeSpellSlots.length === 0 && (
+                <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)', padding: '4px 0' }}>
+                  Nessun incantesimo — usa + Aggiungi per iniziare.
+                </p>
+              )}
+
+              <SpellSectionTabs
+                knownSpells={knownSpells}
+                activeSpellSlots={activeSpellSlots}
+                isPreparedCaster={['cleric','druid','paladin','wizard'].some(k => casterClassKeys.includes(k))}
+                schoolAbbr={SCHOOL_ABBR}
+              />
+            </div>
+
+          {/* Note DM */}
+          {sheet.dmNotes && isDm && (
+            <div style={{ ...CARD, border: '1px solid rgba(139,26,26,0.4)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--sp-1)' }}>
+                <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 1 }} />
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
+              </div>
+              <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-2)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{sheet.dmNotes}</p>
+            </div>
+          )}
+        </div>
+
+        {/* ═══ (old COL4 placeholder — content moved) ═══ */}
+        <div style={{ display: 'none' }}>
+
+          {/* Abilità — rimosso, ora in COL 2 */}
+          <div style={CARD}>
+            <SectionTitle>Abilità</SectionTitle>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 var(--sp-1)' }}>
+
+              {/* Left: str + dex + int */}
+              <div>
+                {leftAbilities.map((ability, abilityIdx) => {
+                  const abilitySkills = SKILLS.filter(s => s.ability === ability);
+                  if (!abilitySkills.length) return null;
+                  return (
+                    <div key={ability}>
+                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--sp-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--sp-1)' }}>
+                        {ABILITY_SHORT[ability]}
+                      </div>
+                      {abilitySkills.map(skill => {
+                        const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
+                        const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
+                        return (
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--sp-1)', borderRadius: 'var(--r)' }}>
+                            <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                            <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
+                            <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
+                            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
+                              {formatModifier(bonus)}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Right: wis + cha */}
+              <div>
+                {rightAbilities.map((ability, abilityIdx) => {
+                  const abilitySkills = SKILLS.filter(s => s.ability === ability);
+                  if (!abilitySkills.length) return null;
+                  return (
+                    <div key={ability}>
+                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--sp-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--sp-1)' }}>
+                        {ABILITY_SHORT[ability]}
+                      </div>
+                      {abilitySkills.map(skill => {
+                        const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
+                        const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
+                        return (
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--sp-1)', borderRadius: 'var(--r)' }}>
+                            <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                            <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
+                            <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
+                            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 22, textAlign: 'right', flexShrink: 0 }}>
+                              {formatModifier(bonus)}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Denaro */}
+          {sheet.money && (
+            <div style={CARD}>
+              <SectionTitle>Denaro</SectionTitle>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--sp-1)', marginBottom: 'var(--sp-1)' }}>
+                {([
+                  ['PP', 'var(--fg-1)', sheet.money.pp],
+                  ['PO', 'var(--gold)',    sheet.money.gp],
+                  ['PE', '#a0a0c8',               sheet.money.ep],
+                  ['PA', '#a8a8a8',               sheet.money.sp],
+                  ['PR', '#b06030',               sheet.money.cp],
+                ] as [string, string, number][]).map(([label, color, val]) => (
+                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1) 4px', textAlign: 'center' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
+                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-1)' }}>
+                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>
+                  + Aggiungi
+                </button>
+                <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>
+                  Assegna Denaro
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Note DM */}
+          {sheet.dmNotes && isDm && (
+            <div style={{ ...CARD, border: '1px solid rgba(139,26,26,0.4)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--sp-1)' }}>
+                <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 1 }} />
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
+              </div>
+              <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-2)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{sheet.dmNotes}</p>
+            </div>
+          )}
+        </div>
+        </div>
+        {/* Fine sub-grid 3 colonne ══════════════════════════════════ */}
+
+
+        </div>
+        {/* Fine pannello destro ════════════════════════════════════ */}
+
+      </div>
     </div>
+    {/* ── MOBILE (< 768px) ─────────────────────────────────── */}
+    <div className="mobile-layout">
+      <MobileSheet
+        characterId={char.id}
+        charName={char.name}
+        classLabel={classLabel}
+        hpCurrent={char.hpCurrent}
+        hpMax={char.hpMax}
+        hpTemp={char.hpTemp}
+        hpPct={hpPct}
+        hpColor={hpColor}
+        level={level}
+        xp={char.xp}
+        xpPct={xpPct}
+        canLevelUp={canLevelUp}
+        prof={prof}
+        hitDie={hitDie}
+        passPerc={passPerc}
+        spellDC={spellDC}
+        spellAtk={spellAtk}
+        carriedKg={carriedKg}
+        carryMax={carryMax}
+        carryPct={carryPct}
+        carryOverloaded={carryOverloaded}
+        canCast={canCast}
+        sheet={sheet}
+        conditions={conditions}
+        resources={resources}
+        knownSpells={knownSpells}
+        activeSpellSlots={activeSpellSlots}
+        pinnedPassive={pinnedPassive}
+        pinnedActive={pinnedActive}
+        casterClassKeys={casterClassKeys}
+        isDm={isDm}
+        isActiveCharacter={isActiveCharacter}
+      />
+    </div>
+    </>
   );
 }

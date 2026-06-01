@@ -23,9 +23,9 @@ export default function StepSubclass({ data, update, onNext, onBack }: Props) {
   return (
     <div>
       <h2 className="mb-1">Archetipo di Classe</h2>
-      <p className="text-sm mb-6" style={{ color: '#a08060', fontFamily: 'Crimson Text, serif' }}>
+      <p className="text-sm mb-6" style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)' }}>
         Al livello {entry.unlockLevel}, {cls?.name} sceglie il proprio archetipo.
-        Questa scelta è <strong style={{ color: '#c8922a' }}>definitiva</strong> e plasma le capacità future.
+        Questa scelta è <strong style={{ color: 'var(--gold)' }}>definitiva</strong> e plasma le capacità future.
       </p>
 
       <div className="space-y-3">
@@ -37,20 +37,20 @@ export default function StepSubclass({ data, update, onNext, onBack }: Props) {
               style={{
                 display: 'block', width: '100%', textAlign: 'left',
                 padding: '16px', cursor: 'pointer',
-                border: `1px solid ${isSelected ? '#c8922a' : '#5a4020'}`,
-                backgroundColor: isSelected ? '#2a2010' : '#1e1810',
+                border: `1px solid ${isSelected ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
+                backgroundColor: isSelected ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)',
               }}>
               <div style={{
-                fontFamily: 'Cinzel, serif', color: isSelected ? '#c8922a' : '#e8d5a3',
+                fontFamily: 'var(--font-label)', color: isSelected ? 'var(--gold)' : 'var(--fg-1)',
                 fontSize: '0.95rem', marginBottom: '6px',
                 display: 'flex', alignItems: 'center', gap: '8px',
               }}>
-                <span style={{ color: isSelected ? '#c8922a' : '#5a4020' }}>
+                <span style={{ color: isSelected ? 'var(--gold)' : 'var(--border-leather-dim)' }}>
                   {isSelected ? '◆' : '◇'}
                 </span>
                 {sub.name}
               </div>
-              <div style={{ color: '#a08060', fontFamily: 'IM Fell English, serif', fontSize: '0.9rem', fontStyle: 'italic', paddingLeft: '20px' }}>
+              <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.9rem', fontStyle: 'italic', paddingLeft: '20px' }}>
                 {sub.description}
               </div>
             </button>

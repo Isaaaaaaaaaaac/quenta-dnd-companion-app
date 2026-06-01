@@ -3,11 +3,7 @@
 import { useState } from 'react';
 import { applyDamage, applyHealing, setTempHp } from '@/lib/db/actions';
 
-interface Props {
-  characterId: string;
-  hpCurrent: number;
-  hpMax: number;
-}
+interface Props { characterId: string; hpCurrent: number; hpMax: number; }
 
 export default function HpControls({ characterId, hpCurrent, hpMax }: Props) {
   const [amount, setAmount] = useState('');
@@ -24,44 +20,34 @@ export default function HpControls({ characterId, hpCurrent, hpMax }: Props) {
     setPending(false);
   }
 
-  const btnStyle = (color: string) => ({
-    padding: '2px 10px',
-    fontSize: '0.8rem',
-    border: `1px solid ${color}`,
-    color,
-    backgroundColor: 'transparent',
-    fontFamily: 'Cinzel, serif',
-    cursor: pending ? 'not-allowed' : 'pointer',
-    opacity: pending ? 0.5 : 1,
+  const inp: React.CSSProperties = {
+    width: 48, height: 32, padding: '0 6px', textAlign: 'center',
+    background: 'var(--bg-card)', border: '1px solid var(--border-leather)',
+    borderRadius: 'var(--r)', color: 'var(--fg-1)',
+    fontFamily: 'var(--font-sans)', fontSize: '13px', outline: 'none',
+  };
+  const btn = (color: string, bg: string): React.CSSProperties => ({
+    flex: 1, fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em',
+    height: 32, borderRadius: 'var(--r)', border: `1px solid ${color}`, color,
+    background: bg, cursor: pending ? 'not-allowed' : 'pointer',
+    opacity: pending ? 0.4 : 1, transition: 'all .2s',
   });
 
   return (
-    <div className="flex items-center gap-2 mt-2">
+    <div style={{ display: 'flex', gap: 'var(--sp-1)', alignItems: 'center' }}>
       <input
-        type="number"
-        min="0"
-        value={amount}
-        onChange={e => setAmount(e.target.value)}
+        type="number" min="0"
+        value={amount} onChange={e => setAmount(e.target.value)}
         onKeyDown={e => { if (e.key === 'Enter') handle('damage'); }}
         placeholder="0"
-        className="w-16 text-center text-sm"
-        style={{
-          backgroundColor: 'transparent',
-          border: 'none',
-          borderBottom: '1px solid #5a4020',
-          color: '#e8d5a3',
-          outline: 'none',
-        }}
+        style={inp}
       />
-      <button style={btnStyle('#8b2020')} onClick={() => handle('damage')} disabled={pending}>
-        Danno
-      </button>
-      <button style={btnStyle('#4a7c4e')} onClick={() => handle('heal')} disabled={pending}>
-        Cura
-      </button>
-      <button style={btnStyle('#5a7a9a')} onClick={() => handle('temp')} disabled={pending}>
-        Temp
-      </button>
+      <button onClick={() => handle('damage')} disabled={pending}
+        style={btn('var(--danger)', 'rgba(139,26,26,.07)')}>Danno</button>
+      <button onClick={() => handle('heal')} disabled={pending}
+        style={btn('var(--hp-healthy)', 'rgba(74,124,78,.07)')}>Cura</button>
+      <button onClick={() => handle('temp')} disabled={pending}
+        style={btn('var(--gold)', 'rgba(184,134,11,.06)')}>Temp</button>
     </div>
   );
 }

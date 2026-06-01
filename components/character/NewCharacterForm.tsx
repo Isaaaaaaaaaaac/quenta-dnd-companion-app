@@ -9,10 +9,10 @@ import type { CharacterSheet } from '@/lib/db/schema';
 const inputStyle = {
   backgroundColor: 'transparent',
   border: 'none',
-  borderBottom: '1px solid #5a4020',
-  color: '#e8d5a3',
+  borderBottom: '1px solid var(--border-leather-dim)',
+  color: 'var(--fg-1)',
   outline: 'none',
-  fontFamily: 'Crimson Text, serif',
+  fontFamily: 'var(--font-body)',
   fontSize: '1rem',
   width: '100%',
   padding: '4px 0',
@@ -21,8 +21,8 @@ const inputStyle = {
 const labelStyle = {
   display: 'block',
   fontSize: '0.8rem',
-  color: '#a08060',
-  fontFamily: 'Cinzel, serif',
+  color: 'var(--fg-2)',
+  fontFamily: 'var(--font-label)',
   letterSpacing: '0.05em',
   marginBottom: '4px',
 };
@@ -30,7 +30,7 @@ const labelStyle = {
 const selectStyle = {
   ...inputStyle,
   cursor: 'pointer',
-  backgroundColor: '#221c14',
+  backgroundColor: 'var(--bg-deep)',
 };
 
 export default function NewCharacterForm() {
@@ -87,7 +87,7 @@ export default function NewCharacterForm() {
         onChange={e => set(Number(e.target.value))}
         className="w-14 text-center"
         style={{ ...inputStyle, width: '56px' }} />
-      <div style={{ color: '#a08060', fontSize: '0.8rem', marginTop: 2 }}>
+      <div style={{ color: 'var(--fg-2)', fontSize: '0.8rem', marginTop: 2 }}>
         {Math.floor((val - 10) / 2) >= 0 ? '+' : ''}{Math.floor((val - 10) / 2)}
       </div>
     </div>
@@ -95,7 +95,7 @@ export default function NewCharacterForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
+      <div className="p-4 border" style={{ borderColor: 'var(--border-leather-dim)', backgroundColor: 'var(--bg-deep)' }}>
         <h2 className="mb-4">Identità</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
@@ -137,7 +137,7 @@ export default function NewCharacterForm() {
         </div>
       </div>
 
-      <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
+      <div className="p-4 border" style={{ borderColor: 'var(--border-leather-dim)', backgroundColor: 'var(--bg-deep)' }}>
         <h2 className="mb-4">Caratteristiche</h2>
         <div className="flex flex-wrap gap-4 justify-around">
           {statField('FOR', str, setStr)}
@@ -153,15 +153,15 @@ export default function NewCharacterForm() {
         <button type="submit" disabled={pending}
           className="px-6 py-2 transition-opacity hover:opacity-80"
           style={{
-            border: '1px solid #c8922a', color: '#c8922a',
-            fontFamily: 'Cinzel, serif', backgroundColor: 'transparent',
+            border: '1px solid var(--gold)', color: 'var(--gold)',
+            fontFamily: 'var(--font-label)', backgroundColor: 'transparent',
             cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.5 : 1,
           }}>
           {pending ? 'Creando...' : 'Crea Personaggio'}
         </button>
         <button type="button" onClick={() => router.back()}
-          style={{ border: '1px solid #5a4020', color: '#a08060',
-            fontFamily: 'Cinzel, serif', backgroundColor: 'transparent',
+          style={{ border: '1px solid var(--border-leather-dim)', color: 'var(--fg-2)',
+            fontFamily: 'var(--font-label)', backgroundColor: 'transparent',
             cursor: 'pointer', padding: '8px 24px' }}>
           Annulla
         </button>

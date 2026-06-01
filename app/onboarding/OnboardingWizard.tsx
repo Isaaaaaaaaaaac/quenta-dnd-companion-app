@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { submitDmRequest } from '@/lib/db/userActions';
 
 type Step = 'choice' | 'dm' | 'player';
-
 interface Props { userId: string; userName: string; }
 
 export default function OnboardingWizard({ userId, userName }: Props) {
@@ -31,73 +30,140 @@ export default function OnboardingWizard({ userId, userName }: Props) {
     router.push(`/join/${code}`);
   }
 
-  const card = (children: React.ReactNode) => (
-    <div style={{ maxWidth: 520, margin: '0 auto', border: '1px solid #5a4020', backgroundColor: '#221c14', padding: 40 }}>
-      {children}
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '70vh' }}>
+      <div className="card" style={{ padding: 48, maxWidth: 540, width: '100%', position: 'relative', overflow: 'hidden' }}>
+        {/* Top accent */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: 2,
+          background: 'linear-gradient(90deg, transparent, var(--gold), transparent)',
+          opacity: 0.5,
+        }} />
+
+        {step === 'choice' && (
+          <>
+            <div style={{ textAlign: 'center', marginBottom: 40 }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', fontWeight: 700, color: 'var(--fg-1)', letterSpacing: '0.05em', marginBottom: 8 }}>
+                Quenta
+              </div>
+              <div style={{ fontFamily: 'var(--font-label)', fontSize: '7px', letterSpacing: '0.5em', textTransform: 'uppercase', color: 'var(--gold)', opacity: 0.8, marginBottom: 24 }}>
+                D&amp;D Companion
+              </div>
+              <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '1rem', fontStyle: 'italic', lineHeight: 1.7 }}>
+                Benvenuto, {userName}.<br />Come vuoi usare Quenta?
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <ChoiceButton
+                icon="🎲"
+                title="Sono un Dungeon Master"
+                desc="Gestisco campagne e personaggi. Richiedo accesso al DM Admin."
+                highlight
+                onClick={() => setStep('dm')}
+              />
+              <ChoiceButton
+                icon="⚔"
+                title="Sono un Giocatore"
+                desc="Ho un invito da un DM per unirmi a una campagna."
+                onClick={() => setStep('player')}
+              />
+            </div>
+          </>
+        )}
+
+        {step === 'dm' && (
+          <>
+            <button onClick={() => setStep('choice')} className="btn btn-ghost" style={{ padding: '4px 0', marginBottom: 28, fontSize: '8px' }}>
+              ← Indietro
+            </button>
+            <div className="eyebrow" style={{ marginBottom: 10 }}>Accesso DM</div>
+            <h2 style={{ marginBottom: 16 }}>Richiesta accesso</h2>
+            <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.95rem', fontStyle: 'italic', lineHeight: 1.7, marginBottom: 28 }}>
+              La tua richiesta sarà revisionata dal Super Admin. Riceverai accesso al prossimo login.
+            </p>
+
+            <div style={{ marginBottom: 24 }}>
+              <label className="field-label">Messaggio (opzionale)</label>
+              <textarea
+                className="field-input"
+                value={dmNote} onChange={e => setDmNote(e.target.value)}
+                rows={3} placeholder="Presentati brevemente al Super Admin…"
+                style={{ resize: 'none' }}
+              />
+            </div>
+
+            <button onClick={handleDmSubmit} disabled={loading} className="btn btn-primary" style={{ width: '100%' }}>
+              {loading ? 'Invio richiesta…' : '✦  Invia richiesta'}
+            </button>
+          </>
+        )}
+
+        {step === 'player' && (
+          <>
+            <button onClick={() => setStep('choice')} className="btn btn-ghost" style={{ padding: '4px 0', marginBottom: 28, fontSize: '8px' }}>
+              ← Indietro
+            </button>
+            <div className="eyebrow" style={{ marginBottom: 10 }}>Giocatore</div>
+            <h2 style={{ marginBottom: 16 }}>Unisciti a una campagna</h2>
+            <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.95rem', fontStyle: 'italic', lineHeight: 1.7, marginBottom: 28 }}>
+              Inserisci il codice invito o incolla il link ricevuto dal tuo DM.
+            </p>
+
+            <div style={{ marginBottom: 24 }}>
+              <label className="field-label">Codice invito</label>
+              <input
+                className="field-input"
+                value={inviteCode} onChange={e => setInviteCode(e.target.value)}
+                placeholder="Es: XK92PL oppure https://…/join/XK92PL"
+                style={{ textTransform: 'uppercase' }}
+              />
+              {error && <div className="field-error">{error}</div>}
+            </div>
+
+            <button
+              onClick={handlePlayerJoin}
+              disabled={loading || !inviteCode.trim()}
+              className="btn btn-secondary"
+              style={{ width: '100%' }}
+            >
+              {loading ? 'Verifica…' : '⚔  Entra nella campagna'}
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
+}
 
-  if (step === 'choice') return card(
-    <>
-      <div style={{ fontFamily: 'Cinzel Decorative, serif', color: '#c8922a', fontSize: '1.6rem', marginBottom: 8, textAlign: 'center' }}>Aethon</div>
-      <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem', fontStyle: 'italic', textAlign: 'center', marginBottom: 36 }}>
-        Benvenuto, {userName}. Come vuoi usare Aethon?
-      </p>
-      <div className="space-y-3">
-        <button onClick={() => setStep('dm')} style={{ width: '100%', border: '1px solid #c8922a', backgroundColor: '#2a2010', color: '#c8922a', fontFamily: 'Cinzel, serif', fontSize: '0.9rem', padding: '18px 24px', cursor: 'pointer', textAlign: 'left' }}>
-          <div style={{ fontSize: '1.3rem', marginBottom: 4 }}>🎲</div>
-          <div>Sono un Dungeon Master</div>
-          <div style={{ fontSize: '0.75rem', color: '#6a5040', fontFamily: 'Crimson Text, serif', fontStyle: 'italic', marginTop: 4 }}>Gestisco campagne e personaggi. Richiedo accesso al DM Admin.</div>
-        </button>
-        <button onClick={() => setStep('player')} style={{ width: '100%', border: '1px solid #5a4020', backgroundColor: '#1e1810', color: '#e8d5a3', fontFamily: 'Cinzel, serif', fontSize: '0.9rem', padding: '18px 24px', cursor: 'pointer', textAlign: 'left' }}>
-          <div style={{ fontSize: '1.3rem', marginBottom: 4 }}>⚔</div>
-          <div>Sono un Giocatore</div>
-          <div style={{ fontSize: '0.75rem', color: '#6a5040', fontFamily: 'Crimson Text, serif', fontStyle: 'italic', marginTop: 4 }}>Ho un invito da un DM per unirmi a una campagna.</div>
-        </button>
+function ChoiceButton({ icon, title, desc, onClick, highlight }: {
+  icon: string; title: string; desc: string; onClick: () => void; highlight?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        width: '100%', textAlign: 'left', cursor: 'pointer',
+        backgroundColor: highlight ? 'rgba(184,134,11,0.05)' : 'var(--bg-card)',
+        border: `1px solid ${highlight ? 'var(--gold)' : 'var(--border-leather)'}`,
+        padding: 24, transition: 'border-color 0.2s ease',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+        <span style={{ fontSize: '1.4rem', flexShrink: 0, marginTop: 2 }}>{icon}</span>
+        <div>
+          <div style={{
+            fontFamily: 'var(--font-label)', fontSize: '9px', letterSpacing: '0.35em',
+            textTransform: 'uppercase', color: highlight ? 'var(--gold)' : 'var(--fg-1)',
+            marginBottom: 8,
+          }}>
+            {title}
+          </div>
+          <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.9rem', fontStyle: 'italic', lineHeight: 1.65 }}>
+            {desc}
+          </div>
+        </div>
       </div>
-    </>
+    </button>
   );
-
-  if (step === 'dm') return card(
-    <>
-      <button onClick={() => setStep('choice')} style={{ border: 'none', background: 'none', color: '#6a5040', cursor: 'pointer', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', marginBottom: 20, padding: 0 }}>← Indietro</button>
-      <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1.1rem', marginBottom: 8 }}>Richiesta accesso DM</div>
-      <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem', fontStyle: 'italic', marginBottom: 24 }}>
-        La tua richiesta sarà revisionata dal Super Admin. Riceverai accesso al prossimo login.
-      </p>
-      <div style={{ marginBottom: 16 }}>
-        <label style={{ fontFamily: 'Cinzel, serif', fontSize: '0.65rem', color: '#6a5040', display: 'block', marginBottom: 6, letterSpacing: '0.06em' }}>MESSAGGIO (opzionale)</label>
-        <textarea value={dmNote} onChange={e => setDmNote(e.target.value)} rows={3}
-          placeholder="Presentati brevemente al Super Admin…"
-          style={{ width: '100%', backgroundColor: '#1a1410', border: '1px solid #5a4020', color: '#e8d5a3', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem', padding: '8px 12px', outline: 'none', resize: 'none', boxSizing: 'border-box' }} />
-      </div>
-      <button onClick={handleDmSubmit} disabled={loading}
-        style={{ width: '100%', border: '1px solid #c8922a', backgroundColor: loading ? '#5a4020' : '#c8922a', color: '#1a1410', fontFamily: 'Cinzel, serif', fontSize: '0.85rem', padding: '12px', cursor: loading ? 'not-allowed' : 'pointer' }}>
-        {loading ? 'Invio richiesta…' : '✦ Invia richiesta'}
-      </button>
-    </>
-  );
-
-  if (step === 'player') return card(
-    <>
-      <button onClick={() => setStep('choice')} style={{ border: 'none', background: 'none', color: '#6a5040', cursor: 'pointer', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', marginBottom: 20, padding: 0 }}>← Indietro</button>
-      <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1.1rem', marginBottom: 8 }}>Unisciti a una campagna</div>
-      <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem', fontStyle: 'italic', marginBottom: 24 }}>
-        Inserisci il codice invito o incolla il link ricevuto dal tuo DM.
-      </p>
-      <div style={{ marginBottom: 16 }}>
-        <label style={{ fontFamily: 'Cinzel, serif', fontSize: '0.65rem', color: '#6a5040', display: 'block', marginBottom: 6, letterSpacing: '0.06em' }}>CODICE INVITO</label>
-        <input value={inviteCode} onChange={e => setInviteCode(e.target.value)}
-          placeholder="Es: XK92PL oppure https://…/join/XK92PL"
-          style={{ width: '100%', backgroundColor: '#1a1410', border: '1px solid #5a4020', color: '#e8d5a3', fontFamily: 'Cinzel, serif', fontSize: '1rem', padding: '10px 12px', outline: 'none', boxSizing: 'border-box', textTransform: 'uppercase' }} />
-        {error && <div style={{ color: '#8b2020', fontFamily: 'Crimson Text, serif', fontSize: '0.8rem', marginTop: 6 }}>{error}</div>}
-      </div>
-      <button onClick={handlePlayerJoin} disabled={loading || !inviteCode.trim()}
-        style={{ width: '100%', border: '1px solid #c8922a', backgroundColor: loading || !inviteCode.trim() ? '#5a4020' : '#c8922a', color: '#1a1410', fontFamily: 'Cinzel, serif', fontSize: '0.85rem', padding: '12px', cursor: loading || !inviteCode.trim() ? 'not-allowed' : 'pointer' }}>
-        {loading ? 'Verifica…' : '⚔ Entra nella campagna'}
-      </button>
-    </>
-  );
-
-  return null;
 }

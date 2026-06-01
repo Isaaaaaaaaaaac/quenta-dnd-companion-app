@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { applyRetroactiveAsi } from '@/lib/db/actions';
 import { getAsiLevels } from '@/lib/srd/constants';
 import { searchFeats, type Feat } from '@/lib/srd/feats';
-import { abilityModifier, formatModifier } from '@/lib/rules/calculations';
+import { formatModifier } from '@/lib/rules/calculations';
 import type { Character, CharacterSheet, AsiHistoryEntry, CharacterFeat } from '@/lib/db/schema';
 
 type StatKey = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
@@ -30,11 +30,10 @@ export default function AsiRetroactiveButton({ character }: Props) {
 
   return (
     <>
-      <button onClick={() => setOpen(true)}
-        style={{ border: '1px solid #c8922a', color: '#c8922a', backgroundColor: '#2a1a00', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', padding: '6px 12px', cursor: 'pointer', letterSpacing: '0.04em' }}>
+      <button onClick={() => setOpen(true)} className="btn btn-secondary"
+        style={{ padding: '6px 12px', borderColor: 'var(--gold)', color: 'var(--gold)' }}>
         ⚡ {pendingLevels.length} ASI non assegnat{pendingLevels.length === 1 ? 'o' : 'i'}
       </button>
-
       {open && (
         <AsiRetroModal character={character} sheet={sheet} classKey={classKey}
           pendingLevels={pendingLevels} onClose={() => setOpen(false)} />
@@ -44,11 +43,8 @@ export default function AsiRetroactiveButton({ character }: Props) {
 }
 
 function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
-  character: Character;
-  sheet: CharacterSheet;
-  classKey: string;
-  pendingLevels: number[];
-  onClose: () => void;
+  character: Character; sheet: CharacterSheet; classKey: string;
+  pendingLevels: number[]; onClose: () => void;
 }) {
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [asiMode, setAsiMode] = useState<AsiMode>('single');
@@ -72,19 +68,13 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
   })();
 
   function resetChoice() {
-    setAsiMode('single');
-    setAsiSingle(null);
-    setAsiSplitA(null);
-    setAsiSplitB(null);
-    setSelectedFeat(null);
-    setFeatCustom('');
-    setFeatSearch('');
+    setAsiMode('single'); setAsiSingle(null); setAsiSplitA(null); setAsiSplitB(null);
+    setSelectedFeat(null); setFeatCustom(''); setFeatSearch('');
   }
 
   async function applyAndNext() {
     if (!asiValid) return;
     setSaving(true);
-
     let asiEntry: AsiHistoryEntry;
     let featEntry: CharacterFeat | undefined;
     let newStats = { ...currentStats };
@@ -105,55 +95,70 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
     await applyRetroactiveAsi(character.id, asiEntry, featEntry);
     setCurrentStats(newStats);
     setSaving(false);
-
-    if (isLast) { onClose(); }
-    else { setCurrentLevelIndex(i => i + 1); resetChoice(); }
+    if (isLast) { onClose(); } else { setCurrentLevelIndex(i => i + 1); resetChoice(); }
   }
 
+  const statBtn = (stat: StatKey, isSelected: boolean, isDisabled: boolean, val: number, previewVal?: number) => (
+    <button key={stat} onClick={() => !isDisabled && (isSelected ? setAsiSingle(null) : setAsiSingle(stat))} disabled={isDisabled}
+      style={{
+        border: `1px solid ${isSelected ? 'var(--gold)' : 'var(--border-leather)'}`,
+        backgroundColor: isSelected ? 'rgba(184,134,11,0.08)' : 'var(--bg-card)',
+        color: isDisabled ? 'var(--fg-3)' : 'var(--fg-1)',
+        padding: '10px 8px', textAlign: 'center' as const,
+        fontFamily: 'var(--font-body)', cursor: isDisabled ? 'not-allowed' : 'pointer',
+      }}>
+      <div style={{ fontFamily: 'var(--font-label)', fontSize: '7px', letterSpacing: '0.3em', color: 'var(--fg-3)', marginBottom: 4 }}>{STAT_LABELS[stat]}</div>
+      <div style={{ fontSize: '1rem', fontWeight: 700, color: isSelected ? 'var(--gold)' : 'var(--fg-1)' }}>
+        {isDisabled ? 'MAX' : isSelected && previewVal ? `${val} → ${previewVal}` : val}
+      </div>
+    </button>
+  );
+
   return (
-    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.75)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}
+    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
       onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{ backgroundColor: '#1a1410', border: '1px solid #c8922a', width: '100%', maxWidth: '520px', maxHeight: '90vh', overflowY: 'auto', padding: '28px' }}>
+      <div className="card" style={{ width: '100%', maxWidth: 520, maxHeight: '90vh', overflowY: 'auto', padding: 32, borderColor: 'var(--gold)' }}>
 
-        <div className="flex justify-between items-start mb-4">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
           <div>
-            <h2>ASI Retroattivo</h2>
-            <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
-              {character.name} · Livello {currentLevel} · ({currentLevelIndex + 1}/{pendingLevels.length})
-            </p>
+            <div className="eyebrow" style={{ marginBottom: 6 }}>ASI Retroattivo</div>
+            <h2 style={{ marginBottom: 4 }}>Livello {currentLevel}</h2>
+            <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontSize: '0.85rem', fontStyle: 'italic' }}>
+              {character.name} · ({currentLevelIndex + 1}/{pendingLevels.length})
+            </div>
           </div>
-          <button onClick={onClose} style={{ backgroundColor: 'transparent', border: 'none', color: '#5a4020', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
+          <button onClick={onClose} style={{ backgroundColor: 'transparent', border: 'none', color: 'var(--fg-3)', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
         </div>
 
-        <div className="p-3 mb-4" style={{ backgroundColor: '#2a2010', border: '1px solid #5a4020' }}>
-          <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic' }}>
-            Questo personaggio è stato creato al livello {character.level} senza applicare tutti gli aumenti di caratteristica guadagnati.
-            Scegli ora l'ASI mancante per il livello {currentLevel}.
-          </p>
+        <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.9rem', fontStyle: 'italic', lineHeight: 1.65, padding: '12px 16px', backgroundColor: 'var(--bg-card)', borderLeft: '2px solid var(--gold)', marginBottom: 24 }}>
+          Scegli l'ASI mancante per il livello {currentLevel}.
         </div>
 
-        {/* Modalità */}
-        <div className="flex gap-1 mb-5">
+        {/* Mode selector */}
+        <div style={{ display: 'flex', gap: 4, marginBottom: 24 }}>
           {(['single', 'split', 'feat'] as AsiMode[]).map(mode => (
             <button key={mode} onClick={() => { setAsiMode(mode); setAsiSingle(null); setAsiSplitA(null); setAsiSplitB(null); setSelectedFeat(null); }}
-              style={{ flex: 1, border: `1px solid ${asiMode === mode ? '#c8922a' : '#5a4020'}`, color: asiMode === mode ? '#c8922a' : '#a08060', backgroundColor: asiMode === mode ? '#2a2010' : 'transparent', fontFamily: 'Cinzel, serif', padding: '7px 4px', cursor: 'pointer', fontSize: '0.7rem' }}>
+              className={asiMode === mode ? 'btn btn-secondary' : 'btn btn-ghost'}
+              style={{ flex: 1, padding: '7px 4px', ...(asiMode === mode ? { borderColor: 'var(--gold)', color: 'var(--gold)' } : {}) }}>
               {mode === 'single' ? '+2 a una' : mode === 'split' ? '+1/+1 a due' : '⚑ Talento'}
             </button>
           ))}
         </div>
 
-        {/* +2 su una */}
+        {/* +2 su una stat */}
         {asiMode === 'single' && (
-          <div className="grid grid-cols-3 gap-2 mb-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 24 }}>
             {STATS.map(stat => {
               const val = currentStats[stat];
               const isMax = val >= 20;
               const isSel = asiSingle === stat;
               return (
                 <button key={stat} onClick={() => !isMax && setAsiSingle(isSel ? null : stat)} disabled={isMax}
-                  style={{ border: `1px solid ${isSel ? '#c8922a' : '#5a4020'}`, backgroundColor: isSel ? '#2a2010' : '#1e1810', color: isMax ? '#3a3020' : '#e8d5a3', padding: '8px', textAlign: 'center', fontFamily: 'Cinzel, serif', cursor: isMax ? 'not-allowed' : 'pointer', fontSize: '0.75rem' }}>
-                  <div style={{ fontSize: '0.55rem', color: '#a08060' }}>{STAT_LABELS[stat]}</div>
-                  <div>{isMax ? '20 MAX' : isSel ? `${val} → ${val + 2}` : val}</div>
+                  style={{ border: `1px solid ${isSel ? 'var(--gold)' : 'var(--border-leather)'}`, backgroundColor: isSel ? 'rgba(184,134,11,0.08)' : 'var(--bg-card)', color: isMax ? 'var(--fg-3)' : 'var(--fg-1)', padding: '10px 8px', textAlign: 'center', cursor: isMax ? 'not-allowed' : 'pointer' }}>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: '7px', letterSpacing: '0.3em', color: 'var(--fg-3)', marginBottom: 4 }}>{STAT_LABELS[stat]}</div>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', fontWeight: 700, color: isSel ? 'var(--gold)' : 'var(--fg-1)' }}>
+                    {isMax ? 'MAX' : isSel ? `${val} → ${val + 2}` : val}
+                  </div>
                 </button>
               );
             })}
@@ -162,7 +167,7 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
 
         {/* +1/+1 */}
         {asiMode === 'split' && (
-          <div className="grid grid-cols-3 gap-2 mb-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 24 }}>
             {STATS.map(stat => {
               const val = currentStats[stat];
               const isMax = val >= 20;
@@ -178,9 +183,11 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
                   if (!asiSplitA) { setAsiSplitA(stat); return; }
                   if (!asiSplitB) { setAsiSplitB(stat); }
                 }} disabled={isMax || full}
-                  style={{ border: `1px solid ${isSel ? '#c8922a' : '#5a4020'}`, backgroundColor: isSel ? '#2a2010' : '#1e1810', color: (isMax || full) ? '#3a3020' : '#e8d5a3', padding: '8px', textAlign: 'center', fontFamily: 'Cinzel, serif', cursor: (isMax || full) ? 'not-allowed' : 'pointer', fontSize: '0.75rem', opacity: full ? 0.4 : 1 }}>
-                  <div style={{ fontSize: '0.55rem', color: '#a08060' }}>{STAT_LABELS[stat]}</div>
-                  <div>{isMax ? 'MAX' : isSel ? `${val} → ${val + 1}` : val}</div>
+                  style={{ border: `1px solid ${isSel ? 'var(--gold)' : 'var(--border-leather)'}`, backgroundColor: isSel ? 'rgba(184,134,11,0.08)' : 'var(--bg-card)', color: (isMax || full) ? 'var(--fg-3)' : 'var(--fg-1)', padding: '10px 8px', textAlign: 'center', cursor: (isMax || full) ? 'not-allowed' : 'pointer', opacity: full ? 0.4 : 1 }}>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: '7px', letterSpacing: '0.3em', color: 'var(--fg-3)', marginBottom: 4 }}>{STAT_LABELS[stat]}</div>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', fontWeight: 700, color: isSel ? 'var(--gold)' : 'var(--fg-1)' }}>
+                    {isMax ? 'MAX' : isSel ? `${val} → ${val + 1}` : val}
+                  </div>
                 </button>
               );
             })}
@@ -189,47 +196,44 @@ function AsiRetroModal({ character, sheet, classKey, pendingLevels, onClose }: {
 
         {/* Talento */}
         {asiMode === 'feat' && !selectedFeat && (
-          <div className="mb-4">
-            <div className="relative">
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ position: 'relative' }}>
               <input value={featSearch} onChange={e => { setFeatSearch(e.target.value); setShowFeatList(true); }} onFocus={() => setShowFeatList(true)}
-                placeholder="Cerca talento SRD…"
-                style={{ width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #5a4020', color: '#e8d5a3', outline: 'none', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem', padding: '4px 0', marginBottom: 8 }} />
+                placeholder="Cerca talento SRD…" className="field-input" style={{ marginBottom: 8 }} />
               {showFeatList && (
                 <>
-                  <div className="fixed inset-0 z-10" onClick={() => setShowFeatList(false)} />
-                  <div className="absolute left-0 right-0 z-20 max-h-40 overflow-y-auto" style={{ backgroundColor: '#221c14', border: '1px solid #5a4020', top: '100%' }}>
+                  <div style={{ position: 'fixed', inset: 0, zIndex: 10 }} onClick={() => setShowFeatList(false)} />
+                  <div style={{ position: 'absolute', left: 0, right: 0, zIndex: 20, maxHeight: 160, overflowY: 'auto', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', top: '100%' }}>
                     {searchFeats(featSearch).map(feat => (
                       <button key={feat.key} onClick={() => { setSelectedFeat(feat); setFeatSearch(''); setShowFeatList(false); }}
-                        style={{ display: 'block', width: '100%', textAlign: 'left', padding: '6px 10px', border: 'none', borderBottom: '1px solid #2a2018', backgroundColor: 'transparent', cursor: 'pointer', color: '#e8d5a3', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
-                        <span style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '0.75rem' }}>{feat.name}</span>
+                        style={{ display: 'block', width: '100%', textAlign: 'left', padding: '8px 12px', border: 'none', borderBottom: '1px solid var(--border-leather)', backgroundColor: 'transparent', cursor: 'pointer', color: 'var(--fg-1)', fontFamily: 'var(--font-body)', fontSize: '0.875rem' }}>
+                        <span style={{ fontFamily: 'var(--font-label)', fontSize: '8px', letterSpacing: '0.3em', color: 'var(--gold)', marginRight: 8 }}>{feat.name}</span>
                       </button>
                     ))}
                   </div>
                 </>
               )}
             </div>
-            <input value={featCustom} onChange={e => setFeatCustom(e.target.value)} placeholder="Oppure: nome talento personalizzato…"
-              style={{ width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #5a4020', color: '#e8d5a3', outline: 'none', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem', padding: '4px 0' }} />
+            <input value={featCustom} onChange={e => setFeatCustom(e.target.value)}
+              placeholder="Oppure: nome talento personalizzato…" className="field-input" />
           </div>
         )}
 
         {selectedFeat && (
-          <div className="mb-4 p-3" style={{ border: '1px solid #c8922a', backgroundColor: '#2a2010' }}>
-            <div className="flex justify-between">
-              <span style={{ fontFamily: 'Cinzel, serif', color: '#c8922a' }}>{selectedFeat.name}</span>
-              <button onClick={() => setSelectedFeat(null)} style={{ border: 'none', color: '#5a4020', backgroundColor: 'transparent', cursor: 'pointer' }}>✕</button>
+          <div style={{ marginBottom: 24, padding: '16px 20px', border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.05)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.85rem', color: 'var(--gold)' }}>{selectedFeat.name}</span>
+              <button onClick={() => setSelectedFeat(null)} style={{ border: 'none', color: 'var(--fg-3)', backgroundColor: 'transparent', cursor: 'pointer' }}>✕</button>
             </div>
-            <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.8rem', marginTop: 4 }}>{selectedFeat.effect}</p>
+            <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.875rem', fontStyle: 'italic' }}>{selectedFeat.effect}</p>
           </div>
         )}
 
-        <div className="flex justify-between mt-6">
-          <button onClick={onClose} style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '8px 18px', cursor: 'pointer', fontSize: '0.8rem' }}>
-            Chiudi
-          </button>
-          <button onClick={applyAndNext} disabled={!asiValid || saving}
-            style={{ border: '1px solid #c8922a', color: '#1a1410', backgroundColor: asiValid && !saving ? '#c8922a' : '#5a4020', fontFamily: 'Cinzel, serif', padding: '8px 22px', cursor: asiValid && !saving ? 'pointer' : 'not-allowed', fontSize: '0.85rem' }}>
-            {saving ? 'Salvando…' : isLast ? 'Applica e chiudi' : `Applica → ASI Lv ${pendingLevels[currentLevelIndex + 1]}`}
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
+          <button onClick={onClose} className="btn btn-ghost" style={{ padding: '8px 18px' }}>Chiudi</button>
+          <button onClick={applyAndNext} disabled={!asiValid || saving} className="btn btn-primary"
+            style={{ padding: '8px 22px', opacity: !asiValid || saving ? 0.4 : 1 }}>
+            {saving ? 'Salvando…' : isLast ? 'Applica e chiudi' : `Applica → Lv ${pendingLevels[currentLevelIndex + 1]}`}
           </button>
         </div>
       </div>

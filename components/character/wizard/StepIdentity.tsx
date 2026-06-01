@@ -4,20 +4,22 @@ import { CLASSES } from '@/lib/srd/classes';
 import { BACKGROUNDS, getBackground, rollTrait } from '@/lib/srd/backgrounds';
 import type { WizardData } from '../CharacterWizard';
 
-const input: React.CSSProperties = {
-  backgroundColor: 'transparent', border: 'none',
-  borderBottom: '1px solid #5a4020', color: '#e8d5a3',
-  outline: 'none', fontFamily: 'Crimson Text, serif',
-  fontSize: '1rem', width: '100%', padding: '4px 0',
+// ── Shared DS style constants ───────────────────────────────────────────────
+export const wizInp: React.CSSProperties = {
+  backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)',
+  color: 'var(--fg-1)', outline: 'none',
+  fontFamily: 'var(--font-body)', fontSize: '0.95rem',
+  width: '100%', padding: '8px 12px', borderRadius: 0,
 };
-const label: React.CSSProperties = {
-  display: 'block', fontSize: '0.75rem', color: '#a08060',
-  fontFamily: 'Cinzel, serif', letterSpacing: '0.05em', marginBottom: '4px',
+export const wizLbl: React.CSSProperties = {
+  display: 'block', fontFamily: 'var(--font-label)', fontSize: '8px',
+  letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--fg-3)', marginBottom: 6,
 };
-const select: React.CSSProperties = { ...input, backgroundColor: '#2a2018', cursor: 'pointer', padding: '4px 2px' };
-const textarea: React.CSSProperties = {
-  ...input, borderBottom: 'none', border: '1px solid #5a4020',
-  padding: '8px', resize: 'vertical' as const,
+export const wizSel: React.CSSProperties = {
+  ...wizInp, cursor: 'pointer',
+};
+export const wizTa: React.CSSProperties = {
+  ...wizInp, resize: 'vertical' as const,
 };
 
 interface Props { data: WizardData; update: (p: Partial<WizardData>) => void; onNext: () => void; }
@@ -33,18 +35,20 @@ export default function StepIdentity({ data, update, onNext }: Props) {
 
   return (
     <div>
-      <h2 className="mb-6">Identità</h2>
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+      <div className="eyebrow" style={{ marginBottom: 10 }}>Passaggio 1</div>
+      <h2 style={{ marginBottom: 28 }}>Identità</h2>
 
-        <div className="md:col-span-2">
-          <label style={label}>Nome *</label>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label style={wizLbl}>Nome *</label>
           <input value={data.name} onChange={e => update({ name: e.target.value })}
-            style={input} placeholder="Nome del personaggio" autoFocus />
+            className="field-input" placeholder="Nome del personaggio" autoFocus />
         </div>
 
         <div>
-          <label style={label}>Tipo</label>
-          <select value={data.type} onChange={e => update({ type: e.target.value as WizardData['type'] })} style={select}>
+          <label style={wizLbl}>Tipo</label>
+          <select value={data.type} onChange={e => update({ type: e.target.value as WizardData['type'] })} className="field-input" style={{ cursor: 'pointer' }}>
             <option value="pc">Personaggio Giocante</option>
             <option value="npc_major">PNG Principale</option>
             <option value="npc_minor">PNG Secondario</option>
@@ -52,22 +56,22 @@ export default function StepIdentity({ data, update, onNext }: Props) {
         </div>
 
         <div>
-          <label style={label}>Classe</label>
-          <select value={data.classKey} onChange={e => update({ classKey: e.target.value, subclass: '' })} style={select}>
+          <label style={wizLbl}>Classe</label>
+          <select value={data.classKey} onChange={e => update({ classKey: e.target.value, subclass: '' })} className="field-input" style={{ cursor: 'pointer' }}>
             {CLASSES.map(c => <option key={c.key} value={c.key}>{c.name}</option>)}
           </select>
         </div>
 
         <div>
-          <label style={label}>Livello di partenza</label>
+          <label style={wizLbl}>Livello di partenza</label>
           <input type="number" min={1} max={20} value={data.level}
             onChange={e => update({ level: Math.max(1, Math.min(20, Number(e.target.value))), subclass: '' })}
-            style={input} />
+            className="field-input" />
         </div>
 
         <div>
-          <label style={label}>Allineamento</label>
-          <select value={data.alignment} onChange={e => update({ alignment: e.target.value })} style={select}>
+          <label style={wizLbl}>Allineamento</label>
+          <select value={data.alignment} onChange={e => update({ alignment: e.target.value })} className="field-input" style={{ cursor: 'pointer' }}>
             <option value="">— Scegli —</option>
             <option>Legale Buono</option><option>Neutrale Buono</option><option>Caotico Buono</option>
             <option>Legale Neutrale</option><option>Neutrale</option><option>Caotico Neutrale</option>
@@ -75,63 +79,57 @@ export default function StepIdentity({ data, update, onNext }: Props) {
           </select>
         </div>
 
-        {/* Background */}
         <div>
-          <label style={label}>Background</label>
+          <label style={wizLbl}>Background</label>
           <select value={data.backgroundKey}
             onChange={e => update({ backgroundKey: e.target.value, background: e.target.value, personality: '', ideals: '', bonds: '', flaws: '' })}
-            style={select}>
+            className="field-input" style={{ cursor: 'pointer' }}>
             <option value="">— Scegli un background —</option>
             {BACKGROUNDS.map(b => <option key={b.key} value={b.key}>{b.name}</option>)}
           </select>
           {bg && (
-            <div className="mt-1 text-xs" style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontStyle: 'italic' }}>
+            <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontSize: '0.8rem', fontStyle: 'italic', marginTop: 6 }}>
               {bg.description}
             </div>
           )}
         </div>
 
-        {/* Tratti background con tiro dado */}
         {bg && (
-          <div className="md:col-span-2 space-y-3">
-            <div className="divider" />
-            <p style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '0.75rem', letterSpacing: '0.06em' }}>
-              TRATTI — clicca 🎲 per tirare un tratto casuale, o scrivi liberamente
-            </p>
-
-            {(['personality', 'ideals', 'bonds', 'flaws'] as const).map(field => {
-              const labels = { personality: 'Tratto', ideals: 'Ideale', bonds: 'Legame', flaws: 'Difetto' };
-              return (
-                <div key={field}>
-                  <div className="flex items-center justify-between mb-1">
-                    <label style={{ ...label, marginBottom: 0 }}>{labels[field]}</label>
-                    <button onClick={() => rollField(field)}
-                      title={`Tira un ${labels[field]} casuale`}
-                      style={{ border: '1px solid #5a4020', color: '#c8922a', backgroundColor: 'transparent', cursor: 'pointer', padding: '2px 8px', fontSize: '0.75rem', fontFamily: 'Cinzel, serif' }}>
-                      🎲
-                    </button>
+          <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ borderTop: '1px solid var(--border-leather)', paddingTop: 16 }}>
+              <div className="eyebrow" style={{ marginBottom: 12 }}>Tratti background — clicca 🎲 per un tratto casuale</div>
+              {(['personality', 'ideals', 'bonds', 'flaws'] as const).map(field => {
+                const labels = { personality: 'Tratto', ideals: 'Ideale', bonds: 'Legame', flaws: 'Difetto' };
+                return (
+                  <div key={field} style={{ marginBottom: 16 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                      <label style={wizLbl}>{labels[field]}</label>
+                      <button onClick={() => rollField(field)} className="btn btn-ghost" style={{ padding: '3px 10px' }}>🎲</button>
+                    </div>
+                    <textarea value={(data as unknown as Record<string, string>)[field]}
+                      onChange={e => update({ [field]: e.target.value } as Partial<WizardData>)}
+                      rows={2} className="field-input" style={{ resize: 'vertical' }}
+                      placeholder={`Tira 🎲 o scrivi un ${labels[field].toLowerCase()}…`} />
                   </div>
-                  <textarea value={(data as unknown as Record<string, string>)[field]}
-                    onChange={e => update({ [field]: e.target.value } as Partial<WizardData>)}
-                    rows={2} style={textarea}
-                    placeholder={`Tira 🎲 o scrivi un ${labels[field].toLowerCase()}…`} />
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
 
-        <div className="md:col-span-2">
-          <label style={label}>Note DM (private)</label>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7 }} />
+            <label style={{ ...wizLbl, color: 'var(--fg-1)', marginBottom: 0 }}>Note DM (private)</label>
+          </div>
           <textarea value={data.dmNotes} onChange={e => update({ dmNotes: e.target.value })}
-            rows={2} style={textarea} placeholder="Visibili solo al DM…" />
+            rows={2} className="field-input" style={{ resize: 'vertical', borderColor: 'rgba(139,26,26,0.4)' }}
+            placeholder="Visibili solo al DM…" />
         </div>
       </div>
 
-      <div className="flex justify-end mt-8">
-        <WizardButton onClick={onNext} disabled={!canProceed}>
-          Avanti → Razza
-        </WizardButton>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 32 }}>
+        <WizardButton onClick={onNext} disabled={!canProceed}>Avanti → Razza</WizardButton>
       </div>
     </div>
   );
@@ -140,14 +138,14 @@ export default function StepIdentity({ data, update, onNext }: Props) {
 export function WizardButton({ onClick, disabled, children, variant = 'primary' }:
   { onClick: () => void; disabled?: boolean; children: React.ReactNode; variant?: 'primary' | 'secondary' }) {
   return (
-    <button onClick={onClick} disabled={disabled} style={{
-      border: `1px solid ${variant === 'primary' ? '#c8922a' : '#5a4020'}`,
-      color: variant === 'primary' ? '#c8922a' : '#a08060',
-      backgroundColor: 'transparent', fontFamily: 'Cinzel, serif',
-      fontSize: '0.85rem', padding: '8px 20px',
-      cursor: disabled ? 'not-allowed' : 'pointer',
-      opacity: disabled ? 0.4 : 1, letterSpacing: '0.05em',
-    }}>
+    <button onClick={onClick} disabled={disabled}
+      className={variant === 'primary' ? 'btn btn-secondary' : 'btn btn-ghost'}
+      style={{
+        padding: '9px 24px',
+        ...(variant === 'primary' ? { borderColor: 'var(--gold)', color: 'var(--gold)' } : {}),
+        opacity: disabled ? 0.4 : 1,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+      }}>
       {children}
     </button>
   );

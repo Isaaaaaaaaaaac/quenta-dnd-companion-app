@@ -30,7 +30,7 @@ interface Props {
 
 // ─── Costanti UI ────────────────────────────────────────────────────────────
 const badge = (color: string, bg: string, text: string) => (
-  <span style={{ border: `1px solid ${color}`, color, backgroundColor: bg, fontFamily: 'Cinzel, serif', fontSize: '0.65rem', padding: '1px 6px', letterSpacing: '0.04em' }}>
+  <span style={{ border: `1px solid ${color}`, color, backgroundColor: bg, fontFamily: 'var(--font-label)', fontSize: '0.65rem', padding: '1px 6px', letterSpacing: '0.04em' }}>
     {text}
   </span>
 );
@@ -40,9 +40,9 @@ const countBadge = (current: number, max: number, label: string) => {
   const full = current === max;
   return (
     <span style={{
-      border: `1px solid ${over ? '#8b2020' : full ? '#4a7c4e' : '#5a4020'}`,
-      color: over ? '#8b2020' : full ? '#4a7c4e' : '#a08060',
-      fontFamily: 'Cinzel, serif', fontSize: '0.7rem', padding: '2px 8px',
+      border: `1px solid ${over ? 'var(--danger)' : full ? 'var(--info)' : 'var(--border-leather)'}`,
+      color: over ? 'var(--danger)' : full ? 'var(--info)' : 'var(--fg-2)',
+      fontFamily: 'var(--font-label)', fontSize: '0.7rem', padding: '2px 8px',
     }}>
       {label}: {current}/{max}
     </span>
@@ -163,7 +163,7 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
 
   if (casterType === 'none') {
     return (
-      <div className="text-center py-10" style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontStyle: 'italic' }}>
+      <div className="text-center py-10" style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-body)', fontStyle: 'italic' }}>
         {CLASSES.find(c => c.key === classKey)?.name ?? classKey} non usa incantesimi.
       </div>
     );
@@ -173,27 +173,27 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
     <div className="space-y-5">
 
       {/* ── Intestazione: tipo di incantatore e regole ── */}
-      <div className="p-3" style={{ backgroundColor: '#2a2010', border: '1px solid #5a4020' }}>
+      <div className="p-3" style={{ backgroundColor: 'rgba(184,134,11,0.08)', border: '1px solid var(--border-leather)' }}>
         <div className="flex flex-wrap gap-2 items-center mb-2">
-          <span style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '0.8rem' }}>
+          <span style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '0.8rem' }}>
             {casterTypeLabel(classKey)}
           </span>
           {cantripLimit > 0 && countBadge(cantrips.length, cantripLimit, 'Trucchetti')}
           {isSpontaneous && countBadge(nonCantripKnown.length, spellsKnownLimit, 'Incantesimi noti')}
           {isWizard && countBadge(nonCantripKnown.length, spellbookCapacity, 'Nel libro')}
           {isPrepared && countBadge(preparedSpells.length, preparedLimit, 'Preparati')}
-          <span style={{ border: '1px solid #5a4020', color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', padding: '1px 6px' }}>
+          <span style={{ border: '1px solid var(--border-leather)', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', padding: '1px 6px' }}>
             Max livello: {maxSpellLv}°
           </span>
         </div>
-        <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic', margin: 0 }}>
+        <p style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', margin: 0 }}>
           {casterRulesDescription(classKey)}
         </p>
       </div>
 
       {/* ── Tab per Mago: Libro vs Preparati ── */}
       {isWizard && (
-        <div className="flex" style={{ borderBottom: '1px solid #5a4020' }}>
+        <div className="flex" style={{ borderBottom: '1px solid var(--border-leather)' }}>
           {[
             { id: 'spellbook' as const, label: '📖 Libro degli Incantesimi' },
             { id: 'prepared' as const, label: '✦ Preparati oggi' },
@@ -202,9 +202,9 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
               style={{
                 flex: 1, padding: '8px', cursor: 'pointer',
                 backgroundColor: 'transparent', border: 'none',
-                borderBottom: `2px solid ${activeTab === t.id ? '#c8922a' : 'transparent'}`,
-                color: activeTab === t.id ? '#c8922a' : '#a08060',
-                fontFamily: 'Cinzel, serif', fontSize: '0.75rem',
+                borderBottom: `2px solid ${activeTab === t.id ? 'var(--gold)' : 'transparent'}`,
+                color: activeTab === t.id ? 'var(--gold)' : 'var(--fg-2)',
+                fontFamily: 'var(--font-label)', fontSize: '0.75rem',
               }}>
               {t.label}
             </button>
@@ -222,7 +222,7 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
           {/* Trucchetti */}
           {cantrips.length > 0 && (
             <div className="mb-3">
-              <div style={{ fontSize: '0.65rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em', marginBottom: 6 }}>
+              <div style={{ fontSize: '0.65rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.06em', marginBottom: 6 }}>
                 TRUCCHETTI ({cantrips.length}/{cantripLimit})
               </div>
               <div className="flex flex-wrap gap-1">
@@ -240,11 +240,11 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
             if (!isWizard && !isSpontaneous && atLevel.length === 0) return null; // prepared: mostra solo se ha qualcosa
             return (
               <div key={lv} className="mb-3">
-                <div style={{ fontSize: '0.65rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em', marginBottom: 4 }}>
+                <div style={{ fontSize: '0.65rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.06em', marginBottom: 4 }}>
                   LIVELLO {lv}
                 </div>
                 {atLevel.length === 0 ? (
-                  <div style={{ color: '#3a3020', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic' }}>
+                  <div style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic' }}>
                     Nessun incantesimo di livello {lv}
                   </div>
                 ) : (
@@ -263,7 +263,7 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
           })}
 
           {knownSpells.filter(s => s.level > 0).length === 0 && (
-            <div style={{ color: '#3a3020', fontFamily: 'Crimson Text, serif', fontStyle: 'italic', padding: '8px 0' }}>
+            <div style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-body)', fontStyle: 'italic', padding: '8px 0' }}>
               Nessun incantesimo ancora. Aggiungi dalla lista qui sotto.
             </div>
           )}
@@ -274,11 +274,11 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
       {isWizard && activeTab === 'prepared' && (
         <section>
           <h3 className="mb-1">Incantesimi Preparati Oggi</h3>
-          <p className="mb-3" style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic' }}>
+          <p className="mb-3" style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic' }}>
             Scegli fino a {preparedLimit} incantesimi dal tuo libro da preparare per oggi.
           </p>
           {nonCantripKnown.length === 0 ? (
-            <div style={{ color: '#3a3020', fontFamily: 'Crimson Text, serif', fontStyle: 'italic' }}>
+            <div style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-body)', fontStyle: 'italic' }}>
               Aggiungi prima incantesimi al libro.
             </div>
           ) : (
@@ -288,18 +288,18 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
                   style={{
                     display: 'flex', alignItems: 'center', gap: 8,
                     width: '100%', padding: '8px 10px', textAlign: 'left', cursor: 'pointer',
-                    border: `1px solid ${s.prepared ? '#c8922a' : '#5a4020'}`,
-                    backgroundColor: s.prepared ? '#2a2010' : 'transparent',
+                    border: `1px solid ${s.prepared ? 'var(--gold)' : 'var(--border-leather)'}`,
+                    backgroundColor: s.prepared ? 'rgba(184,134,11,0.08)' : 'transparent',
                   }}>
-                  <span style={{ color: s.prepared ? '#c8922a' : '#5a4020', fontSize: '0.8rem' }}>
+                  <span style={{ color: s.prepared ? 'var(--gold)' : 'var(--border-leather)', fontSize: '0.8rem' }}>
                     {s.prepared ? '◆' : '◇'}
                   </span>
-                  <span style={{ flex: 1, color: '#e8d5a3', fontFamily: 'Crimson Text, serif' }}>{s.name}</span>
-                  <span style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.65rem' }}>
+                  <span style={{ flex: 1, color: 'var(--fg-1)', fontFamily: 'var(--font-body)' }}>{s.name}</span>
+                  <span style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-label)', fontSize: '0.65rem' }}>
                     Lv {s.level}
                   </span>
                   {!s.prepared && preparedSpells.length >= preparedLimit && (
-                    <span style={{ color: '#8b2020', fontSize: '0.65rem', fontFamily: 'Cinzel, serif' }}>LIMITE</span>
+                    <span style={{ color: 'var(--danger)', fontSize: '0.65rem', fontFamily: 'var(--font-label)' }}>LIMITE</span>
                   )}
                 </button>
               ))}
@@ -314,22 +314,22 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
           <div className="flex items-center justify-between mb-3">
             <h3 style={{ marginBottom: 0 }}>Aggiungi dalla lista SRD</h3>
             {isSpontaneous && nonCantripKnown.length >= spellsKnownLimit && (
-              <span style={{ color: '#8b2020', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', border: '1px solid #8b2020', padding: '2px 6px' }}>
+              <span style={{ color: 'var(--danger)', fontFamily: 'var(--font-label)', fontSize: '0.7rem', border: '1px solid var(--danger)', padding: '2px 6px' }}>
                 Limite incantesimi raggiunto
               </span>
             )}
             {isWizard && nonCantripKnown.length >= spellbookCapacity && (
-              <span style={{ color: '#8b2020', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', border: '1px solid #8b2020', padding: '2px 6px' }}>
+              <span style={{ color: 'var(--danger)', fontFamily: 'var(--font-label)', fontSize: '0.7rem', border: '1px solid var(--danger)', padding: '2px 6px' }}>
                 Libro pieno
               </span>
             )}
           </div>
 
           {loadError && (
-            <div className="p-3 mb-3" style={{ backgroundColor: '#1a0a0a', border: '1px solid #8b2020', color: '#8b2020', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
+            <div className="p-3 mb-3" style={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--danger)', color: 'var(--danger)', fontFamily: 'var(--font-body)', fontSize: '0.85rem' }}>
               {loadError}
               <div className="mt-2">
-                <button onClick={() => addCustomSpell()} style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '4px 12px', cursor: 'pointer', fontSize: '0.75rem' }}>
+                <button onClick={() => addCustomSpell()} style={{ border: '1px solid var(--border-leather)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '4px 12px', cursor: 'pointer', fontSize: '0.75rem' }}>
                   + Aggiungi incantesimo manualmente
                 </button>
               </div>
@@ -337,7 +337,7 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
           )}
 
           {loadingSpells && (
-            <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontStyle: 'italic' }}>
+            <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontStyle: 'italic' }}>
               Caricamento incantesimi dalla SRD…
             </div>
           )}
@@ -347,10 +347,10 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
               <div className="flex gap-2 mb-3">
                 <input value={search} onChange={e => setSearch(e.target.value)}
                   placeholder="Cerca per nome…"
-                  style={{ flex: 1, backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #5a4020', color: '#e8d5a3', outline: 'none', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem', padding: '4px 0' }} />
+                  style={{ flex: 1, backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--border-leather)', color: 'var(--fg-1)', outline: 'none', fontFamily: 'var(--font-body)', fontSize: '0.9rem', padding: '4px 0' }} />
                 <select value={filterLevel}
                   onChange={e => setFilterLevel(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-                  style={{ backgroundColor: '#2a2018', border: 'none', borderBottom: '1px solid #5a4020', color: '#e8d5a3', outline: 'none', fontFamily: 'Cinzel, serif', fontSize: '0.8rem', padding: '4px', cursor: 'pointer' }}>
+                  style={{ backgroundColor: 'var(--bg-card)', border: 'none', borderBottom: '1px solid var(--border-leather)', color: 'var(--fg-1)', outline: 'none', fontFamily: 'var(--font-label)', fontSize: '0.8rem', padding: '4px', cursor: 'pointer' }}>
                   <option value="all">Tutti i livelli</option>
                   <option value={0}>Trucchetti</option>
                   {Array.from({ length: maxSpellLv }, (_, i) => i + 1).map(l =>
@@ -372,32 +372,32 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
                       style={{
                         display: 'flex', alignItems: 'center', gap: 8,
                         width: '100%', padding: '6px 10px', textAlign: 'left',
-                        border: `1px solid ${isKnown ? '#c8922a' : '#5a4020'}`,
-                        backgroundColor: isKnown ? '#2a2010' : 'transparent',
+                        border: `1px solid ${isKnown ? 'var(--gold)' : 'var(--border-leather)'}`,
+                        backgroundColor: isKnown ? 'rgba(184,134,11,0.08)' : 'transparent',
                         cursor: blocked ? 'not-allowed' : 'pointer',
                         opacity: blocked ? 0.4 : 1,
                       }}>
-                      <span style={{ color: isKnown ? '#c8922a' : '#5a4020', fontSize: '0.75rem' }}>
+                      <span style={{ color: isKnown ? 'var(--gold)' : 'var(--border-leather)', fontSize: '0.75rem' }}>
                         {isKnown ? '◆' : '◇'}
                       </span>
-                      <span style={{ flex: 1, color: '#e8d5a3', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem' }}>
+                      <span style={{ flex: 1, color: 'var(--fg-1)', fontFamily: 'var(--font-body)', fontSize: '0.9rem' }}>
                         {spell.name}
                       </span>
-                      <span style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', flexShrink: 0 }}>
+                      <span style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', flexShrink: 0 }}>
                         {spell.level === 0 ? 'Trucchetto' : `Lv ${spell.level}`}
                       </span>
-                      <span style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontSize: '0.75rem', flexShrink: 0 }}>
+                      <span style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-body)', fontSize: '0.75rem', flexShrink: 0 }}>
                         {spell.school}
                       </span>
                       <div className="flex gap-1">
-                        {spell.concentration && badge('#5a7a9a', 'transparent', 'C')}
-                        {spell.ritual && badge('#8a6a2a', 'transparent', 'R')}
+                        {spell.concentration && badge('var(--info)', 'transparent', 'C')}
+                        {spell.ritual && badge('var(--gold)', 'transparent', 'R')}
                       </div>
                     </button>
                   );
                 })}
                 {filteredSrd.length === 0 && (
-                  <div style={{ color: '#3a3020', fontFamily: 'Crimson Text, serif', fontStyle: 'italic', padding: '12px 0' }}>
+                  <div style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-body)', fontStyle: 'italic', padding: '12px 0' }}>
                     Nessun incantesimo trovato.
                   </div>
                 )}
@@ -406,7 +406,7 @@ export default function TabSpells({ classKey, level, stats, knownSpells, setKnow
           )}
 
           <button onClick={addCustomSpell} className="mt-3"
-            style={{ border: '1px dashed #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '6px 14px', cursor: 'pointer', fontSize: '0.8rem' }}>
+            style={{ border: '1px dashed var(--border-leather)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '6px 14px', cursor: 'pointer', fontSize: '0.8rem' }}>
             + Aggiungi incantesimo manuale / homebrew
           </button>
         </section>
@@ -436,25 +436,25 @@ function SpellChip({ spell, onRemove, onTogglePrepared, showPrepare, preparedLim
   const canPrepare = spell.prepared || preparedCount < preparedLimit;
   return (
     <div className="flex items-center gap-2 p-2 mb-1"
-      style={{ border: '1px solid #5a4020', backgroundColor: '#1e1810' }}>
-      <span style={{ color: '#e8d5a3', fontFamily: 'Crimson Text, serif', flex: 1, fontSize: '0.9rem' }}>
+      style={{ border: '1px solid var(--border-leather)', backgroundColor: 'var(--bg-deep)' }}>
+      <span style={{ color: 'var(--fg-1)', fontFamily: 'var(--font-body)', flex: 1, fontSize: '0.9rem' }}>
         {spell.name}
       </span>
-      <span style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', flexShrink: 0 }}>
+      <span style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', flexShrink: 0 }}>
         {spell.level === 0 ? 'Trucchetto' : `Lv ${spell.level}`}
         {spell.school && ` · ${spell.school}`}
       </span>
       <div className="flex gap-1">
-        {spell.concentration && <span style={{ border: '1px solid #5a7a9a', color: '#5a7a9a', fontSize: '0.6rem', padding: '0 4px' }}>C</span>}
-        {spell.ritual && <span style={{ border: '1px solid #8a6a2a', color: '#8a6a2a', fontSize: '0.6rem', padding: '0 4px' }}>R</span>}
+        {spell.concentration && <span style={{ border: '1px solid var(--info)', color: 'var(--info)', fontSize: '0.6rem', padding: '0 4px' }}>C</span>}
+        {spell.ritual && <span style={{ border: '1px solid var(--gold)', color: 'var(--gold)', fontSize: '0.6rem', padding: '0 4px' }}>R</span>}
       </div>
       {showPrepare && spell.level > 0 && (
         <button onClick={() => onTogglePrepared(spell.id)}
           disabled={!canPrepare}
           style={{
-            border: `1px solid ${spell.prepared ? '#4a7c4e' : '#5a4020'}`,
-            color: spell.prepared ? '#4a7c4e' : '#5a4020',
-            backgroundColor: 'transparent', fontFamily: 'Cinzel, serif',
+            border: `1px solid ${spell.prepared ? 'var(--info)' : 'var(--border-leather)'}`,
+            color: spell.prepared ? 'var(--info)' : 'var(--border-leather)',
+            backgroundColor: 'transparent', fontFamily: 'var(--font-label)',
             padding: '1px 6px', cursor: canPrepare ? 'pointer' : 'not-allowed',
             fontSize: '0.65rem', opacity: canPrepare || spell.prepared ? 1 : 0.4,
           }}>
@@ -462,7 +462,7 @@ function SpellChip({ spell, onRemove, onTogglePrepared, showPrepare, preparedLim
         </button>
       )}
       <button onClick={() => onRemove(spell.id)}
-        style={{ border: 'none', color: '#8b2020', backgroundColor: 'transparent', cursor: 'pointer', fontSize: '0.9rem', padding: '0 2px', flexShrink: 0 }}>
+        style={{ border: 'none', color: 'var(--danger)', backgroundColor: 'transparent', cursor: 'pointer', fontSize: '0.9rem', padding: '0 2px', flexShrink: 0 }}>
         ✕
       </button>
     </div>

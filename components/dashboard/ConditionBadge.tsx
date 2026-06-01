@@ -2,27 +2,21 @@
 
 import { removeCondition } from '@/lib/db/actions';
 
-interface Props {
-  conditionId: string;
-  characterId: string;
-  name: string;
-  icon: string;
-}
+interface Props { conditionId: string; characterId: string; name: string; icon: string; }
 
 export default function ConditionBadge({ conditionId, characterId, name, icon }: Props) {
   return (
     <button
       onClick={() => removeCondition(conditionId, characterId)}
       title={`Rimuovi: ${name}`}
-      className="flex items-center gap-1 px-2 py-0.5 text-xs transition-opacity hover:opacity-70"
       style={{
-        border: '1px solid #8b2020',
-        backgroundColor: '#2a1010',
-        color: '#e8d5a3',
-        fontFamily: 'Crimson Text, serif',
-        cursor: 'pointer',
-      }}
-    >
+        display: 'inline-flex', alignItems: 'center', gap: 6,
+        padding: '0 var(--sp-1)', height: 24,
+        fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
+        border: '1px solid rgba(139,26,26,.5)', color: '#fca5a5',
+        background: 'rgba(139,26,26,.08)', borderRadius: 'var(--r)',
+        cursor: 'pointer', transition: 'all .2s',
+      }}>
       <span>{icon}</span>
       <span>{name}</span>
     </button>

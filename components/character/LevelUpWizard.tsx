@@ -133,18 +133,18 @@ export default function LevelUpWizard({ character, onClose }: Props) {
     <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.75)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
 
-      <div style={{ backgroundColor: '#1a1410', border: '1px solid #c8922a', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflowY: 'auto', padding: '32px' }}>
+      <div style={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--gold)', width: '100%', maxWidth: '560px', maxHeight: '90vh', overflowY: 'auto', padding: '32px' }}>
 
         {/* Header */}
         <div className="flex justify-between items-start mb-4">
           <div>
             <h2>Level Up — Livello {newLevel}</h2>
-            <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem' }}>
+            <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.9rem' }}>
               {character.name} · {cls?.name}
-              {hasAsi && <span style={{ marginLeft: 8, color: '#c8922a', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', border: '1px solid #c8922a', padding: '1px 6px' }}>ASI</span>}
+              {hasAsi && <span style={{ marginLeft: 8, color: 'var(--gold)', fontFamily: 'var(--font-label)', fontSize: '0.7rem', border: '1px solid var(--gold)', padding: '1px 6px' }}>ASI</span>}
             </div>
           </div>
-          <button onClick={onClose} style={{ backgroundColor: 'transparent', border: 'none', color: '#5a4020', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
+          <button onClick={onClose} style={{ backgroundColor: 'transparent', border: 'none', color: 'var(--border-leather-dim)', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
         </div>
 
         {/* Progress */}
@@ -153,8 +153,8 @@ export default function LevelUpWizard({ character, onClose }: Props) {
             const labels: Record<Step, string> = { hp: 'Punti Ferita', asi: 'Caratteristica', confirm: 'Conferma' };
             return (
               <div key={s} className="flex-1 text-center">
-                <div style={{ height: 2, backgroundColor: stepIndex >= i ? '#c8922a' : '#5a4020', marginBottom: 4 }} />
-                <span style={{ fontFamily: 'Cinzel, serif', fontSize: '0.6rem', letterSpacing: '0.04em', color: stepIndex === i ? '#c8922a' : stepIndex > i ? '#8a6010' : '#5a4020' }}>
+                <div style={{ height: 2, backgroundColor: stepIndex >= i ? 'var(--gold)' : 'var(--border-leather-dim)', marginBottom: 4 }} />
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.6rem', letterSpacing: '0.04em', color: stepIndex === i ? 'var(--gold)' : stepIndex > i ? 'var(--gold)' : 'var(--border-leather-dim)' }}>
                   {labels[s]}
                 </span>
               </div>
@@ -164,20 +164,20 @@ export default function LevelUpWizard({ character, onClose }: Props) {
 
         {/* Nuove features di classe */}
         {clsFeatures.length > 0 && (
-          <div className="mb-5 p-3" style={{ backgroundColor: '#2a2010', border: '1px solid #5a4020' }}>
-            <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '0.65rem', letterSpacing: '0.06em', marginBottom: 6 }}>
+          <div className="mb-5 p-3" style={{ backgroundColor: 'rgba(184,134,11,0.08)', border: '1px solid var(--border-leather-dim)' }}>
+            <div style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '0.65rem', letterSpacing: '0.06em', marginBottom: 6 }}>
               NUOVE CAPACITÀ AL LIVELLO {newLevel}
             </div>
             {clsFeatures.map(f => (
-              <div key={f} style={{ color: '#e8d5a3', fontFamily: 'Crimson Text, serif', padding: '2px 0', fontSize: '0.9rem' }}>✦ {f}</div>
+              <div key={f} style={{ color: 'var(--fg-1)', fontFamily: 'var(--font-body)', padding: '2px 0', fontSize: '0.9rem' }}>✦ {f}</div>
             ))}
           </div>
         )}
 
         {/* Bonus competenza aggiornato */}
         {newProf !== proficiencyBonus(character.level) && (
-          <div className="mb-5 p-3" style={{ backgroundColor: '#1a2a1a', border: '1px solid #4a7c4e' }}>
-            <span style={{ color: '#4a7c4e', fontFamily: 'Cinzel, serif', fontSize: '0.75rem' }}>
+          <div className="mb-5 p-3" style={{ backgroundColor: 'rgba(14,116,144,0.1)', border: '1px solid var(--info)' }}>
+            <span style={{ color: 'var(--info)', fontFamily: 'var(--font-label)', fontSize: '0.75rem' }}>
               ✦ Bonus Competenza aumenta: +{proficiencyBonus(character.level)} → +{newProf}
             </span>
           </div>
@@ -187,32 +187,32 @@ export default function LevelUpWizard({ character, onClose }: Props) {
         {step === 'hp' && (
           <div>
             <h3 className="mb-2">Punti Ferita</h3>
-            <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem', marginBottom: 16 }}>
+            <p style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.9rem', marginBottom: 16 }}>
               d{die} + modificatore COS ({formatModifier(conMod)}) · min. 1 PF
             </p>
 
             {!hpLocked ? (
               <div className="flex gap-3 mb-4">
                 <button onClick={rollHP}
-                  style={{ border: '1px solid #c8922a', color: '#c8922a', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '10px 20px', cursor: 'pointer', fontSize: '0.85rem' }}>
+                  style={{ border: '1px solid var(--gold)', color: 'var(--gold)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '10px 20px', cursor: 'pointer', fontSize: '0.85rem' }}>
                   🎲 Tira d{die}
                 </button>
                 <button onClick={useAvgHP}
-                  style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '10px 20px', cursor: 'pointer', fontSize: '0.85rem' }}>
+                  style={{ border: '1px solid var(--border-leather-dim)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '10px 20px', cursor: 'pointer', fontSize: '0.85rem' }}>
                   ⌀ Media ({averageHitDie(die)})
                 </button>
               </div>
             ) : (
-              <div className="p-4 text-center mb-4" style={{ border: '1px solid #c8922a', backgroundColor: '#2a2010' }}>
-                <div style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', letterSpacing: '0.1em', marginBottom: 4 }}>PF GUADAGNATI — CONFERMATO</div>
-                <div style={{ fontFamily: 'Cinzel, serif', fontSize: '3rem', color: '#c8922a', lineHeight: 1 }}>
+              <div className="p-4 text-center mb-4" style={{ border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.08)' }}>
+                <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', letterSpacing: '0.1em', marginBottom: 4 }}>PF GUADAGNATI — CONFERMATO</div>
+                <div style={{ fontFamily: 'var(--font-label)', fontSize: '3rem', color: 'var(--gold)', lineHeight: 1 }}>
                   +{hpGain}
                 </div>
-                <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', marginTop: 6 }}>
+                <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', marginTop: 6 }}>
                   {hpRoll} (dado) {conMod >= 0 ? '+' : ''}{conMod} (COS)
-                  &nbsp;→ {character.hpMax} ➜ <strong style={{ color: '#e8d5a3' }}>{character.hpMax + hpGain}</strong>
+                  &nbsp;→ {character.hpMax} ➜ <strong style={{ color: 'var(--fg-1)' }}>{character.hpMax + hpGain}</strong>
                 </div>
-                <div style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', marginTop: 8, letterSpacing: '0.04em' }}>
+                <div style={{ color: 'var(--border-leather-dim)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', marginTop: 8, letterSpacing: '0.04em' }}>
                   ⚔ TIRO IRREVERSIBILE — NON PUÒ ESSERE RIPETUTO
                 </div>
               </div>
@@ -231,7 +231,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
         {step === 'asi' && (
           <div>
             <h3 className="mb-2">Aumento di Caratteristica</h3>
-            <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic', marginBottom: 16 }}>
+            <p style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', marginBottom: 16 }}>
               Al livello {newLevel} puoi aumentare le caratteristiche o apprendere un talento.
             </p>
 
@@ -239,7 +239,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
             <div className="flex gap-1 mb-5">
               {(['single', 'split', 'feat'] as AsiMode[]).map(mode => (
                 <button key={mode} onClick={() => resetAsi(mode)}
-                  style={{ flex: 1, border: `1px solid ${asiMode === mode ? '#c8922a' : '#5a4020'}`, color: asiMode === mode ? '#c8922a' : '#a08060', backgroundColor: asiMode === mode ? '#2a2010' : 'transparent', fontFamily: 'Cinzel, serif', padding: '8px 4px', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.03em' }}>
+                  style={{ flex: 1, border: `1px solid ${asiMode === mode ? 'var(--gold)' : 'var(--border-leather-dim)'}`, color: asiMode === mode ? 'var(--gold)' : 'var(--fg-2)', backgroundColor: asiMode === mode ? 'rgba(184,134,11,0.08)' : 'transparent', fontFamily: 'var(--font-label)', padding: '8px 4px', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.03em' }}>
                   {mode === 'single' ? '+2 a una' : mode === 'split' ? '+1/+1 a due' : '⚑ Talento'}
                 </button>
               ))}
@@ -248,7 +248,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
             {/* +2 su una */}
             {asiMode === 'single' && (
               <div>
-                <p style={{ fontSize: '0.7rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em', marginBottom: 10 }}>
+                <p style={{ fontSize: '0.7rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.05em', marginBottom: 10 }}>
                   SCEGLI UNA CARATTERISTICA DA AUMENTARE DI +2
                 </p>
                 <StatGrid stats={sheet.stats} selected={asiSingle ? [asiSingle] : []} increment={2}
@@ -259,7 +259,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
             {/* +1/+1 su due */}
             {asiMode === 'split' && (
               <div>
-                <p style={{ fontSize: '0.7rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em', marginBottom: 10 }}>
+                <p style={{ fontSize: '0.7rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.05em', marginBottom: 10 }}>
                   SCEGLI DUE CARATTERISTICHE DIVERSE DA AUMENTARE DI +1
                 </p>
                 <StatGrid stats={sheet.stats} selected={[asiSplitA, asiSplitB].filter(Boolean) as StatKey[]} increment={1}
@@ -275,26 +275,26 @@ export default function LevelUpWizard({ character, onClose }: Props) {
             {/* Talento */}
             {asiMode === 'feat' && (
               <div>
-                <p style={{ fontSize: '0.7rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em', marginBottom: 10 }}>
+                <p style={{ fontSize: '0.7rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.05em', marginBottom: 10 }}>
                   SCEGLI UN TALENTO SRD O PERSONALIZZATO
                 </p>
 
                 {/* Talento selezionato */}
                 {selectedFeat && (
-                  <div className="mb-3 p-3" style={{ border: '1px solid #c8922a', backgroundColor: '#2a2010' }}>
+                  <div className="mb-3 p-3" style={{ border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.08)' }}>
                     <div className="flex justify-between items-start">
                       <div>
-                        <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '0.95rem' }}>{selectedFeat.name}</div>
+                        <div style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '0.95rem' }}>{selectedFeat.name}</div>
                         {selectedFeat.prerequisite && (
-                          <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.75rem', fontStyle: 'italic' }}>
+                          <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.75rem', fontStyle: 'italic' }}>
                             Prerequisito: {selectedFeat.prerequisite}
                           </div>
                         )}
                       </div>
                       <button onClick={() => setSelectedFeat(null)}
-                        style={{ border: 'none', color: '#5a4020', backgroundColor: 'transparent', cursor: 'pointer', fontSize: '1rem' }}>✕</button>
+                        style={{ border: 'none', color: 'var(--border-leather-dim)', backgroundColor: 'transparent', cursor: 'pointer', fontSize: '1rem' }}>✕</button>
                     </div>
-                    <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', marginTop: 6 }}>{selectedFeat.effect}</p>
+                    <p style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', marginTop: 6 }}>{selectedFeat.effect}</p>
                   </div>
                 )}
 
@@ -306,22 +306,22 @@ export default function LevelUpWizard({ character, onClose }: Props) {
                         onChange={e => { setFeatSearch(e.target.value); setShowFeatList(true); }}
                         onFocus={() => setShowFeatList(true)}
                         placeholder="Cerca talento SRD…"
-                        style={{ width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #5a4020', color: '#e8d5a3', outline: 'none', fontFamily: 'Crimson Text, serif', fontSize: '0.95rem', padding: '6px 0' }} />
+                        style={{ width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--border-leather-dim)', color: 'var(--fg-1)', outline: 'none', fontFamily: 'var(--font-body)', fontSize: '0.95rem', padding: '6px 0' }} />
 
                       {showFeatList && (
                         <>
                           <div className="fixed inset-0 z-10" onClick={() => setShowFeatList(false)} />
                           <div className="absolute left-0 right-0 z-20 max-h-52 overflow-y-auto"
-                            style={{ backgroundColor: '#221c14', border: '1px solid #5a4020', top: '100%' }}>
+                            style={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', top: '100%' }}>
                             {searchFeats(featSearch).map(feat => (
                               <button key={feat.key}
                                 onClick={() => { setSelectedFeat(feat); setFeatSearch(''); setShowFeatList(false); }}
-                                style={{ display: 'block', width: '100%', textAlign: 'left', padding: '8px 12px', border: 'none', borderBottom: '1px solid #2a2018', backgroundColor: 'transparent', cursor: 'pointer', color: '#e8d5a3', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem' }}>
-                                <div style={{ fontFamily: 'Cinzel, serif', fontSize: '0.8rem', color: '#c8922a' }}>{feat.name}</div>
+                                style={{ display: 'block', width: '100%', textAlign: 'left', padding: '8px 12px', border: 'none', borderBottom: '1px solid var(--bg-card)', backgroundColor: 'transparent', cursor: 'pointer', color: 'var(--fg-1)', fontFamily: 'var(--font-body)', fontSize: '0.9rem' }}>
+                                <div style={{ fontFamily: 'var(--font-label)', fontSize: '0.8rem', color: 'var(--gold)' }}>{feat.name}</div>
                                 {feat.prerequisite && (
-                                  <div style={{ fontSize: '0.7rem', color: '#5a4020', fontStyle: 'italic' }}>Req: {feat.prerequisite}</div>
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--border-leather-dim)', fontStyle: 'italic' }}>Req: {feat.prerequisite}</div>
                                 )}
-                                <div style={{ fontSize: '0.8rem', color: '#a08060', marginTop: 2 }}>{feat.effect.slice(0, 80)}…</div>
+                                <div style={{ fontSize: '0.8rem', color: 'var(--fg-2)', marginTop: 2 }}>{feat.effect.slice(0, 80)}…</div>
                               </button>
                             ))}
                           </div>
@@ -329,15 +329,15 @@ export default function LevelUpWizard({ character, onClose }: Props) {
                       )}
                     </div>
 
-                    <div style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontSize: '0.8rem', marginBottom: 8, textAlign: 'center' }}>
+                    <div style={{ color: 'var(--border-leather-dim)', fontFamily: 'var(--font-body)', fontSize: '0.8rem', marginBottom: 8, textAlign: 'center' }}>
                       — oppure —
                     </div>
 
                     <div>
                       <input value={featCustom} onChange={e => setFeatCustom(e.target.value)}
                         placeholder="Nome talento personalizzato / homebrew…"
-                        style={{ width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #5a4020', color: '#e8d5a3', outline: 'none', fontFamily: 'Crimson Text, serif', fontSize: '0.95rem', padding: '6px 0' }} />
-                      <div style={{ color: '#5a4020', fontSize: '0.75rem', fontFamily: 'Crimson Text, serif', fontStyle: 'italic', marginTop: 4 }}>
+                        style={{ width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--border-leather-dim)', color: 'var(--fg-1)', outline: 'none', fontFamily: 'var(--font-body)', fontSize: '0.95rem', padding: '6px 0' }} />
+                      <div style={{ color: 'var(--border-leather-dim)', fontSize: '0.75rem', fontFamily: 'var(--font-body)', fontStyle: 'italic', marginTop: 4 }}>
                         Gli effetti del talento vanno aggiunti manualmente alla scheda.
                       </div>
                     </div>
@@ -384,7 +384,7 @@ export default function LevelUpWizard({ character, onClose }: Props) {
             <div className="flex justify-between">
               <WizardButton onClick={() => setStepIndex(i => i - 1)} variant="secondary">← Modifica</WizardButton>
               <button onClick={handleConfirm} disabled={saving}
-                style={{ border: '1px solid #c8922a', color: '#1a1410', backgroundColor: saving ? '#5a4020' : '#c8922a', fontFamily: 'Cinzel, serif', fontSize: '0.9rem', padding: '10px 28px', cursor: saving ? 'not-allowed' : 'pointer' }}>
+                style={{ border: '1px solid var(--gold)', color: 'var(--bg-deep)', backgroundColor: saving ? 'var(--border-leather-dim)' : 'var(--gold)', fontFamily: 'var(--font-label)', fontSize: '0.9rem', padding: '10px 28px', cursor: saving ? 'not-allowed' : 'pointer' }}>
                 {saving ? 'Salvando…' : `⬆ Conferma Lv ${newLevel}`}
               </button>
             </div>
@@ -414,22 +414,22 @@ function StatGrid({ stats, selected, onSelect, increment, maxSelected }: {
         return (
           <button key={stat} onClick={() => !isMax && !isFull && onSelect(stat)} disabled={isMax}
             style={{
-              border: `1px solid ${isSel ? '#c8922a' : isMax ? '#2a2018' : '#5a4020'}`,
-              backgroundColor: isSel ? '#2a2010' : '#1e1810',
-              color: isMax ? '#3a3020' : '#e8d5a3',
+              border: `1px solid ${isSel ? 'var(--gold)' : isMax ? 'var(--bg-card)' : 'var(--border-leather-dim)'}`,
+              backgroundColor: isSel ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)',
+              color: isMax ? 'var(--border-leather)' : 'var(--fg-1)',
               padding: '10px 6px', textAlign: 'center',
-              fontFamily: 'Cinzel, serif',
+              fontFamily: 'var(--font-label)',
               cursor: isMax || isFull ? 'not-allowed' : 'pointer',
               opacity: isFull && !isSel ? 0.4 : 1,
             }}>
-            <div style={{ fontSize: '0.55rem', color: '#a08060', letterSpacing: '0.06em', marginBottom: 2 }}>{STAT_LABELS[stat].toUpperCase()}</div>
+            <div style={{ fontSize: '0.55rem', color: 'var(--fg-2)', letterSpacing: '0.06em', marginBottom: 2 }}>{STAT_LABELS[stat].toUpperCase()}</div>
             <div style={{ fontSize: '1.3rem', lineHeight: 1.1 }}>
               {isMax ? '20' : isSel ? `${val} → ${val + increment}` : `${val}`}
             </div>
-            <div style={{ fontSize: '0.75rem', color: mod >= 0 ? '#c8922a' : '#8b2020' }}>
+            <div style={{ fontSize: '0.75rem', color: mod >= 0 ? 'var(--gold)' : 'var(--danger)' }}>
               {formatModifier(mod)}{isSel ? ` → ${formatModifier(mod + increment > 10 ? 5 : abilityModifier(Math.min(20, val + increment)))}` : ''}
             </div>
-            {isMax && <div style={{ fontSize: '0.5rem', color: '#3a3020', letterSpacing: '0.04em' }}>MAX</div>}
+            {isMax && <div style={{ fontSize: '0.5rem', color: 'var(--border-leather)', letterSpacing: '0.04em' }}>MAX</div>}
           </button>
         );
       })}
@@ -439,9 +439,9 @@ function StatGrid({ stats, selected, onSelect, increment, maxSelected }: {
 
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between py-1.5" style={{ borderBottom: '1px solid #2a2018' }}>
-      <span style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.72rem', letterSpacing: '0.04em' }}>{label.toUpperCase()}</span>
-      <span style={{ color: '#e8d5a3', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem' }}>{value}</span>
+    <div className="flex justify-between py-1.5" style={{ borderBottom: '1px solid var(--bg-card)' }}>
+      <span style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.72rem', letterSpacing: '0.04em' }}>{label.toUpperCase()}</span>
+      <span style={{ color: 'var(--fg-1)', fontFamily: 'var(--font-body)', fontSize: '0.9rem' }}>{value}</span>
     </div>
   );
 }

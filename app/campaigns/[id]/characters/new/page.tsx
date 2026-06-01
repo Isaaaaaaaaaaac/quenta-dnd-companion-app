@@ -11,13 +11,19 @@ export default async function NewCharacterPage({ params }: { params: Promise<{ i
   if (!campaign) notFound();
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-2" style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', letterSpacing: '0.08em' }}>
-        <a href={`/campaigns/${id}`} style={{ color: '#5a4020', textDecoration: 'none' }}>
-          ← {campaign.name}
-        </a>
-      </div>
-      <h1 className="mb-8">Nuovo Personaggio</h1>
+    <div style={{ maxWidth: 760, margin: '0 auto', padding: '40px 24px' }}>
+      {/* Breadcrumb */}
+      <a href={`/campaigns/${id}`} style={{
+        fontFamily: 'var(--font-label)', fontSize: '8px', letterSpacing: '0.4em',
+        textTransform: 'uppercase', color: 'var(--fg-3)', textDecoration: 'none',
+        display: 'inline-block', marginBottom: 16,
+      }}>
+        ← {campaign.name}
+      </a>
+
+      <div className="eyebrow" style={{ marginBottom: 10 }}>Nuovo Personaggio</div>
+      <h1 style={{ marginBottom: 40 }}>{campaign.name}</h1>
+
       <CharacterCreationChoice campaignId={id} />
     </div>
   );

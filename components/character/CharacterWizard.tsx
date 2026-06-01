@@ -181,11 +181,11 @@ export default function CharacterWizard({ campaignId }: { campaignId?: string })
           return (
             <div key={s} className="flex-1 text-center">
               <div className="h-1 mb-1" style={{
-                backgroundColor: done ? '#c8922a' : active ? '#8a6010' : '#5a4020',
+                backgroundColor: done ? 'var(--gold)' : active ? 'var(--gold)' : 'var(--border-leather-dim)',
               }} />
               <span style={{
-                fontFamily: 'Cinzel, serif', fontSize: '0.6rem', letterSpacing: '0.04em',
-                color: active ? '#c8922a' : done ? '#a08060' : '#5a4020',
+                fontFamily: 'var(--font-label)', fontSize: '0.6rem', letterSpacing: '0.04em',
+                color: active ? 'var(--gold)' : done ? 'var(--fg-2)' : 'var(--border-leather-dim)',
               }}>
                 {STEP_LABELS[s]}
               </span>
@@ -194,7 +194,7 @@ export default function CharacterWizard({ campaignId }: { campaignId?: string })
         })}
       </div>
 
-      <div style={{ backgroundColor: '#221c14', border: '1px solid #5a4020', padding: '24px' }}>
+      <div style={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', padding: '24px' }}>
         {step === 'identity'  && <StepIdentity  data={data} update={update} onNext={next} />}
         {step === 'race'      && <StepRace      data={data} update={update} onNext={next} onBack={back} />}
         {step === 'subclass'  && <StepSubclass  data={data} update={update} onNext={next} onBack={back} />}

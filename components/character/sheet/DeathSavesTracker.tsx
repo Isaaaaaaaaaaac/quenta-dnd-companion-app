@@ -4,10 +4,7 @@ import { useState } from 'react';
 import { updateCharacterSheet } from '@/lib/db/actions';
 import type { CharacterSheet } from '@/lib/db/schema';
 
-interface Props {
-  characterId: string;
-  sheet: CharacterSheet;
-}
+interface Props { characterId: string; sheet: CharacterSheet; }
 
 export default function DeathSavesTracker({ characterId, sheet }: Props) {
   const [saves, setSaves] = useState(sheet.deathSaves ?? { successes: 0, failures: 0 });
@@ -18,40 +15,39 @@ export default function DeathSavesTracker({ characterId, sheet }: Props) {
     await updateCharacterSheet(characterId, { deathSaves: updated });
   }
 
-  const dot = (filled: boolean, danger: boolean) => (
-    <div style={{
-      width: '14px', height: '14px', borderRadius: '50%',
-      backgroundColor: filled ? (danger ? '#8b2020' : '#4a7c4e') : 'transparent',
-      border: `2px solid ${danger ? '#8b2020' : '#4a7c4e'}`,
-    }} />
-  );
-
   return (
     <div>
-      <div style={{ color: '#8b2020', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', letterSpacing: '0.06em', marginBottom: '8px' }}>
-        TIRI SALVEZZA VS MORTE
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <span style={{ color: '#4a7c4e', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', minWidth: '60px' }}>Successi</span>
-          <div className="flex gap-1 cursor-pointer" onClick={() => update('successes', saves.successes < 3 ? saves.successes + 1 : 0)}>
-            {[0, 1, 2].map(i => dot(i < saves.successes, false))}
+      <div className="label" style={{ color: 'var(--fg-1)', marginBottom: 10 }}>Tiri Salvezza vs Morte</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {([
+          { key: 'successes' as const, label: 'Successi', color: 'var(--info)' },
+          { key: 'failures' as const,  label: 'Fallimenti', color: 'var(--danger)' },
+        ]).map(({ key, label, color }) => (
+          <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.875rem', minWidth: 70, fontStyle: 'italic' }}>
+              {label}
+            </span>
+            <div style={{ display: 'flex', gap: 6, cursor: 'pointer' }}
+              onClick={() => update(key, saves[key] < 3 ? saves[key] + 1 : 0)}>
+              {[0, 1, 2].map(i => (
+                <div key={i} style={{
+                  width: 14, height: 14, borderRadius: '50%',
+                  backgroundColor: i < saves[key] ? color : 'transparent',
+                  border: `2px solid ${color}`,
+                  transition: 'background-color 0.15s ease',
+                }} />
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <span style={{ color: '#8b2020', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', minWidth: '60px' }}>Fallimenti</span>
-          <div className="flex gap-1 cursor-pointer" onClick={() => update('failures', saves.failures < 3 ? saves.failures + 1 : 0)}>
-            {[0, 1, 2].map(i => dot(i < saves.failures, true))}
-          </div>
-        </div>
+        ))}
       </div>
       {saves.failures >= 3 && (
-        <div className="mt-2" style={{ color: '#8b2020', fontFamily: 'Cinzel, serif', fontSize: '0.8rem' }}>
+        <div style={{ fontFamily: 'var(--font-label)', fontSize: '8px', letterSpacing: '0.3em', color: 'var(--fg-1)', marginTop: 10 }}>
           ✝ Il personaggio è morto
         </div>
       )}
       {saves.successes >= 3 && (
-        <div className="mt-2" style={{ color: '#4a7c4e', fontFamily: 'Cinzel, serif', fontSize: '0.8rem' }}>
+        <div style={{ fontFamily: 'var(--font-label)', fontSize: '8px', letterSpacing: '0.3em', color: 'var(--fg-1)', marginTop: 10 }}>
           ♥ Stabile
         </div>
       )}

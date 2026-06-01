@@ -178,7 +178,7 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
 
   const inp: React.CSSProperties = {
     flex: 1, backgroundColor: 'transparent', border: 'none',
-    color: '#e8d5a3', outline: 'none', fontFamily: 'Crimson Text, serif',
+    color: 'var(--fg-1)', outline: 'none', fontFamily: 'var(--font-body)',
     fontSize: '1rem', resize: 'none', padding: '8px 0', lineHeight: 1.5,
   };
 
@@ -189,12 +189,12 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 style={{ marginBottom: 2 }}>Genera con AI</h2>
-          <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic' }}>
+          <p style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic' }}>
             Descrivi il personaggio che vuoi creare — l'AI genererà la scheda completa.
           </p>
         </div>
         <button onClick={onBack}
-          style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.75rem', padding: '6px 14px', cursor: 'pointer' }}>
+          style={{ border: '1px solid var(--border-leather-dim)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', fontSize: '0.75rem', padding: '6px 14px', cursor: 'pointer' }}>
           ← Indietro
         </button>
       </div>
@@ -202,13 +202,13 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
       {/* Starter suggestions */}
       {messages.length === 0 && (
         <div className="mb-4">
-          <p style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', letterSpacing: '0.06em', marginBottom: 8 }}>
+          <p style={{ color: 'var(--border-leather-dim)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', letterSpacing: '0.06em', marginBottom: 8 }}>
             ESEMPI DI DESCRIZIONE
           </p>
           <div className="flex flex-wrap gap-2">
             {STARTERS.map(s => (
               <button key={s} onClick={() => sendMessage(s)}
-                style={{ border: '1px solid #3a3020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', padding: '4px 10px', cursor: 'pointer', fontStyle: 'italic', textAlign: 'left' }}>
+                style={{ border: '1px solid var(--border-leather)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-body)', fontSize: '0.85rem', padding: '4px 10px', cursor: 'pointer', fontStyle: 'italic', textAlign: 'left' }}>
                 "{s}"
               </button>
             ))}
@@ -217,7 +217,7 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
       )}
 
       {/* Chat messages */}
-      <div className="flex-1 overflow-y-auto mb-4 space-y-3" style={{ borderTop: '1px solid #3a3020', paddingTop: 12 }}>
+      <div className="flex-1 overflow-y-auto mb-4 space-y-3" style={{ borderTop: '1px solid var(--border-leather)', paddingTop: 12 }}>
         {messages.map((msg, i) => {
           // Nascondi il tag <character_sheet> nel testo visualizzato
           const displayText = msg.content.replace(/<character_sheet>[\s\S]*?<\/character_sheet>/g, '').trim();
@@ -227,16 +227,16 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
             <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
               <div style={{
                 maxWidth: '85%', padding: '10px 14px',
-                backgroundColor: msg.role === 'user' ? '#2a2010' : '#221c14',
-                border: `1px solid ${msg.role === 'user' ? '#8a6010' : '#5a4020'}`,
-                fontFamily: 'Crimson Text, serif', color: '#e8d5a3', fontSize: '0.95rem',
+                backgroundColor: msg.role === 'user' ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)',
+                border: `1px solid ${msg.role === 'user' ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
+                fontFamily: 'var(--font-body)', color: 'var(--fg-1)', fontSize: '0.95rem',
                 whiteSpace: 'pre-wrap', lineHeight: 1.6,
               }}>
                 {displayText || (streaming && i === messages.length - 1 ? (
-                  <span style={{ color: '#5a4020' }}>⏳ Generazione in corso…</span>
+                  <span style={{ color: 'var(--border-leather-dim)' }}>⏳ Generazione in corso…</span>
                 ) : '')}
                 {hasSheet && (
-                  <div className="mt-2 pt-2" style={{ borderTop: '1px solid #5a4020', color: '#4a7c4e', fontFamily: 'Cinzel, serif', fontSize: '0.75rem' }}>
+                  <div className="mt-2 pt-2" style={{ borderTop: '1px solid var(--border-leather-dim)', color: 'var(--info)', fontFamily: 'var(--font-label)', fontSize: '0.75rem' }}>
                     ✦ Scheda generata — vedi anteprima qui sotto
                   </div>
                 )}
@@ -249,39 +249,39 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
 
       {/* Anteprima scheda generata */}
       {parsedChar && (
-        <div className="mb-4 p-4" style={{ border: '1px solid #c8922a', backgroundColor: '#2a2010' }}>
+        <div className="mb-4 p-4" style={{ border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.08)' }}>
           <div className="flex items-center justify-between mb-2">
             <div>
-              <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1.1rem' }}>{parsedChar.name}</div>
-              <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
+              <div style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '1.1rem' }}>{parsedChar.name}</div>
+              <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem' }}>
                 {parsedChar.race}
                 {parsedChar.classes?.[0] && ` · ${CLASSES.find(c => c.key === parsedChar.classes[0].classKey)?.name ?? parsedChar.classes[0].classKey} ${parsedChar.classes[0].level}`}
                 {parsedChar.alignment && ` · ${parsedChar.alignment}`}
               </div>
             </div>
             <div className="flex gap-2">
-              <div className="text-center" style={{ border: '1px solid #5a4020', padding: '4px 10px' }}>
-                <div style={{ fontSize: '0.55rem', color: '#a08060', fontFamily: 'Cinzel, serif' }}>PF</div>
-                <div style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3' }}>{parsedChar.hpMax ?? '?'}</div>
+              <div className="text-center" style={{ border: '1px solid var(--border-leather-dim)', padding: '4px 10px' }}>
+                <div style={{ fontSize: '0.55rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)' }}>PF</div>
+                <div style={{ fontFamily: 'var(--font-label)', color: 'var(--fg-1)' }}>{parsedChar.hpMax ?? '?'}</div>
               </div>
-              <div className="text-center" style={{ border: '1px solid #5a4020', padding: '4px 10px' }}>
-                <div style={{ fontSize: '0.55rem', color: '#a08060', fontFamily: 'Cinzel, serif' }}>CA</div>
-                <div style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3' }}>{parsedChar.armorClass ?? '?'}</div>
+              <div className="text-center" style={{ border: '1px solid var(--border-leather-dim)', padding: '4px 10px' }}>
+                <div style={{ fontSize: '0.55rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)' }}>CA</div>
+                <div style={{ fontFamily: 'var(--font-label)', color: 'var(--fg-1)' }}>{parsedChar.armorClass ?? '?'}</div>
               </div>
             </div>
           </div>
           {parsedChar.backstory && (
-            <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic', marginBottom: 12 }}>
+            <p style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', marginBottom: 12 }}>
               {parsedChar.backstory.slice(0, 150)}{parsedChar.backstory.length > 150 ? '…' : ''}
             </p>
           )}
           <div className="flex gap-2">
             <button onClick={handleSave} disabled={saving}
-              style={{ border: '1px solid #c8922a', color: '#1a1410', backgroundColor: saving ? '#5a4020' : '#c8922a', fontFamily: 'Cinzel, serif', padding: '8px 22px', cursor: saving ? 'not-allowed' : 'pointer', fontSize: '0.85rem' }}>
+              style={{ border: '1px solid var(--gold)', color: 'var(--bg-deep)', backgroundColor: saving ? 'var(--border-leather-dim)' : 'var(--gold)', fontFamily: 'var(--font-label)', padding: '8px 22px', cursor: saving ? 'not-allowed' : 'pointer', fontSize: '0.85rem' }}>
               {saving ? 'Salvando…' : '✦ Salva personaggio'}
             </button>
             <button onClick={() => { setParsedChar(null); setMessages([]); }}
-              style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '8px 18px', cursor: 'pointer', fontSize: '0.85rem' }}>
+              style={{ border: '1px solid var(--border-leather-dim)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '8px 18px', cursor: 'pointer', fontSize: '0.85rem' }}>
               Ricomincia
             </button>
           </div>
@@ -290,14 +290,14 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
 
       {/* Errore */}
       {error && (
-        <div className="mb-3 p-3" style={{ backgroundColor: '#1a0a0a', border: '1px solid #8b2020', color: '#8b2020', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
+        <div className="mb-3 p-3" style={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--danger)', color: 'var(--danger)', fontFamily: 'var(--font-body)', fontSize: '0.85rem' }}>
           ⚠ {error}
         </div>
       )}
 
       {/* Input */}
       {!parsedChar && (
-        <div style={{ border: '1px solid #5a4020', backgroundColor: '#221c14', padding: '8px 12px' }}>
+        <div style={{ border: '1px solid var(--border-leather-dim)', backgroundColor: 'var(--bg-deep)', padding: '8px 12px' }}>
           <div className="flex gap-3 items-end">
             <textarea
               ref={textareaRef}
@@ -318,15 +318,15 @@ export default function AiCharacterBuilder({ campaignId, onBack }: Props) {
               onClick={() => sendMessage(input)}
               disabled={streaming || !input.trim()}
               style={{
-                border: '1px solid #c8922a', color: '#c8922a', backgroundColor: 'transparent',
-                fontFamily: 'Cinzel, serif', padding: '8px 16px', cursor: 'pointer',
+                border: '1px solid var(--gold)', color: 'var(--gold)', backgroundColor: 'transparent',
+                fontFamily: 'var(--font-label)', padding: '8px 16px', cursor: 'pointer',
                 fontSize: '0.8rem', flexShrink: 0,
                 opacity: streaming || !input.trim() ? 0.4 : 1,
               }}>
               {streaming ? '⏳' : '→ Invia'}
             </button>
           </div>
-          <div style={{ color: '#3a3020', fontFamily: 'Crimson Text, serif', fontSize: '0.75rem', marginTop: 4 }}>
+          <div style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-body)', fontSize: '0.75rem', marginTop: 4 }}>
             Powered by Claude · Le informazioni rimangono private
           </div>
         </div>

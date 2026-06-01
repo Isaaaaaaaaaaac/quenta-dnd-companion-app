@@ -139,7 +139,7 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
     <div>
       <h2 className="mb-1">Caratteristiche</h2>
       {cls && (
-        <p className="text-sm mb-5" style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontStyle: 'italic' }}>
+        <p className="text-sm mb-5" style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontStyle: 'italic' }}>
           Suggerimento per {cls.name}: priorità su {getPriority(data.classKey)}.
         </p>
       )}
@@ -149,9 +149,9 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
         <button onClick={rollOne}
           disabled={!canRollMore || isSpinning}
           style={{
-            border: `1px solid ${canRollMore && !isSpinning ? '#c8922a' : '#5a4020'}`,
-            color: canRollMore && !isSpinning ? '#c8922a' : '#5a4020',
-            backgroundColor: 'transparent', fontFamily: 'Cinzel, serif',
+            border: `1px solid ${canRollMore && !isSpinning ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
+            color: canRollMore && !isSpinning ? 'var(--gold)' : 'var(--border-leather-dim)',
+            backgroundColor: 'transparent', fontFamily: 'var(--font-label)',
             padding: '10px 22px', cursor: canRollMore && !isSpinning ? 'pointer' : 'not-allowed',
             fontSize: '0.9rem', letterSpacing: '0.04em',
           }}>
@@ -161,9 +161,9 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
         {canNewSet && (
           <button onClick={startNewSet}
             style={{
-              border: `1px solid ${isLastSet ? '#8b2020' : '#5a4020'}`,
-              color: isLastSet ? '#8b2020' : '#a08060',
-              backgroundColor: 'transparent', fontFamily: 'Cinzel, serif',
+              border: `1px solid ${isLastSet ? 'var(--danger)' : 'var(--border-leather-dim)'}`,
+              color: isLastSet ? 'var(--danger)' : 'var(--fg-2)',
+              backgroundColor: 'transparent', fontFamily: 'var(--font-label)',
               padding: '10px 22px', cursor: 'pointer', fontSize: '0.85rem',
             }}>
             ↺ Nuovo set {isLastSet ? '(ultimo!)' : `(${setsLeft} rimast${setsLeft === 1 ? 'o' : 'i'})`}
@@ -171,7 +171,7 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
         )}
 
         {setCount === MAX_ROLLS && rolledCount < 6 && (
-          <span style={{ color: '#8b2020', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
+          <span style={{ color: 'var(--danger)', fontFamily: 'var(--font-body)', fontSize: '0.85rem' }}>
             Ultimo set — completa i tiri rimanenti.
           </span>
         )}
@@ -182,18 +182,18 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
         <div className="flex gap-2 mb-5 items-center">
           {diceDisplay.map((die, i) => (
             <div key={i} style={{
-              width: '52px', height: '52px', border: `2px solid ${die.dropped ? '#5a2020' : '#c8922a'}`,
-              backgroundColor: die.dropped ? '#1a0a0a' : '#2a2010',
+              width: '52px', height: '52px', border: `2px solid ${die.dropped ? 'var(--danger)' : 'var(--gold)'}`,
+              backgroundColor: die.dropped ? 'var(--bg-deep)' : 'rgba(184,134,11,0.08)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: 'Cinzel, serif', fontSize: '1.4rem',
-              color: die.dropped ? '#5a2020' : '#e8d5a3',
+              fontFamily: 'var(--font-label)', fontSize: '1.4rem',
+              color: die.dropped ? 'var(--danger)' : 'var(--fg-1)',
               transition: die.spinning ? 'none' : 'all 0.2s',
               opacity: die.dropped ? 0.5 : 1,
             }}>
               {die.value}
             </div>
           ))}
-          <span style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', marginLeft: '8px' }}>
+          <span style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', marginLeft: '8px' }}>
             in corso…
           </span>
         </div>
@@ -202,7 +202,7 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
       {/* Pool dei punteggi ottenuti */}
       {pool.length > 0 && (
         <div className="mb-5">
-          <p className="text-xs mb-2" style={{ color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em' }}>
+          <p className="text-xs mb-2" style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.05em' }}>
             POOL — clicca un punteggio, poi clicca la caratteristica · clicca di nuovo per riassegnare
           </p>
           <div className="flex flex-wrap gap-2">
@@ -214,23 +214,23 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
                   onClick={() => selectPoolEntry(i)}
                   title={entry.roll.dice.map((d, di) => di === entry.roll.dropped ? `[${d}]` : `${d}`).join(' + ') + ` = ${entry.roll.total}${isAssigned ? ` → ${entry.assignedTo?.toUpperCase()}` : ''}`}
                   style={{
-                    border: `2px solid ${isSel ? '#c8922a' : isAssigned ? '#8a6010' : '#5a4020'}`,
-                    backgroundColor: isSel ? '#3a2800' : isAssigned ? '#2a1e08' : '#2a2018',
-                    color: isAssigned ? '#c8922a' : '#e8d5a3',
-                    fontFamily: 'Cinzel, serif', padding: '6px 12px',
+                    border: `2px solid ${isSel ? 'var(--gold)' : isAssigned ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
+                    backgroundColor: isSel ? 'rgba(184,134,11,0.12)' : isAssigned ? 'rgba(184,134,11,0.06)' : 'var(--bg-card)',
+                    color: isAssigned ? 'var(--gold)' : 'var(--fg-1)',
+                    fontFamily: 'var(--font-label)', padding: '6px 12px',
                     cursor: 'pointer',
                     minWidth: '52px', textAlign: 'center',
                   }}>
                   <div style={{ fontSize: '1.3rem', lineHeight: 1.1 }}>{entry.roll.total}</div>
-                  <div style={{ fontSize: '0.5rem', color: '#a08060', marginTop: '2px', display: 'flex', gap: '2px', justifyContent: 'center' }}>
+                  <div style={{ fontSize: '0.5rem', color: 'var(--fg-2)', marginTop: '2px', display: 'flex', gap: '2px', justifyContent: 'center' }}>
                     {entry.roll.dice.map((d, di) => (
-                      <span key={di} style={{ color: di === entry.roll.dropped ? '#5a2020' : '#a08060', textDecoration: di === entry.roll.dropped ? 'line-through' : 'none' }}>
+                      <span key={di} style={{ color: di === entry.roll.dropped ? 'var(--danger)' : 'var(--fg-2)', textDecoration: di === entry.roll.dropped ? 'line-through' : 'none' }}>
                         {d}
                       </span>
                     ))}
                   </div>
                   {isAssigned && (
-                    <div style={{ fontSize: '0.5rem', color: '#c8922a', textTransform: 'uppercase' }}>
+                    <div style={{ fontSize: '0.5rem', color: 'var(--gold)', textTransform: 'uppercase' }}>
                       → {ABILITY_SHORT[entry.assignedTo!]}
                     </div>
                   )}
@@ -254,19 +254,19 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
             <div key={stat}
               onClick={() => isTarget && assignToStat(stat)}
               style={{
-                border: `1px solid ${isTarget ? '#c8922a' : hasValue ? '#8a6010' : '#5a4020'}`,
-                backgroundColor: isTarget ? '#2a2010' : hasValue ? '#2a2018' : '#1e1810',
+                border: `1px solid ${isTarget ? 'var(--gold)' : hasValue ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
+                backgroundColor: isTarget ? 'rgba(184,134,11,0.08)' : hasValue ? 'var(--bg-card)' : 'var(--bg-deep)',
                 padding: '12px 6px', textAlign: 'center',
                 cursor: isTarget ? 'pointer' : 'default',
                 transition: 'border-color 0.15s, background-color 0.15s',
               }}>
-              <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em', marginBottom: '4px' }}>
+              <div style={{ fontSize: '0.6rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.05em', marginBottom: '4px' }}>
                 {ABILITY_SHORT[stat]}
               </div>
-              <div style={{ fontFamily: 'Cinzel, serif', fontSize: '1.6rem', color: hasValue ? '#e8d5a3' : '#3a3020', lineHeight: 1.1 }}>
+              <div style={{ fontFamily: 'var(--font-label)', fontSize: '1.6rem', color: hasValue ? 'var(--fg-1)' : 'var(--border-leather)', lineHeight: 1.1 }}>
                 {hasValue ? val : '—'}
               </div>
-              <div style={{ fontSize: '0.85rem', color: hasValue ? (mod >= 0 ? '#c8922a' : '#8b2020') : '#3a3020', fontFamily: 'Crimson Text, serif' }}>
+              <div style={{ fontSize: '0.85rem', color: hasValue ? (mod >= 0 ? 'var(--gold)' : 'var(--danger)') : 'var(--border-leather)', fontFamily: 'var(--font-body)' }}>
                 {hasValue ? (mod >= 0 ? `+${mod}` : `${mod}`) : '·'}
               </div>
             </div>
@@ -275,7 +275,7 @@ export default function StepStats({ data, update, onNext, onBack }: Props) {
       </div>
 
       {selected !== null && (
-        <p className="text-sm mb-3" style={{ color: '#c8922a', fontFamily: 'Crimson Text, serif', fontStyle: 'italic' }}>
+        <p className="text-sm mb-3" style={{ color: 'var(--gold)', fontFamily: 'var(--font-body)', fontStyle: 'italic' }}>
           Punteggio {pool[selected]?.roll.total} selezionato — clicca una caratteristica per assegnarlo.
         </p>
       )}

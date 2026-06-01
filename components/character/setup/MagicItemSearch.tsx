@@ -140,8 +140,8 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
   );
 
   const RARITY_COLORS: Record<string, string> = {
-    'comune': '#a08060', 'non comune': '#4a7c4e', 'raro': '#4a6a9a',
-    'molto raro': '#7a3a9a', 'leggendario': '#c8922a', 'artefatto': '#8b2020',
+    'comune': 'var(--fg-2)', 'non comune': 'var(--info)', 'raro': 'var(--info)',
+    'molto raro': 'var(--arcane)', 'leggendario': 'var(--gold)', 'artefatto': 'var(--danger)',
   };
 
   return (
@@ -150,33 +150,33 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
       {magicItems.length > 0 && (
         <div className="mb-4 space-y-2">
           {magicItems.map(item => (
-            <div key={item.id} className="p-3" style={{ border: '1px solid #5a4020', backgroundColor: '#1e1810' }}>
+            <div key={item.id} className="p-3" style={{ border: '1px solid var(--border-leather)', backgroundColor: 'var(--bg-deep)' }}>
               <div className="flex items-start justify-between mb-2">
                 <div>
-                  <div style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3', fontSize: '0.9rem' }}>{item.name}</div>
+                  <div style={{ fontFamily: 'var(--font-label)', color: 'var(--fg-1)', fontSize: '0.9rem' }}>{item.name}</div>
                   <div className="flex gap-2 mt-1">
-                    <span style={{ border: `1px solid ${RARITY_COLORS[item.rarity] ?? '#a08060'}`, color: RARITY_COLORS[item.rarity] ?? '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.6rem', padding: '1px 5px' }}>
+                    <span style={{ border: `1px solid ${RARITY_COLORS[item.rarity] ?? 'var(--fg-2)'}`, color: RARITY_COLORS[item.rarity] ?? 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.6rem', padding: '1px 5px' }}>
                       {item.rarity}
                     </span>
                     {item.attunement && (
                       <button onClick={() => updateItem(item.id, 'attuned', !item.attuned)}
-                        style={{ border: `1px solid ${item.attuned ? '#4a7c4e' : '#8b2020'}`, color: item.attuned ? '#4a7c4e' : '#8b2020', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.6rem', padding: '1px 5px', cursor: 'pointer' }}>
+                        style={{ border: `1px solid ${item.attuned ? 'var(--info)' : 'var(--danger)'}`, color: item.attuned ? 'var(--info)' : 'var(--danger)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', fontSize: '0.6rem', padding: '1px 5px', cursor: 'pointer' }}>
                         {item.attuned ? '✓ Sintonizzato' : '○ Sintonizzazione richiesta'}
                       </button>
                     )}
                   </div>
                 </div>
                 <button onClick={() => removeItem(item.id)}
-                  style={{ border: 'none', color: '#8b2020', backgroundColor: 'transparent', cursor: 'pointer', fontSize: '1rem', padding: '0 4px' }}>
+                  style={{ border: 'none', color: 'var(--danger)', backgroundColor: 'transparent', cursor: 'pointer', fontSize: '1rem', padding: '0 4px' }}>
                   ✕
                 </button>
               </div>
               {item.description && (
                 <details>
-                  <summary style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', cursor: 'pointer', letterSpacing: '0.04em' }}>
+                  <summary style={{ color: 'var(--border-leather)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', cursor: 'pointer', letterSpacing: '0.04em' }}>
                     DESCRIZIONE
                   </summary>
-                  <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic', marginTop: 6, whiteSpace: 'pre-wrap' }}>
+                  <p style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: 6, whiteSpace: 'pre-wrap' }}>
                     {item.description}
                   </p>
                 </details>
@@ -188,18 +188,18 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
 
       {/* ── Preview dettaglio prima di aggiungere ── */}
       {previewItem && (
-        <div className="mb-4 p-4" style={{ border: '1px solid #c8922a', backgroundColor: '#2a2010' }}>
+        <div className="mb-4 p-4" style={{ border: '1px solid var(--gold)', backgroundColor: 'rgba(184,134,11,0.08)' }}>
           <div className="flex justify-between items-start mb-2">
             <div>
-              <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1rem' }}>{previewItem.name}</div>
+              <div style={{ fontFamily: 'var(--font-label)', color: 'var(--gold)', fontSize: '1rem' }}>{previewItem.name}</div>
               <div className="flex gap-2 mt-1">
                 {previewItem.rarity && (
-                  <span style={{ color: RARITY_COLORS[RARITY_MAP[previewItem.rarity.name]] ?? '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.65rem' }}>
+                  <span style={{ color: RARITY_COLORS[RARITY_MAP[previewItem.rarity.name]] ?? 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.65rem' }}>
                     {RARITY_MAP[previewItem.rarity.name] ?? previewItem.rarity.name}
                   </span>
                 )}
                 {previewItem.requires_attunement && (
-                  <span style={{ color: '#8a6a2a', fontFamily: 'Cinzel, serif', fontSize: '0.65rem' }}>
+                  <span style={{ color: 'var(--gold)', fontFamily: 'var(--font-label)', fontSize: '0.65rem' }}>
                     Richiede sintonizzazione
                     {typeof previewItem.requires_attunement === 'string' ? ` (${previewItem.requires_attunement})` : ''}
                   </span>
@@ -207,22 +207,22 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
               </div>
             </div>
             <button onClick={() => setPreviewItem(null)}
-              style={{ border: 'none', color: '#5a4020', backgroundColor: 'transparent', cursor: 'pointer', fontSize: '1rem' }}>
+              style={{ border: 'none', color: 'var(--border-leather)', backgroundColor: 'transparent', cursor: 'pointer', fontSize: '1rem' }}>
               ✕
             </button>
           </div>
           {previewItem.desc && previewItem.desc.slice(0, 3).map((line, i) => (
-            <p key={i} style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic', marginBottom: 4 }}>
+            <p key={i} style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', fontStyle: 'italic', marginBottom: 4 }}>
               {line}
             </p>
           ))}
           <div className="flex gap-2 mt-3">
             <button onClick={confirmPreview}
-              style={{ border: '1px solid #c8922a', color: '#c8922a', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '6px 16px', cursor: 'pointer', fontSize: '0.8rem' }}>
+              style={{ border: '1px solid var(--gold)', color: 'var(--gold)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '6px 16px', cursor: 'pointer', fontSize: '0.8rem' }}>
               + Aggiungi al personaggio
             </button>
             <button onClick={() => setPreviewItem(null)}
-              style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '6px 16px', cursor: 'pointer', fontSize: '0.8rem' }}>
+              style={{ border: '1px solid var(--border-leather)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '6px 16px', cursor: 'pointer', fontSize: '0.8rem' }}>
               Annulla
             </button>
           </div>
@@ -231,10 +231,10 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
 
       {/* ── Ricerca ── */}
       {loadError ? (
-        <div className="p-3 mb-3" style={{ backgroundColor: '#1a0a0a', border: '1px solid #8b2020' }}>
-          <p style={{ color: '#8b2020', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', marginBottom: 8 }}>{loadError}</p>
+        <div className="p-3 mb-3" style={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--danger)' }}>
+          <p style={{ color: 'var(--danger)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', marginBottom: 8 }}>{loadError}</p>
           <button onClick={addManual}
-            style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '5px 12px', cursor: 'pointer', fontSize: '0.75rem' }}>
+            style={{ border: '1px solid var(--border-leather)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '5px 12px', cursor: 'pointer', fontSize: '0.75rem' }}>
             + Aggiungi oggetto manuale
           </button>
         </div>
@@ -248,10 +248,10 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
               onFocus={() => setShowDropdown(true)}
               placeholder={loading ? 'Caricamento SRD…' : 'Cerca oggetto magico SRD…'}
               disabled={loading}
-              style={{ flex: 1, backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #5a4020', color: '#e8d5a3', outline: 'none', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem', padding: '4px 0' }}
+              style={{ flex: 1, backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--border-leather)', color: 'var(--fg-1)', outline: 'none', fontFamily: 'var(--font-body)', fontSize: '0.9rem', padding: '4px 0' }}
             />
             <button onClick={addManual}
-              style={{ border: '1px dashed #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '4px 10px', cursor: 'pointer', fontSize: '0.75rem', flexShrink: 0 }}>
+              style={{ border: '1px dashed var(--border-leather)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '4px 10px', cursor: 'pointer', fontSize: '0.75rem', flexShrink: 0 }}>
               + Manuale
             </button>
           </div>
@@ -260,9 +260,9 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
             <>
               <div className="fixed inset-0 z-10" onClick={() => setShowDropdown(false)} />
               <div className="absolute left-0 right-0 z-20 max-h-52 overflow-y-auto"
-                style={{ backgroundColor: '#221c14', border: '1px solid #5a4020', top: '100%' }}>
+                style={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', top: '100%' }}>
                 {loadingDetail && (
-                  <div style={{ padding: '8px 12px', color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
+                  <div style={{ padding: '8px 12px', color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem' }}>
                     Caricamento dettaglio…
                   </div>
                 )}
@@ -274,13 +274,13 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
                       style={{
                         display: 'flex', alignItems: 'center', gap: 8,
                         width: '100%', padding: '8px 12px', textAlign: 'left',
-                        border: 'none', borderBottom: '1px solid #2a2018',
-                        backgroundColor: isAdded ? '#2a2010' : 'transparent',
+                        border: 'none', borderBottom: '1px solid var(--bg-card)',
+                        backgroundColor: isAdded ? 'rgba(184,134,11,0.08)' : 'transparent',
                         cursor: 'pointer',
-                        color: isAdded ? '#c8922a' : '#e8d5a3',
-                        fontFamily: 'Crimson Text, serif', fontSize: '0.9rem',
+                        color: isAdded ? 'var(--gold)' : 'var(--fg-1)',
+                        fontFamily: 'var(--font-body)', fontSize: '0.9rem',
                       }}>
-                      <span style={{ fontSize: '0.75rem', color: isAdded ? '#c8922a' : '#5a4020' }}>
+                      <span style={{ fontSize: '0.75rem', color: isAdded ? 'var(--gold)' : 'var(--border-leather)' }}>
                         {isAdded ? '◆' : '◇'}
                       </span>
                       {item.name}
@@ -288,7 +288,7 @@ export default function MagicItemSearch({ magicItems, setMagicItems }: Props) {
                   );
                 })}
                 {filtered.length > 30 && (
-                  <div style={{ padding: '6px 12px', color: '#5a4020', fontFamily: 'Crimson Text, serif', fontSize: '0.8rem', fontStyle: 'italic' }}>
+                  <div style={{ padding: '6px 12px', color: 'var(--border-leather)', fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontStyle: 'italic' }}>
                     {filtered.length - 30} altri risultati — affina la ricerca
                   </div>
                 )}

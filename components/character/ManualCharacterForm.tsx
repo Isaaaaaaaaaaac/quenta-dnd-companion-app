@@ -20,14 +20,14 @@ const STATS: { key: StatKey; label: string; short: string }[] = [
   { key: 'cha', label: 'Carisma',       short: 'CAR' },
 ];
 
-const inp: React.CSSProperties = { backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #5a4020', color: '#e8d5a3', outline: 'none', fontFamily: 'Crimson Text, serif', fontSize: '0.95rem', width: '100%', padding: '4px 0' };
-const lbl: React.CSSProperties = { display: 'block', fontSize: '0.7rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em', marginBottom: 4 };
-const sel: React.CSSProperties = { ...inp, backgroundColor: '#2a2018', padding: '4px 2px', cursor: 'pointer' };
-const ta: React.CSSProperties = { ...inp, borderBottom: 'none', border: '1px solid #5a4020', padding: '8px', resize: 'vertical' as const };
+const inp: React.CSSProperties = { backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid var(--border-leather-dim)', color: 'var(--fg-1)', outline: 'none', fontFamily: 'var(--font-body)', fontSize: '0.95rem', width: '100%', padding: '4px 0' };
+const lbl: React.CSSProperties = { display: 'block', fontSize: '0.7rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.05em', marginBottom: 4 };
+const sel: React.CSSProperties = { ...inp, backgroundColor: 'var(--bg-card)', padding: '4px 2px', cursor: 'pointer' };
+const ta: React.CSSProperties = { ...inp, borderBottom: 'none', border: '1px solid var(--border-leather-dim)', padding: '8px', resize: 'vertical' as const };
 const numInp: React.CSSProperties = { ...inp, textAlign: 'center' };
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <div className="p-5 border mb-4" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
+  <div className="p-5 border mb-4" style={{ borderColor: 'var(--border-leather-dim)', backgroundColor: 'var(--bg-deep)' }}>
     <h2 className="mb-4">{title}</h2>
     {children}
   </div>
@@ -220,18 +220,18 @@ export default function ManualCharacterForm({ campaignId }: Props) {
             const val = stats[key];
             const mod = abilityModifier(val);
             return (
-              <div key={key} className="text-center p-3 border" style={{ borderColor: '#5a4020', backgroundColor: '#2a2018' }}>
+              <div key={key} className="text-center p-3 border" style={{ borderColor: 'var(--border-leather-dim)', backgroundColor: 'var(--bg-card)' }}>
                 <label style={{ ...lbl, textAlign: 'center', display: 'block' }}>{short}</label>
                 <input type="number" min={1} max={30} value={val} onChange={e => setStat(key, Number(e.target.value))}
-                  style={{ ...numInp, fontSize: '1.4rem', fontFamily: 'Cinzel, serif' }} />
-                <div style={{ fontSize: '0.85rem', color: mod >= 0 ? '#c8922a' : '#8b2020', marginTop: 4 }}>
+                  style={{ ...numInp, fontSize: '1.4rem', fontFamily: 'var(--font-label)' }} />
+                <div style={{ fontSize: '0.85rem', color: mod >= 0 ? 'var(--gold)' : 'var(--danger)', marginTop: 4 }}>
                   {mod >= 0 ? `+${mod}` : mod}
                 </div>
               </div>
             );
           })}
         </div>
-        <div style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontSize: '0.8rem', fontStyle: 'italic' }}>
+        <div style={{ color: 'var(--border-leather-dim)', fontFamily: 'var(--font-body)', fontSize: '0.8rem', fontStyle: 'italic' }}>
           Bonus competenza al livello {level}: +{prof}
         </div>
       </Section>
@@ -253,7 +253,7 @@ export default function ManualCharacterForm({ campaignId }: Props) {
           <div>
             <label style={lbl}>Bonus Iniziativa extra</label>
             <input type="number" value={initiativeBonus} onChange={e => setInitiativeBonus(Number(e.target.value))} style={numInp} />
-            <div style={{ color: '#5a4020', fontSize: '0.7rem', marginTop: 2 }}>
+            <div style={{ color: 'var(--border-leather-dim)', fontSize: '0.7rem', marginTop: 2 }}>
               Iniziativa totale: {abilityModifier(stats.dex) + initiativeBonus >= 0 ? '+' : ''}{abilityModifier(stats.dex) + initiativeBonus}
             </div>
           </div>
@@ -261,7 +261,7 @@ export default function ManualCharacterForm({ campaignId }: Props) {
       </Section>
 
       <Section title="Tiri Salvezza">
-        <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', marginBottom: 12 }}>
+        <p style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', marginBottom: 12 }}>
           Seleziona le caratteristiche in cui sei competente (il bonus sarà calcolato automaticamente).
         </p>
         <div className="grid grid-cols-3 gap-2 md:grid-cols-6">
@@ -272,10 +272,10 @@ export default function ManualCharacterForm({ campaignId }: Props) {
             const total = mod + (hasProficiency ? prof : 0);
             return (
               <button type="button" key={key} onClick={() => toggleSt(key)}
-                style={{ border: `1px solid ${hasProficiency ? '#c8922a' : '#5a4020'}`, backgroundColor: hasProficiency ? '#2a2010' : '#1e1810', padding: '8px', textAlign: 'center', cursor: 'pointer', fontFamily: 'Cinzel, serif', fontSize: '0.75rem', color: '#e8d5a3' }}>
-                <div style={{ fontSize: '0.6rem', color: hasProficiency ? '#c8922a' : '#a08060', marginBottom: 2 }}>{short}</div>
+                style={{ border: `1px solid ${hasProficiency ? 'var(--gold)' : 'var(--border-leather-dim)'}`, backgroundColor: hasProficiency ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)', padding: '8px', textAlign: 'center', cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: '0.75rem', color: 'var(--fg-1)' }}>
+                <div style={{ fontSize: '0.6rem', color: hasProficiency ? 'var(--gold)' : 'var(--fg-2)', marginBottom: 2 }}>{short}</div>
                 <div>{total >= 0 ? `+${total}` : total}</div>
-                <div style={{ fontSize: '0.5rem', color: hasProficiency ? '#c8922a' : '#3a3020', marginTop: 2 }}>
+                <div style={{ fontSize: '0.5rem', color: hasProficiency ? 'var(--gold)' : 'var(--border-leather)', marginTop: 2 }}>
                   {hasProficiency ? '◆' : '◇'}
                 </div>
               </button>
@@ -285,7 +285,7 @@ export default function ManualCharacterForm({ campaignId }: Props) {
       </Section>
 
       <Section title="Abilità">
-        <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', marginBottom: 12 }}>
+        <p style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem', marginBottom: 12 }}>
           Seleziona le abilità in cui sei competente. I bonus vengono calcolati automaticamente.
         </p>
         <div className="space-y-1 max-h-80 overflow-y-auto">
@@ -294,11 +294,11 @@ export default function ManualCharacterForm({ campaignId }: Props) {
             const bonus = abilityModifier(stats[skill.ability]) + (hasProficiency ? prof : 0);
             return (
               <button type="button" key={skill.key} onClick={() => toggleSkill(skill.key)}
-                style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '6px 10px', textAlign: 'left', border: `1px solid ${hasProficiency ? '#8a6010' : '#2a2018'}`, backgroundColor: hasProficiency ? '#2a1e08' : 'transparent', cursor: 'pointer', marginBottom: 1 }}>
-                <span style={{ color: hasProficiency ? '#c8922a' : '#3a3020', fontSize: '0.7rem' }}>{hasProficiency ? '◆' : '◇'}</span>
-                <span style={{ flex: 1, color: '#e8d5a3', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem' }}>{skill.name}</span>
-                <span style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.65rem' }}>({skill.ability.toUpperCase()})</span>
-                <span style={{ fontFamily: 'Cinzel, serif', color: bonus >= 0 ? '#c8922a' : '#8b2020', fontSize: '0.85rem', minWidth: 28, textAlign: 'right' }}>
+                style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '6px 10px', textAlign: 'left', border: `1px solid ${hasProficiency ? 'var(--gold)' : 'var(--bg-card)'}`, backgroundColor: hasProficiency ? 'rgba(184,134,11,0.06)' : 'transparent', cursor: 'pointer', marginBottom: 1 }}>
+                <span style={{ color: hasProficiency ? 'var(--gold)' : 'var(--border-leather)', fontSize: '0.7rem' }}>{hasProficiency ? '◆' : '◇'}</span>
+                <span style={{ flex: 1, color: 'var(--fg-1)', fontFamily: 'var(--font-body)', fontSize: '0.9rem' }}>{skill.name}</span>
+                <span style={{ color: 'var(--border-leather-dim)', fontFamily: 'var(--font-label)', fontSize: '0.65rem' }}>({skill.ability.toUpperCase()})</span>
+                <span style={{ fontFamily: 'var(--font-label)', color: bonus >= 0 ? 'var(--gold)' : 'var(--danger)', fontSize: '0.85rem', minWidth: 28, textAlign: 'right' }}>
                   {bonus >= 0 ? `+${bonus}` : bonus}
                 </span>
               </button>
@@ -314,17 +314,17 @@ export default function ManualCharacterForm({ campaignId }: Props) {
           <div><label style={lbl}>Legame</label><textarea value={bonds} onChange={e => setBonds(e.target.value)} rows={2} style={ta} /></div>
           <div><label style={lbl}>Difetto</label><textarea value={flaws} onChange={e => setFlaws(e.target.value)} rows={2} style={ta} /></div>
           <div className="md:col-span-2"><label style={lbl}>Storia / Backstory</label><textarea value={backstory} onChange={e => setBackstory(e.target.value)} rows={4} style={ta} /></div>
-          <div className="md:col-span-2"><label style={{ ...lbl, color: '#8b2020' }}>Note DM (private)</label><textarea value={dmNotes} onChange={e => setDmNotes(e.target.value)} rows={3} style={{ ...ta, border: '1px solid #8b2020', backgroundColor: '#1a0a0a' }} /></div>
+          <div className="md:col-span-2"><label style={{ ...lbl, color: 'var(--danger)' }}>Note DM (private)</label><textarea value={dmNotes} onChange={e => setDmNotes(e.target.value)} rows={3} style={{ ...ta, border: '1px solid var(--danger)', backgroundColor: 'var(--bg-deep)' }} /></div>
         </div>
       </Section>
 
       <div className="flex gap-3 pb-8">
         <button type="submit" disabled={saving || !name.trim()}
-          style={{ border: '1px solid #c8922a', color: '#c8922a', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '10px 24px', cursor: saving ? 'not-allowed' : 'pointer', opacity: saving || !name.trim() ? 0.5 : 1, fontSize: '0.85rem' }}>
+          style={{ border: '1px solid var(--gold)', color: 'var(--gold)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '10px 24px', cursor: saving ? 'not-allowed' : 'pointer', opacity: saving || !name.trim() ? 0.5 : 1, fontSize: '0.85rem' }}>
           {saving ? 'Salvando…' : '✦ Salva Personaggio'}
         </button>
         <button type="button" onClick={() => router.back()}
-          style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '10px 24px', cursor: 'pointer', fontSize: '0.85rem' }}>
+          style={{ border: '1px solid var(--border-leather-dim)', color: 'var(--fg-2)', backgroundColor: 'transparent', fontFamily: 'var(--font-label)', padding: '10px 24px', cursor: 'pointer', fontSize: '0.85rem' }}>
           Annulla
         </button>
       </div>

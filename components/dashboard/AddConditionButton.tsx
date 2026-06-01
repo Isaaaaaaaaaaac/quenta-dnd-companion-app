@@ -4,9 +4,7 @@ import { useState } from 'react';
 import { addCondition } from '@/lib/db/actions';
 import { CONDITIONS } from '@/lib/srd/conditions';
 
-interface Props {
-  characterId: string;
-}
+interface Props { characterId: string; }
 
 export default function AddConditionButton({ characterId }: Props) {
   const [open, setOpen] = useState(false);
@@ -17,32 +15,38 @@ export default function AddConditionButton({ characterId }: Props) {
   }
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="px-2 py-0.5 text-xs transition-opacity hover:opacity-70"
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <button onClick={() => setOpen(o => !o)}
         style={{
-          border: '1px solid #5a4020',
-          color: '#a08060',
-          backgroundColor: 'transparent',
-          cursor: 'pointer',
-          fontFamily: 'Cinzel, serif',
-        }}
-      >
+          fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em',
+          color: 'var(--fg-3)', background: 'none',
+          border: '1px dashed var(--fg-3)', padding: '0 var(--sp-1)',
+          height: 24, borderRadius: 'var(--r)', cursor: 'pointer', transition: 'all .2s',
+        }}>
         + Condizione
       </button>
 
       {open && (
         <>
-          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute left-0 top-full mt-1 z-20 max-h-60 overflow-y-auto"
-            style={{ backgroundColor: '#221c14', border: '1px solid #5a4020', minWidth: '180px' }}>
+          <div style={{ position: 'fixed', inset: 0, zIndex: 10 }} onClick={() => setOpen(false)} />
+          <div style={{
+            position: 'absolute', left: 0, top: '100%', marginTop: 4,
+            zIndex: 20, maxHeight: 240, overflowY: 'auto',
+            background: 'var(--bg-card)', border: '1px solid var(--border-leather)',
+            borderRadius: 'var(--r)', minWidth: 180,
+          }}>
             {CONDITIONS.map(c => (
-              <button
-                key={c.key}
-                onClick={() => handleAdd(c.key)}
-                className="w-full text-left px-3 py-1.5 text-sm flex items-center gap-2 transition-colors hover:bg-[#2a2018]"
-                style={{ color: '#e8d5a3', fontFamily: 'Crimson Text, serif', cursor: 'pointer' }}
+              <button key={c.key} onClick={() => handleAdd(c.key)}
+                style={{
+                  width: '100%', textAlign: 'left',
+                  padding: '8px 14px',
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  fontFamily: 'var(--font-sans)', fontSize: '0.875rem', color: 'var(--fg-1)',
+                  background: 'transparent', border: 'none', cursor: 'pointer',
+                  borderBottom: '1px solid var(--border-leather)',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-elevated)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
                 <span>{c.icon}</span>
                 <span>{c.name}</span>

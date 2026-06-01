@@ -1,10 +1,8 @@
 import { requireAuth } from '@/lib/auth-helpers';
-import { getMemberships, requestCharacterSwitch } from '@/lib/db/userActions';
+import { getMemberships } from '@/lib/db/userActions';
 import { getDb } from '@/lib/db/client';
 import { characters, campaigns } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
-import type { CharacterSheet } from '@/lib/db/schema';
-import { CLASSES } from '@/lib/srd/classes';
 import MyCharactersClient from './MyCharactersClient';
 
 export const dynamic = 'force-dynamic';
@@ -22,10 +20,10 @@ export default async function MyCharactersPage() {
   }));
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div style={{ marginBottom: 24 }}>
-        <div style={{ fontFamily: 'Cinzel, serif', color: '#5a4020', fontSize: '0.65rem', letterSpacing: '0.08em', marginBottom: 4 }}>I MIEI</div>
-        <h1>Personaggi</h1>
+    <div style={{ maxWidth: 860, margin: '0 auto', padding: '40px 24px' }}>
+      <div style={{ marginBottom: 48 }}>
+        <div className="eyebrow" style={{ marginBottom: 10 }}>Giocatore</div>
+        <h1>I miei Personaggi</h1>
       </div>
       <MyCharactersClient data={data} userId={user.id} />
     </div>

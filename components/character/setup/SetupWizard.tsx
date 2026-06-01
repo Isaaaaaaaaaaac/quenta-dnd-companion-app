@@ -12,19 +12,47 @@ import TabInventory from './TabInventory';
 import TabSpells from './TabSpells';
 
 type Tab = 'weapons' | 'inventory' | 'spells';
+interface Props { character: Character; onClose: () => void; }
 
-interface Props {
-  character: Character;
-  onClose: () => void;
-}
+// ── DS inline style constants ──────────────────────────────────────────────
+const S = {
+  eyebrow: {
+    fontFamily: 'var(--font-label)',
+    fontSize: '8px',
+    letterSpacing: '0.1em',
+    textTransform: 'uppercase' as const,
+    color: 'var(--gold)',
+    opacity: 0.8,
+  },
+  btnGhost: {
+    fontFamily: 'var(--font-label)',
+    fontSize: '10px',
+    letterSpacing: '0.3em',
+    textTransform: 'uppercase' as const,
+    padding: '8px 18px',
+    border: '1px solid var(--border-leather)',
+    backgroundColor: 'transparent',
+    color: 'var(--fg-3)',
+    cursor: 'pointer',
+  },
+  btnSecondary: {
+    fontFamily: 'var(--font-label)',
+    fontSize: '10px',
+    letterSpacing: '0.3em',
+    textTransform: 'uppercase' as const,
+    padding: '8px 22px',
+    border: '1px solid var(--border-leather-dim)',
+    backgroundColor: 'transparent',
+    color: 'var(--fg-2)',
+    cursor: 'pointer',
+  },
+} as const;
 
-const TABS: { id: Tab; label: string; icon: string }[] = [
-  { id: 'weapons',   label: 'Armi & Difesa',    icon: '⚔' },
-  { id: 'inventory', label: 'Inventario',        icon: '🎒' },
-  { id: 'spells',    label: 'Incantesimi',       icon: '📜' },
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'weapons',   label: 'Armi & Difesa' },
+  { id: 'inventory', label: 'Inventario' },
+  { id: 'spells',    label: 'Incantesimi' },
 ];
-
-const PREPARED_CASTERS = new Set(['cleric', 'druid', 'paladin', 'wizard', 'artificer']);
 
 export default function SetupWizard({ character, onClose }: Props) {
   const sheet = character.sheet as CharacterSheet;
@@ -36,18 +64,13 @@ export default function SetupWizard({ character, onClose }: Props) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  // ─── State equipment ───────────────────────────────────────────
   const [weapons, setWeapons] = useState<CharacterWeapon[]>(sheet.weapons ?? []);
   const [equippedArmorKey, setEquippedArmorKey] = useState<string | null>(sheet.equippedArmorKey ?? null);
   const [equippedArmorName, setEquippedArmorName] = useState(sheet.equippedArmorName ?? '');
   const [hasShield, setHasShield] = useState(sheet.hasShield ?? false);
   const [magicItems, setMagicItems] = useState<MagicItem[]>(sheet.magicItems ?? []);
-
-  // ─── State inventario ──────────────────────────────────────────
   const [inventory, setInventory] = useState(sheet.inventory ?? []);
   const [money, setMoney] = useState(sheet.money ?? { pp: 0, gp: 0, ep: 0, sp: 0, cp: 0 });
-
-  // ─── State incantesimi ─────────────────────────────────────────
   const [knownSpells, setKnownSpells] = useState<KnownSpell[]>(sheet.knownSpells ?? []);
 
   const computedAC = calcAC(equippedArmorKey, hasShield, dexMod, sheet.classes?.[0]?.classKey);
@@ -71,50 +94,54 @@ export default function SetupWizard({ character, onClose }: Props) {
   return (
     <div style={{
       position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)',
-      zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: '16px',
+      zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
     }}
       onClick={e => e.target === e.currentTarget && onClose()}>
 
       <div style={{
-        backgroundColor: '#1a1410', border: '1px solid #c8922a',
-        width: '100%', maxWidth: '680px', maxHeight: '90vh',
+        backgroundColor: 'var(--bg-deep)',
+        border: '1px solid var(--gold)',
+        width: '100%', maxWidth: 700, maxHeight: '90vh',
         display: 'flex', flexDirection: 'column',
+        position: 'relative', overflow: 'hidden',
       }}>
+        {/* Gold top accent */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', opacity: 0.5 }} />
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4"
-          style={{ borderBottom: '1px solid #5a4020', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px', borderBottom: '1px solid var(--border-leather)', flexShrink: 0 }}>
           <div>
-            <h2 style={{ marginBottom: 0 }}>Equipaggiamento</h2>
-            <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
+            <div style={{ ...S.eyebrow, marginBottom: 8 }}>Personaggio</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--fg-1)', letterSpacing: '0.02em', marginBottom: 4 }}>
+              Equipaggiamento
+            </div>
+            <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.875rem', fontStyle: 'italic' }}>
               {character.name}
             </div>
           </div>
-          <button onClick={onClose}
-            style={{ backgroundColor: 'transparent', border: 'none', color: '#5a4020', cursor: 'pointer', fontSize: '1.2rem', padding: '4px' }}>
+          <button onClick={onClose} style={{ backgroundColor: 'transparent', border: 'none', color: 'var(--fg-3)', cursor: 'pointer', fontSize: '1.1rem', lineHeight: 1 }}>
             ✕
           </button>
         </div>
 
         {/* Tab bar */}
-        <div className="flex" style={{ borderBottom: '1px solid #5a4020', flexShrink: 0 }}>
+        <div style={{ display: 'flex', borderBottom: '1px solid var(--border-leather)', flexShrink: 0 }}>
           {visibleTabs.map(t => (
-            <button key={t.id} onClick={() => setTab(t.id)}
-              style={{
-                flex: 1, padding: '12px 8px', cursor: 'pointer',
-                backgroundColor: 'transparent', border: 'none',
-                borderBottom: `2px solid ${tab === t.id ? '#c8922a' : 'transparent'}`,
-                color: tab === t.id ? '#c8922a' : '#a08060',
-                fontFamily: 'Cinzel, serif', fontSize: '0.75rem', letterSpacing: '0.04em',
-              }}>
-              {t.icon} {t.label}
+            <button key={t.id} onClick={() => setTab(t.id)} style={{
+              flex: 1, padding: '12px 8px', cursor: 'pointer',
+              backgroundColor: 'transparent', border: 'none',
+              borderBottom: `2px solid ${tab === t.id ? 'var(--gold)' : 'transparent'}`,
+              color: tab === t.id ? 'var(--gold)' : 'var(--fg-2)',
+              fontFamily: 'var(--font-label)', fontSize: '8px', letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+            }}>
+              {t.label}
             </button>
           ))}
         </div>
 
-        {/* Tab content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        {/* Tab content — padding: 28px inline, no Tailwind */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: 28 }}>
           {tab === 'weapons' && (
             <TabWeapons
               sheet={sheet}
@@ -144,26 +171,17 @@ export default function SetupWizard({ character, onClose }: Props) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between px-6 py-4"
-          style={{ borderTop: '1px solid #5a4020', flexShrink: 0 }}>
-          <div style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontSize: '0.8rem', fontStyle: 'italic' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 28px', borderTop: '1px solid var(--border-leather)', flexShrink: 0 }}>
+          <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontSize: '0.8rem', fontStyle: 'italic' }}>
             Le modifiche vengono salvate solo premendo "Salva"
           </div>
-          <div className="flex gap-3">
-            <button onClick={onClose}
-              style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', padding: '8px 18px', cursor: 'pointer', fontSize: '0.8rem' }}>
-              Chiudi
-            </button>
-            <button onClick={handleSave} disabled={saving}
-              style={{
-                border: '1px solid #c8922a',
-                color: saved ? '#4a7c4e' : '#c8922a',
-                backgroundColor: saved ? '#1a2a1a' : 'transparent',
-                fontFamily: 'Cinzel, serif', padding: '8px 22px',
-                cursor: saving ? 'not-allowed' : 'pointer',
-                fontSize: '0.8rem', opacity: saving ? 0.6 : 1,
-                transition: 'all 0.3s',
-              }}>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={onClose} style={S.btnGhost}>Chiudi</button>
+            <button onClick={handleSave} disabled={saving} style={{
+              ...S.btnSecondary,
+              ...(saved ? { borderColor: 'var(--info)', color: 'var(--fg-1)' } : {}),
+              opacity: saving ? 0.5 : 1,
+            }}>
               {saving ? 'Salvando…' : saved ? '✓ Salvato' : 'Salva tutto'}
             </button>
           </div>

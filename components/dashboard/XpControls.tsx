@@ -3,10 +3,7 @@
 import { useState } from 'react';
 import { addXp, addXpToAll } from '@/lib/db/actions';
 
-interface Props {
-  characterId: string;
-  label?: string;
-}
+interface Props { characterId: string; label?: string; }
 
 export default function XpControls({ characterId, label }: Props) {
   const [amount, setAmount] = useState('');
@@ -23,39 +20,33 @@ export default function XpControls({ characterId, label }: Props) {
   }
 
   return (
-    <div className="flex items-center gap-2">
-      {label && <span className="text-sm" style={{ color: '#a08060', fontFamily: 'Crimson Text, serif' }}>{label}</span>}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      {label && <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-2)', letterSpacing: '.06em' }}>{label}</span>}
+    <div style={{ display: 'flex', gap: 'var(--sp-1)' }}>
       <input
-        type="number"
-        min="0"
-        value={amount}
-        onChange={e => setAmount(e.target.value)}
+        type="number" min="0"
+        value={amount} onChange={e => setAmount(e.target.value)}
         onKeyDown={e => { if (e.key === 'Enter') handle(); }}
         placeholder="XP"
-        className="w-20 text-center text-sm"
         style={{
-          backgroundColor: 'transparent',
-          border: 'none',
-          borderBottom: '1px solid #5a4020',
-          color: '#e8d5a3',
-          outline: 'none',
+          flex: 1, height: 32, textAlign: 'center',
+          background: 'var(--bg-card)', border: '1px solid var(--border-leather)',
+          borderRadius: 'var(--r)', color: 'var(--fg-1)',
+          fontFamily: 'var(--font-sans)', fontSize: '12px',
+          outline: 'none', padding: '0 var(--sp-1)',
         }}
       />
-      <button
-        onClick={handle}
-        disabled={pending}
-        className="px-3 py-1 text-xs transition-opacity hover:opacity-70"
+      <button onClick={handle} disabled={pending}
         style={{
-          border: '1px solid #c8922a',
-          color: '#c8922a',
-          backgroundColor: 'transparent',
-          fontFamily: 'Cinzel, serif',
+          flex: 1, fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
+          height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)',
+          background: 'var(--bg-card)', color: 'var(--fg-2)',
           cursor: pending ? 'not-allowed' : 'pointer',
-          opacity: pending ? 0.5 : 1,
-        }}
-      >
-        + XP
+          opacity: pending ? 0.4 : 1, transition: 'all .2s',
+        }}>
+        + Assegna XP
       </button>
+    </div>
     </div>
   );
 }

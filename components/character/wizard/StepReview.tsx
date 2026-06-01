@@ -23,9 +23,9 @@ export default function StepReview({ data, onBack, onSave, saving }: Props) {
   );
 
   const row = (label: string, value: string | number | undefined) => value ? (
-    <div className="flex justify-between text-sm py-1" style={{ borderBottom: '1px solid #2a2018' }}>
-      <span style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.75rem', letterSpacing: '0.05em' }}>{label}</span>
-      <span style={{ color: '#e8d5a3', fontFamily: 'Crimson Text, serif' }}>{value}</span>
+    <div className="flex justify-between text-sm py-1" style={{ borderBottom: '1px solid var(--bg-card)' }}>
+      <span style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.75rem', letterSpacing: '0.05em' }}>{label}</span>
+      <span style={{ color: 'var(--fg-1)', fontFamily: 'var(--font-body)' }}>{value}</span>
     </div>
   ) : null;
 
@@ -49,10 +49,10 @@ export default function StepReview({ data, onBack, onSave, saving }: Props) {
             const val = data.stats[stat];
             const mod = abilityModifier(val);
             return (
-              <div key={stat} className="text-center p-2" style={{ border: '1px solid #5a4020' }}>
-                <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif' }}>{ABILITY_SHORT[stat]}</div>
-                <div style={{ fontFamily: 'Cinzel, serif', fontSize: '1.3rem', color: '#e8d5a3' }}>{val}</div>
-                <div style={{ fontSize: '0.8rem', color: mod >= 0 ? '#c8922a' : '#8b2020' }}>
+              <div key={stat} className="text-center p-2" style={{ border: '1px solid var(--border-leather-dim)' }}>
+                <div style={{ fontSize: '0.6rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)' }}>{ABILITY_SHORT[stat]}</div>
+                <div style={{ fontFamily: 'var(--font-label)', fontSize: '1.3rem', color: 'var(--fg-1)' }}>{val}</div>
+                <div style={{ fontSize: '0.8rem', color: mod >= 0 ? 'var(--gold)' : 'var(--danger)' }}>
                   {mod >= 0 ? `+${mod}` : mod}
                 </div>
               </div>
@@ -63,8 +63,8 @@ export default function StepReview({ data, onBack, onSave, saving }: Props) {
 
       {section('Punti Ferita', (
         <div className="text-center py-2">
-          <span style={{ fontFamily: 'Cinzel, serif', fontSize: '2.5rem', color: '#c8922a' }}>{data.hpMax}</span>
-          <span style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', marginLeft: '8px' }}>PF massimi</span>
+          <span style={{ fontFamily: 'var(--font-label)', fontSize: '2.5rem', color: 'var(--gold)' }}>{data.hpMax}</span>
+          <span style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', marginLeft: '8px' }}>PF massimi</span>
         </div>
       ))}
 
@@ -73,7 +73,7 @@ export default function StepReview({ data, onBack, onSave, saving }: Props) {
           {data.skillProficiencies.map(key => {
             const skill = SKILLS.find(s => s.key === key);
             return skill ? (
-              <span key={key} style={{ border: '1px solid #5a4020', color: '#e8d5a3', padding: '2px 8px', fontFamily: 'Crimson Text, serif', fontSize: '0.9rem' }}>
+              <span key={key} style={{ border: '1px solid var(--border-leather-dim)', color: 'var(--fg-1)', padding: '2px 8px', fontFamily: 'var(--font-body)', fontSize: '0.9rem' }}>
                 {skill.name}
               </span>
             ) : null;
@@ -84,9 +84,9 @@ export default function StepReview({ data, onBack, onSave, saving }: Props) {
       <div className="flex justify-between mt-8">
         <WizardButton onClick={onBack} variant="secondary">← Modifica</WizardButton>
         <button onClick={onSave} disabled={saving} style={{
-          border: '1px solid #c8922a', color: '#1a1410',
-          backgroundColor: saving ? '#5a4020' : '#c8922a',
-          fontFamily: 'Cinzel, serif', fontSize: '0.9rem',
+          border: '1px solid var(--gold)', color: 'var(--bg-deep)',
+          backgroundColor: saving ? 'var(--border-leather-dim)' : 'var(--gold)',
+          fontFamily: 'var(--font-label)', fontSize: '0.9rem',
           padding: '10px 28px', cursor: saving ? 'not-allowed' : 'pointer',
           letterSpacing: '0.05em',
         }}>

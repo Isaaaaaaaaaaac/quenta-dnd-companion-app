@@ -14,77 +14,64 @@ export const dynamic = 'force-dynamic';
 export default async function MyCharacterPage() {
   const user = await requireAuth();
   const db = getDb();
-
   const memberships = await getMemberships(user.id);
 
-  // Nessuna campagna → messaggio di attesa
   if (memberships.length === 0) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-        <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1.5rem', marginBottom: 12 }}>
-          Nessuna campagna
-        </div>
-        <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem', fontStyle: 'italic' }}>
+      <CenteredCard>
+        <div className="eyebrow" style={{ marginBottom: 16 }}>Giocatore</div>
+        <h2 style={{ marginBottom: 16 }}>Nessuna campagna</h2>
+        <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontStyle: 'italic', lineHeight: 1.7 }}>
           Chiedi al tuo DM il link di invito per unirti a una campagna.
         </p>
-      </div>
+      </CenteredCard>
     );
   }
 
-  // Più campagne → vai alla dashboard completa
-  if (memberships.length > 1) {
-    redirect('/my-characters');
-  }
+  if (memberships.length > 1) redirect('/my-characters');
 
-  // Una sola campagna → mostra il personaggio attivo
   const membership = memberships[0];
   const [campaign] = await db.select().from(campaigns).where(eq(campaigns.id, membership.campaignId));
 
-  // Nessun personaggio attivo assegnato
   if (!membership.activeCharacterId) {
     const myChars = await db.select().from(characters)
       .where(and(eq(characters.userId, user.id), eq(characters.campaignId, membership.campaignId)));
 
     return (
-      <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-        <div style={{ fontFamily: 'Cinzel, serif', color: '#c8922a', fontSize: '1.3rem', marginBottom: 8 }}>
-          {campaign?.name ?? 'Campagna'}
-        </div>
+      <CenteredCard>
+        <div className="eyebrow" style={{ marginBottom: 16 }}>{campaign?.name ?? 'Campagna'}</div>
         {myChars.length === 0 ? (
           <>
-            <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem', fontStyle: 'italic', marginBottom: 20 }}>
+            <h2 style={{ marginBottom: 16 }}>Nessun personaggio</h2>
+            <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontStyle: 'italic', lineHeight: 1.7, marginBottom: 32 }}>
               Non hai ancora un personaggio in questa campagna.
             </p>
-            <a href={`/campaigns/${membership.campaignId}/characters/new`}
-              style={{ border: '1px solid #c8922a', color: '#c8922a', fontFamily: 'Cinzel, serif', fontSize: '0.8rem', padding: '10px 24px', textDecoration: 'none' }}>
+            <a href={`/campaigns/${membership.campaignId}/characters/new`} className="btn btn-primary">
               + Crea il tuo personaggio
             </a>
           </>
         ) : (
           <>
-            <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem', fontStyle: 'italic', marginBottom: 20 }}>
+            <h2 style={{ marginBottom: 16 }}>Personaggio non attivo</h2>
+            <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontStyle: 'italic', lineHeight: 1.7, marginBottom: 32 }}>
               Hai {myChars.length} personaggio{myChars.length > 1 ? 'i' : ''} ma nessuno è attivo. Richiedi al DM di assegnarne uno.
             </p>
-            <a href="/my-characters"
-              style={{ border: '1px solid #5a4020', color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.8rem', padding: '10px 24px', textDecoration: 'none' }}>
-              Vedi i miei personaggi
-            </a>
+            <a href="/my-characters" className="btn btn-secondary">Vedi i miei personaggi</a>
           </>
         )}
-      </div>
+      </CenteredCard>
     );
   }
 
-  // Mostra il personaggio attivo
   const [char] = await db.select().from(characters).where(eq(characters.id, membership.activeCharacterId));
 
   if (!char) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-        <p style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontStyle: 'italic' }}>
+      <CenteredCard>
+        <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontStyle: 'italic' }}>
           Personaggio non trovato. Chiedi al DM di riassegnarlo.
         </p>
-      </div>
+      </CenteredCard>
     );
   }
 
@@ -112,202 +99,221 @@ export default async function MyCharacterPage() {
   }).join(' / ') ?? '';
 
   const hpPct = char.hpMax > 0 ? Math.round((char.hpCurrent / char.hpMax) * 100) : 0;
-  const hpBarColor = hpPct > 60 ? '#4a7c4e' : hpPct > 30 ? '#8a7a2a' : '#7a2a2a';
-
-  const statBox = (key: Ability) => {
-    const val = stats[key];
-    const mod = abilityModifier(val);
-    return (
-      <div key={key} className="text-center p-3 border" style={{ borderColor: '#5a4020', backgroundColor: '#2a2018' }}>
-        <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em' }}>{ABILITY_SHORT[key]}</div>
-        <div style={{ fontFamily: 'Cinzel, serif', fontSize: '1.8rem', color: '#e8d5a3', lineHeight: 1.1 }}>{val}</div>
-        <div style={{ fontFamily: 'Cinzel, serif', fontSize: '1rem', color: mod >= 0 ? '#c8922a' : '#8b2020' }}>{formatModifier(mod)}</div>
-        <div style={{ fontSize: '0.65rem', color: '#6a5040', fontFamily: 'Cinzel, serif' }}>{ABILITY_NAMES[key]}</div>
-      </div>
-    );
-  };
+  const hpColor = hpPct > 60 ? 'var(--info)' : hpPct > 30 ? 'var(--gold)' : 'var(--danger)';
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div style={{ maxWidth: 860, margin: '0 auto', padding: '40px 24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-      {/* Campagna breadcrumb */}
-      <div style={{ fontFamily: 'Crimson Text, serif', color: '#5a4020', fontSize: '0.8rem', fontStyle: 'italic' }}>
+      {/* Breadcrumb */}
+      <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontSize: '0.85rem', fontStyle: 'italic' }}>
         {campaign?.name ?? 'Campagna'} ·{' '}
-        <a href="/my-characters" style={{ color: '#5a4020', textDecoration: 'none' }}>I miei personaggi</a>
+        <a href="/my-characters" style={{ color: 'var(--fg-3)', textDecoration: 'none' }}>I miei personaggi</a>
       </div>
 
-      {/* Header */}
-      <div className="p-4 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-        <div style={{ fontFamily: 'Cinzel Decorative, serif', color: '#c8922a', fontSize: '1.8rem' }}>{char.name}</div>
-        <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '1rem', fontStyle: 'italic' }}>
-          {sheet.race}{sheet.subrace ? ` (${sheet.subrace})` : ''}{classLabel ? ` · ${classLabel}` : ''}{sheet.background ? ` · ${sheet.background}` : ''}
-        </div>
-        {sheet.alignment && (
-          <div style={{ color: '#6a5040', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', marginTop: 4 }}>{sheet.alignment}</div>
-        )}
-      </div>
-
-      {/* HP + CA + Speed */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="p-4 border text-center" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em', marginBottom: 4 }}>PUNTI FERITA</div>
-          <div style={{ fontFamily: 'Cinzel, serif', fontSize: '2rem', color: hpBarColor }}>
-            {char.hpCurrent}<span style={{ fontSize: '1rem', color: '#6a5040' }}>/{char.hpMax}</span>
+      {/* Header card */}
+      <div className="card" style={{ padding: 32, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', opacity: 0.5 }} />
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+          <div>
+            <div className="eyebrow" style={{ marginBottom: 10 }}>{classLabel}</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', fontWeight: 700, color: 'var(--fg-1)', letterSpacing: '0.02em', lineHeight: 1.1, marginBottom: 8 }}>
+              {char.name}
+            </div>
+            <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '1rem', fontStyle: 'italic' }}>
+              {sheet.race}{sheet.subrace ? ` (${sheet.subrace})` : ''}
+              {sheet.background ? ` · ${sheet.background}` : ''}
+              {sheet.alignment ? ` · ${sheet.alignment}` : ''}
+            </div>
           </div>
-          {char.hpTemp > 0 && <div style={{ fontSize: '0.75rem', color: '#6a8c6e', fontFamily: 'Cinzel, serif' }}>+{char.hpTemp} temp</div>}
-          <div style={{ height: 4, backgroundColor: '#3a2010', marginTop: 6, borderRadius: 2 }}>
-            <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpBarColor, borderRadius: 2 }} />
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: 'var(--fg-3)', border: '1px solid var(--border-leather)', padding: '4px 12px', fontStyle: 'italic', letterSpacing: '0.2em', flexShrink: 0 }}>
+            Lv. {level}
           </div>
         </div>
-        <div className="p-4 border text-center" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em', marginBottom: 4 }}>CLASSE ARMATURA</div>
-          <div style={{ fontFamily: 'Cinzel, serif', fontSize: '2rem', color: '#e8d5a3' }}>{sheet.armorClass ?? '—'}</div>
-        </div>
-        <div className="p-4 border text-center" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em', marginBottom: 4 }}>VELOCITÀ</div>
-          <div style={{ fontFamily: 'Cinzel, serif', fontSize: '2rem', color: '#e8d5a3' }}>{sheet.speed ?? '—'}<span style={{ fontSize: '0.8rem', color: '#6a5040' }}> m</span></div>
-        </div>
       </div>
 
-      {/* Stats */}
-      <div>
-        <h3 className="mb-3 pb-1" style={{ borderBottom: '1px solid #5a4020' }}>Caratteristiche</h3>
-        <div className="grid grid-cols-6 gap-2">
-          {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(statBox)}
-        </div>
+      {/* HP · CA · Speed */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        <StatPanel label="Punti Ferita" accent="var(--danger)">
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: '2.2rem', fontWeight: 700, color: hpColor, lineHeight: 1 }}>
+            {char.hpCurrent}<span style={{ fontSize: '1rem', color: 'var(--fg-3)' }}>/{char.hpMax}</span>
+          </div>
+          {char.hpTemp > 0 && (
+            <div style={{ fontFamily: 'var(--font-label)', fontSize: '8px', letterSpacing: '0.3em', color: 'var(--info)', marginTop: 6 }}>
+              +{char.hpTemp} TEMP
+            </div>
+          )}
+          <div className="hp-bar-track" style={{ marginTop: 8 }}>
+            <div className="hp-bar-fill" style={{ width: `${hpPct}%`, background: hpColor, boxShadow: 'none' }} />
+          </div>
+        </StatPanel>
+        <StatPanel label="Classe Armatura" accent="var(--gold)">
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: '2.2rem', fontWeight: 700, color: 'var(--gold)', lineHeight: 1 }}>
+            {sheet.armorClass ?? '—'}
+          </div>
+        </StatPanel>
+        <StatPanel label="Velocità" accent="var(--fg-2)">
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: '2.2rem', fontWeight: 700, color: 'var(--fg-1)', lineHeight: 1 }}>
+            {sheet.speed ?? '—'}<span style={{ fontSize: '0.9rem', color: 'var(--fg-3)' }}> m</span>
+          </div>
+        </StatPanel>
       </div>
 
-      {/* Saving throws + Combat */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-3 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em', marginBottom: 8 }}>TIRI SALVEZZA</div>
+      {/* Caratteristiche */}
+      <Section label="Caratteristiche">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8 }}>
           {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(ab => {
-            const isProficient = savingThrows[ab];
-            const mod = abilityModifier(stats[ab]) + (isProficient ? prof : 0);
+            const val = stats[ab];
+            const mod = abilityModifier(val);
             return (
-              <div key={ab} className="flex items-center gap-2 mb-1">
-                <span style={{ color: isProficient ? '#c8922a' : '#5a4020', fontSize: '0.7rem' }}>{isProficient ? '●' : '○'}</span>
-                <span style={{ fontFamily: 'Cinzel, serif', fontSize: '0.75rem', color: '#e8d5a3', flex: 1 }}>{ABILITY_NAMES[ab]}</span>
-                <span style={{ fontFamily: 'Cinzel, serif', fontSize: '0.85rem', color: mod >= 0 ? '#c8922a' : '#8b2020' }}>{formatModifier(mod)}</span>
+              <div key={ab} className="card" style={{ padding: '16px 8px', textAlign: 'center' }}>
+                <div className="label" style={{ marginBottom: 6 }}>{ABILITY_SHORT[ab]}</div>
+                <div style={{ fontFamily: 'var(--font-body)', fontSize: '2rem', fontWeight: 700, color: 'var(--fg-1)', lineHeight: 1 }}>{val}</div>
+                <div style={{ fontFamily: 'var(--font-body)', fontSize: '1.1rem', fontWeight: 700, color: mod >= 0 ? 'var(--gold)' : 'var(--danger)', marginTop: 2 }}>
+                  {formatModifier(mod)}
+                </div>
+                <div style={{ fontFamily: 'var(--font-label)', fontSize: '6.5px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg-3)', marginTop: 4 }}>
+                  {ABILITY_NAMES[ab]}
+                </div>
               </div>
             );
           })}
         </div>
-        <div className="p-3 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14' }}>
-          <div style={{ fontSize: '0.6rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.06em', marginBottom: 8 }}>COMBATTIMENTO</div>
+      </Section>
+
+      {/* Tiri salvezza + Combattimento */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div className="card" style={{ padding: 32 }}>
+          <div className="label" style={{ marginBottom: 16 }}>Tiri Salvezza</div>
+          {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(ab => {
+            const isProficient = savingThrows[ab];
+            const mod = abilityModifier(stats[ab]) + (isProficient ? prof : 0);
+            return (
+              <div key={ab} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                <span style={{ color: isProficient ? 'var(--gold)' : 'var(--fg-3)', fontSize: '0.7rem' }}>{isProficient ? '●' : '○'}</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: 'var(--fg-1)', flex: 1 }}>{ABILITY_NAMES[ab]}</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', fontWeight: 700, color: mod >= 0 ? 'var(--gold)' : 'var(--danger)' }}>
+                  {formatModifier(mod)}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+        <div className="card" style={{ padding: 32 }}>
+          <div className="label" style={{ marginBottom: 16 }}>Combattimento</div>
           {[
-            ['Bonus competenza', `+${prof}`],
-            ['Percezione passiva', String(passivePerception(stats.wis, level, skillMap['perception']?.proficient ?? false, skillMap['perception']?.expertise ?? false))],
+            ['Bonus Competenza', `+${prof}`],
+            ['Percezione Passiva', String(passivePerception(stats.wis, level, skillMap['perception']?.proficient ?? false, skillMap['perception']?.expertise ?? false))],
             ['Iniziativa', formatModifier(abilityModifier(stats.dex))],
             ...(spellDC ? [['CD Incantesimi', String(spellDC)], ['Attacco Incantesimi', formatModifier(spellAtk ?? 0)]] : []),
           ].map(([label, val]) => (
-            <div key={label} className="flex justify-between mb-1">
-              <span style={{ fontFamily: 'Crimson Text, serif', color: '#a08060', fontSize: '0.85rem' }}>{label}</span>
-              <span style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3', fontSize: '0.85rem' }}>{val}</span>
+            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
+              <span style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.9rem', fontStyle: 'italic' }}>{label}</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontWeight: 700, color: 'var(--fg-1)', fontSize: '1rem' }}>{val}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Skills */}
-      <div>
-        <h3 className="mb-3 pb-1" style={{ borderBottom: '1px solid #5a4020' }}>Abilità</h3>
-        <div className="grid grid-cols-2 gap-1">
+      {/* Abilità */}
+      <Section label="Abilità">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
           {SKILLS.map(skill => {
             const entry = skillMap[skill.key];
             const isProficient = entry?.proficient ?? false;
             const isExpert = entry?.expertise ?? false;
             const bonus = skillBonus(stats[skill.ability], level, isProficient, isExpert);
             return (
-              <div key={skill.key} className="flex items-center gap-2 px-2 py-1" style={{ backgroundColor: '#1e1810' }}>
-                <span style={{ fontSize: '0.65rem', color: isExpert ? '#c8922a' : isProficient ? '#c8922a' : '#5a4020' }}>
+              <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 16px', backgroundColor: 'var(--bg-card)' }}>
+                <span style={{ fontSize: '0.65rem', color: isExpert ? 'var(--fg-1)' : isProficient ? 'var(--gold)' : 'var(--fg-3)' }}>
                   {isExpert ? '◆' : isProficient ? '●' : '○'}
                 </span>
-                <span style={{ fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', color: '#a08060', flex: 1 }}>{skill.name}</span>
-                <span style={{ fontFamily: 'Cinzel, serif', fontSize: '0.8rem', color: bonus >= 0 ? '#c8922a' : '#8b2020' }}>{formatModifier(bonus)}</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', color: 'var(--fg-2)', flex: 1, fontStyle: 'italic' }}>{skill.name}</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.9rem', fontWeight: 700, color: bonus >= 0 ? 'var(--gold)' : 'var(--danger)' }}>
+                  {formatModifier(bonus)}
+                </span>
               </div>
             );
           })}
         </div>
-      </div>
+      </Section>
 
       {/* Condizioni */}
       {conditions.length > 0 && (
-        <div>
-          <h3 className="mb-3 pb-1" style={{ borderBottom: '1px solid #5a4020' }}>Condizioni attive</h3>
-          <div className="flex flex-wrap gap-2">
+        <Section label="Condizioni Attive">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             {conditions.map(c => {
               const cond = CONDITIONS.find(x => x.key === c.conditionKey);
-              return (
-                <span key={c.id} style={{ border: '1px solid #8b2020', color: '#8b2020', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', padding: '3px 8px' }}>
-                  {cond?.name ?? c.conditionKey}
-                </span>
-              );
+              return <span key={c.id} className="badge badge-danger">{cond?.name ?? c.conditionKey}</span>;
             })}
           </div>
-        </div>
+        </Section>
       )}
 
       {/* Slot incantesimo */}
       {spellSlots.filter(s => s.total > 0).length > 0 && (
-        <div>
-          <h3 className="mb-3 pb-1" style={{ borderBottom: '1px solid #5a4020' }}>Slot Incantesimo</h3>
-          <div className="flex flex-wrap gap-3">
+        <Section label="Slot Incantesimo">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
             {spellSlots.filter(s => s.total > 0).map(s => (
-              <div key={s.slotLevel} className="text-center p-2 border" style={{ borderColor: '#5a4020', backgroundColor: '#221c14', minWidth: 60 }}>
-                <div style={{ fontSize: '0.55rem', color: '#a08060', fontFamily: 'Cinzel, serif' }}>LIV {s.slotLevel}</div>
-                <div className="flex gap-1 justify-center mt-1">
+              <div key={s.slotLevel} className="card" style={{ padding: '16px 20px', textAlign: 'center', minWidth: 72 }}>
+                <div className="label" style={{ marginBottom: 10 }}>Liv {s.slotLevel}</div>
+                <div style={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
                   {Array.from({ length: s.total }).map((_, i) => (
-                    <span key={i} style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: i < (s.total - s.used) ? '#c8922a' : '#3a3020', display: 'inline-block', border: '1px solid #5a4020' }} />
+                    <span key={i} style={{
+                      width: 10, height: 10, borderRadius: '50%', display: 'inline-block',
+                      border: '1px solid var(--border-leather)',
+                      backgroundColor: i < (s.total - s.used) ? 'var(--arcane)' : 'var(--bg-elevated)',
+                    }} />
                   ))}
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </Section>
       )}
 
-      {/* Incantesimi noti */}
+      {/* Incantesimi */}
       {(sheet.knownSpells?.length ?? 0) > 0 && (
-        <div>
-          <h3 className="mb-3 pb-1" style={{ borderBottom: '1px solid #5a4020' }}>Incantesimi</h3>
-          <div className="space-y-1">
+        <Section label="Incantesimi">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {sheet.knownSpells!.map(sp => (
-              <div key={sp.name} className="flex items-center gap-3 px-2 py-1" style={{ backgroundColor: '#1e1810' }}>
-                <span style={{ fontFamily: 'Cinzel, serif', fontSize: '0.6rem', color: '#5a4020', minWidth: 50 }}>
+              <div key={sp.name} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '10px 16px', backgroundColor: 'var(--bg-card)' }}>
+                <span className="badge badge-arcane" style={{ minWidth: 56, textAlign: 'center' }}>
                   {sp.level === 0 ? 'Trucco' : `Liv. ${sp.level}`}
                 </span>
-                <span style={{ fontFamily: 'Crimson Text, serif', color: '#e8d5a3', fontSize: '0.9rem' }}>{sp.name}</span>
-                {sp.prepared && <span style={{ fontSize: '0.6rem', color: '#c8922a', fontFamily: 'Cinzel, serif' }}>✦ preparato</span>}
+                <span style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-1)', fontSize: '0.95rem', flex: 1 }}>{sp.name}</span>
+                {sp.prepared && <span className="badge badge-gold">Preparato</span>}
+                {sp.concentration && <span className="badge badge-arcane">Conc.</span>}
               </div>
             ))}
           </div>
-        </div>
+        </Section>
       )}
 
       {/* Inventario */}
       {(sheet.inventory?.length ?? 0) > 0 && (
-        <div>
-          <h3 className="mb-3 pb-1" style={{ borderBottom: '1px solid #5a4020' }}>Inventario</h3>
-          <div className="space-y-1">
+        <Section label="Inventario">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {sheet.inventory!.map((item, i) => (
-              <div key={i} className="flex items-center justify-between px-2 py-1" style={{ backgroundColor: '#1e1810' }}>
-                <span style={{ fontFamily: 'Crimson Text, serif', color: '#e8d5a3', fontSize: '0.9rem' }}>
-                  {item.quantity > 1 && <span style={{ color: '#6a5040' }}>{item.quantity}× </span>}
+              <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', backgroundColor: 'var(--bg-card)' }}>
+                <span style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-1)', fontSize: '0.95rem' }}>
+                  {item.quantity > 1 && <span style={{ color: 'var(--fg-3)' }}>{item.quantity}× </span>}
                   {item.name}
                 </span>
-                {item.weight && <span style={{ color: '#6a5040', fontSize: '0.8rem' }}>{item.weight * item.quantity} kg</span>}
+                {item.weight > 0 && (
+                  <span style={{ fontFamily: 'var(--font-label)', fontSize: '7.5px', letterSpacing: '0.3em', color: 'var(--fg-3)' }}>
+                    {(item.weight * item.quantity).toFixed(1)} kg
+                  </span>
+                )}
               </div>
             ))}
           </div>
-        </div>
+        </Section>
       )}
 
       {/* Background narrativo */}
       {(sheet.backstory || sheet.personality || sheet.ideals || sheet.bonds || sheet.flaws) && (
-        <div>
-          <h3 className="mb-3 pb-1" style={{ borderBottom: '1px solid #5a4020' }}>Background</h3>
-          <div className="space-y-3">
+        <Section label="Background">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
             {[
               { label: 'Storia', val: sheet.backstory },
               { label: 'Personalità', val: sheet.personality },
@@ -316,14 +322,46 @@ export default async function MyCharacterPage() {
               { label: 'Difetti', val: sheet.flaws },
             ].filter(x => x.val).map(({ label, val }) => (
               <div key={label}>
-                <div style={{ fontFamily: 'Cinzel, serif', fontSize: '0.65rem', color: '#6a5040', letterSpacing: '0.06em', marginBottom: 4 }}>{label.toUpperCase()}</div>
-                <p style={{ fontFamily: 'Crimson Text, serif', color: '#a08060', fontSize: '0.95rem', fontStyle: 'italic', lineHeight: 1.6 }}>{val}</p>
+                <div className="label" style={{ marginBottom: 8 }}>{label}</div>
+                <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '1rem', fontStyle: 'italic', lineHeight: 1.7 }}>{val}</p>
               </div>
             ))}
           </div>
-        </div>
+        </Section>
       )}
 
+    </div>
+  );
+}
+
+/* ── Componenti locali ── */
+
+function CenteredCard({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+      <div className="card" style={{ padding: 48, maxWidth: 480, width: '100%', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(90deg, transparent, var(--gold), transparent)', opacity: 0.4 }} />
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="card" style={{ padding: 32 }}>
+      <div className="label" style={{ marginBottom: 20 }}>{label}</div>
+      {children}
+    </div>
+  );
+}
+
+function StatPanel({ label, accent, children }: { label: string; accent: string; children: React.ReactNode }) {
+  return (
+    <div className="card" style={{ padding: 32, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${accent}, transparent)`, opacity: 0.4 }} />
+      <div className="label" style={{ marginBottom: 12 }}>{label}</div>
+      {children}
     </div>
   );
 }

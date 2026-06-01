@@ -3,10 +3,7 @@
 import { useState } from 'react';
 import { assignUserToCharacter, removeUserFromCharacter } from '@/lib/db/actions';
 
-interface Props {
-  characterId: string;
-  currentUserId: string | null;
-}
+interface Props { characterId: string; currentUserId: string | null; }
 
 export default function AssignPlayerButton({ characterId, currentUserId }: Props) {
   const [open, setOpen] = useState(false);
@@ -28,49 +25,59 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
     setLoading(false);
   }
 
+  const btnSm: React.CSSProperties = {
+    fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em',
+    color: 'var(--fg-2)', background: 'none',
+    border: '1px solid var(--border-leather)', padding: '0 var(--sp-1)',
+    height: 24, borderRadius: 'var(--r)', cursor: 'pointer', transition: 'all .2s',
+  };
+
   return (
     <div>
-      {currentUserId ? (
-        <div className="flex items-center gap-2">
-          <span style={{ fontFamily: 'Cinzel, serif', fontSize: '0.65rem', color: '#4a7c4e' }}>
-            ✦ Giocatore assegnato
-          </span>
-          <button onClick={handleRemove} disabled={loading}
-            style={{ border: '1px solid #5a4020', color: '#8b2020', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', padding: '2px 8px', cursor: 'pointer' }}>
-            Rimuovi
-          </button>
-        </div>
-      ) : (
-        <button onClick={() => setOpen(true)}
-          style={{ border: '1px solid #5a4020', color: '#a08060', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', padding: '4px 12px', cursor: 'pointer' }}>
-          + Assegna giocatore
-        </button>
-      )}
-
-      {open && (
-        <div className="mt-2 p-3 border" style={{ borderColor: '#5a4020', backgroundColor: '#1a1410' }}>
-          <div style={{ fontFamily: 'Cinzel, serif', fontSize: '0.65rem', color: '#6a5040', marginBottom: 6 }}>
-            CLERK USER ID del giocatore
+      {/* Inline player row */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)' }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: 'var(--r)',
+            background: 'var(--bg-card)', border: '1px solid var(--border-leather)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 600,
+            color: currentUserId ? 'var(--gold)' : 'var(--fg-3)',
+          }}>
+            {currentUserId ? currentUserId.slice(0, 1).toUpperCase() : '?'}
           </div>
-          <div className="flex gap-2">
-            <input
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              placeholder="email@gmail.com"
-              style={{ flex: 1, backgroundColor: '#221c14', border: '1px solid #5a4020', color: '#e8d5a3', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', padding: '4px 8px', outline: 'none' }}
-            />
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', letterSpacing: '.06em', color: currentUserId ? 'var(--fg-1)' : 'var(--fg-3)' }}>
+            {currentUserId ? 'Giocatore assegnato' : 'Nessun giocatore'}
+          </span>
+        </div>
+        <button
+          onClick={() => currentUserId ? handleRemove() : setOpen(o => !o)}
+          disabled={loading}
+          style={{ ...btnSm, opacity: loading ? 0.4 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
+          {loading ? '…' : currentUserId ? 'Rimuovi' : 'Assegna'}
+        </button>
+      </div>
+
+      {/* Inline email form */}
+      {open && !currentUserId && (
+        <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <input
+            value={input} onChange={e => setInput(e.target.value)}
+            placeholder="email@gmail.com"
+            style={{
+              height: 32, padding: '0 var(--sp-1)', borderRadius: 'var(--r)',
+              border: '1px solid var(--border-leather)', background: 'var(--bg-card)',
+              color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '11px',
+              outline: 'none', width: '100%',
+            }}
+          />
+          <div style={{ display: 'flex', gap: 6 }}>
             <button onClick={handleAssign} disabled={loading || !input.trim()}
-              style={{ border: '1px solid #c8922a', color: '#c8922a', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.75rem', padding: '4px 12px', cursor: 'pointer' }}>
+              style={{ ...btnSm, flex: 1, height: 28, color: 'var(--gold)', borderColor: 'rgba(184,134,11,.35)', opacity: (loading || !input.trim()) ? 0.4 : 1 }}>
               {loading ? '…' : 'Salva'}
             </button>
-            <button onClick={() => setOpen(false)}
-              style={{ border: '1px solid #5a4020', color: '#6a5040', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.75rem', padding: '4px 8px', cursor: 'pointer' }}>
-              ✕
-            </button>
+            <button onClick={() => setOpen(false)} style={{ ...btnSm, height: 28 }}>✕</button>
           </div>
-          <p style={{ color: '#5a4020', fontFamily: 'Crimson Text, serif', fontSize: '0.75rem', marginTop: 6, fontStyle: 'italic' }}>
-            Inserisci l'email Google del giocatore
-          </p>
         </div>
       )}
     </div>

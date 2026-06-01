@@ -74,18 +74,18 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
   return (
     <div>
       <h2 className="mb-1">Razza</h2>
-      <p className="text-sm mb-6" style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontStyle: 'italic' }}>
+      <p className="text-sm mb-6" style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontStyle: 'italic' }}>
         La razza definisce i bonus alle caratteristiche e i tratti innati del personaggio.
       </p>
 
       {/* Dropdown razza */}
       <div className="mb-5">
-        <label style={{ display: 'block', fontSize: '0.75rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em', marginBottom: '4px' }}>
+        <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.05em', marginBottom: '4px' }}>
           Razza *
         </label>
         <select value={data.race}
           onChange={e => { update({ race: e.target.value, subrace: '' }); setSubraceKey(''); setChoiceKeys([]); }}
-          style={{ backgroundColor: '#2a2018', border: 'none', borderBottom: '1px solid #5a4020', color: '#e8d5a3', outline: 'none', fontFamily: 'Crimson Text, serif', fontSize: '1rem', width: '100%', padding: '4px 2px', cursor: 'pointer' }}>
+          style={{ backgroundColor: 'var(--bg-card)', border: 'none', borderBottom: '1px solid var(--border-leather-dim)', color: 'var(--fg-1)', outline: 'none', fontFamily: 'var(--font-body)', fontSize: '1rem', width: '100%', padding: '4px 2px', cursor: 'pointer' }}>
           <option value="">— Scegli una razza —</option>
           {RACES.map(r => <option key={r.key} value={r.key}>{r.name}</option>)}
         </select>
@@ -94,11 +94,11 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
       {race && (
         <>
           {/* Descrizione + velocità */}
-          <div className="mb-4 p-3" style={{ backgroundColor: '#2a2018', border: '1px solid #5a4020' }}>
-            <p style={{ color: '#e8d5a3', fontFamily: 'IM Fell English, serif', fontStyle: 'italic', marginBottom: '8px' }}>
+          <div className="mb-4 p-3" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather-dim)' }}>
+            <p style={{ color: 'var(--fg-1)', fontFamily: 'var(--font-body)', fontStyle: 'italic', marginBottom: '8px' }}>
               {race.description}
             </p>
-            <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
+            <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem' }}>
               Velocità: {race.speed}m &nbsp;·&nbsp; Tratti: {race.traits.join(', ')}
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
           {/* Sottorazza */}
           {hasSubraces && (
             <div className="mb-5">
-              <label style={{ display: 'block', fontSize: '0.75rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em', marginBottom: '8px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.05em', marginBottom: '8px' }}>
                 Sottorazza *
               </label>
               <div className="space-y-2">
@@ -114,14 +114,14 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
                   <button key={sub.key} onClick={() => setSubraceKey(sub.key)}
                     style={{
                       display: 'block', width: '100%', textAlign: 'left', padding: '12px',
-                      border: `1px solid ${subraceKey === sub.key ? '#c8922a' : '#5a4020'}`,
-                      backgroundColor: subraceKey === sub.key ? '#2a2010' : '#1e1810',
+                      border: `1px solid ${subraceKey === sub.key ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
+                      backgroundColor: subraceKey === sub.key ? 'rgba(184,134,11,0.08)' : 'var(--bg-deep)',
                       cursor: 'pointer',
                     }}>
-                    <div style={{ fontFamily: 'Cinzel, serif', color: subraceKey === sub.key ? '#c8922a' : '#e8d5a3', marginBottom: '4px' }}>
+                    <div style={{ fontFamily: 'var(--font-label)', color: subraceKey === sub.key ? 'var(--gold)' : 'var(--fg-1)', marginBottom: '4px' }}>
                       {subraceKey === sub.key ? '◆ ' : '◇ '}{sub.name}
                     </div>
-                    <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem' }}>
+                    <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-body)', fontSize: '0.85rem' }}>
                       {Object.entries(sub.bonus.bonuses).map(([k, v]) => `+${v} ${ABILITY_SHORT[k as StatKey]}`).join(', ')}
                       {sub.traits && ` · ${sub.traits.join(', ')}`}
                     </div>
@@ -134,7 +134,7 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
           {/* Scelta caratteristiche */}
           {needsChoice && (
             <div className="mb-5">
-              <p style={{ fontSize: '0.75rem', color: '#a08060', fontFamily: 'Cinzel, serif', letterSpacing: '0.05em', marginBottom: '8px' }}>
+              <p style={{ fontSize: '0.75rem', color: 'var(--fg-2)', fontFamily: 'var(--font-label)', letterSpacing: '0.05em', marginBottom: '8px' }}>
                 SCEGLI {choiceCount} CARATTERISTICHE (+1 ciascuna)
                 {isHalfElf && ' — escluso Carisma (già +2)'}
                 &nbsp;·&nbsp; {choiceKeys.length}/{choiceCount} selezionate
@@ -147,12 +147,12 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
                   return (
                     <button key={stat} onClick={() => !isDisabled && toggleChoice(stat)} disabled={isDisabled}
                       style={{
-                        padding: '8px', border: `1px solid ${isSelected ? '#c8922a' : '#5a4020'}`,
-                        backgroundColor: isSelected ? '#2a2010' : isDisabled ? '#1a1410' : '#2a2018',
-                        color: isDisabled ? '#3a3020' : '#e8d5a3', cursor: isDisabled ? 'not-allowed' : 'pointer',
-                        fontFamily: 'Cinzel, serif', fontSize: '0.8rem', textAlign: 'center',
+                        padding: '8px', border: `1px solid ${isSelected ? 'var(--gold)' : 'var(--border-leather-dim)'}`,
+                        backgroundColor: isSelected ? 'rgba(184,134,11,0.08)' : isDisabled ? 'var(--bg-deep)' : 'var(--bg-card)',
+                        color: isDisabled ? 'var(--border-leather)' : 'var(--fg-1)', cursor: isDisabled ? 'not-allowed' : 'pointer',
+                        fontFamily: 'var(--font-label)', fontSize: '0.8rem', textAlign: 'center',
                       }}>
-                      <div style={{ fontSize: '0.6rem', color: '#a08060' }}>{ABILITY_SHORT[stat]}</div>
+                      <div style={{ fontSize: '0.6rem', color: 'var(--fg-2)' }}>{ABILITY_SHORT[stat]}</div>
                       <div>{ABILITY_NAMES[stat]}</div>
                     </button>
                   );
@@ -163,13 +163,13 @@ export default function StepRace({ data, update, onNext, onBack }: Props) {
 
           {/* Riepilogo bonus */}
           {getBonusDisplay()!.length > 0 && (
-            <div className="p-3" style={{ backgroundColor: '#2a2010', border: '1px solid #5a4020' }}>
-              <div style={{ color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', letterSpacing: '0.08em', marginBottom: '6px' }}>
+            <div className="p-3" style={{ backgroundColor: 'rgba(184,134,11,0.08)', border: '1px solid var(--border-leather-dim)' }}>
+              <div style={{ color: 'var(--fg-2)', fontFamily: 'var(--font-label)', fontSize: '0.65rem', letterSpacing: '0.08em', marginBottom: '6px' }}>
                 BONUS RAZZIALI
               </div>
               <div className="flex flex-wrap gap-2">
                 {getBonusDisplay()!.map((b, i) => (
-                  <span key={i} style={{ border: '1px solid #c8922a', color: '#c8922a', padding: '2px 8px', fontFamily: 'Cinzel, serif', fontSize: '0.8rem' }}>
+                  <span key={i} style={{ border: '1px solid var(--gold)', color: 'var(--gold)', padding: '2px 8px', fontFamily: 'var(--font-label)', fontSize: '0.8rem' }}>
                     {b}
                   </span>
                 ))}

@@ -8,9 +8,10 @@ const ROLE_LABELS: Record<string, string> = {
   superadmin: 'Super Admin', dm: 'DM', player: 'Giocatore',
   pending_dm: 'In attesa (DM)', rejected: 'Rifiutato', pending: 'In attesa',
 };
-const ROLE_COLORS: Record<string, string> = {
-  superadmin: '#c8922a', dm: '#4a7c4e', player: '#4e6a8c',
-  pending_dm: '#8a7a2a', rejected: '#8b2020', pending: '#6a5040',
+
+const ROLE_BADGE: Record<string, string> = {
+  superadmin: 'badge-gold', dm: 'badge-info', player: 'badge-default',
+  pending_dm: 'badge-warning', rejected: 'badge-danger', pending: 'badge-default',
 };
 
 export default function AdminPanel({ users }: { users: User[] }) {
@@ -45,52 +46,62 @@ export default function AdminPanel({ users }: { users: User[] }) {
     setLoading(null);
   }
 
-  const Tab = ({ id, label, count }: { id: 'requests' | 'users'; label: string; count?: number }) => (
-    <button onClick={() => setTab(id)} style={{
-      border: 'none', borderBottom: `2px solid ${tab === id ? '#c8922a' : 'transparent'}`,
-      backgroundColor: 'transparent', color: tab === id ? '#c8922a' : '#6a5040',
-      fontFamily: 'Cinzel, serif', fontSize: '0.75rem', padding: '8px 16px', cursor: 'pointer',
-    }}>
-      {label}{count !== undefined && count > 0 && <span style={{ marginLeft: 6, backgroundColor: '#8b2020', color: '#fff', borderRadius: '50%', padding: '1px 6px', fontSize: '0.6rem' }}>{count}</span>}
-    </button>
-  );
-
   return (
     <div>
-      <div style={{ borderBottom: '1px solid #3a3020', marginBottom: 24 }}>
-        <Tab id="requests" label="Richieste DM" count={pendingDms.length} />
-        <Tab id="users" label="Tutti gli utenti" />
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--border-leather)', marginBottom: 32 }}>
+        {([
+          { id: 'requests' as const, label: 'Richieste DM', count: pendingDms.length },
+          { id: 'users' as const, label: 'Tutti gli utenti' },
+        ]).map(({ id, label, count }) => (
+          <button key={id} onClick={() => setTab(id)} style={{
+            fontFamily: 'var(--font-label)', fontSize: '8px', letterSpacing: '0.4em', textTransform: 'uppercase',
+            padding: '10px 20px', border: 'none', borderBottom: `2px solid ${tab === id ? 'var(--gold)' : 'transparent'}`,
+            backgroundColor: 'transparent', color: tab === id ? 'var(--gold)' : 'var(--fg-3)', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: 8,
+          }}>
+            {label}
+            {count !== undefined && count > 0 && (
+              <span style={{ backgroundColor: 'var(--danger)', color: 'var(--fg-1)', borderRadius: '50%', padding: '1px 6px', fontSize: '7px' }}>
+                {count}
+              </span>
+            )}
+          </button>
+        ))}
       </div>
 
+      {/* Richieste DM */}
       {tab === 'requests' && (
-        <div className="space-y-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {pendingDms.length === 0 && (
-            <p style={{ color: '#6a5040', fontFamily: 'Crimson Text, serif', fontStyle: 'italic', fontSize: '0.9rem' }}>
+            <p style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontStyle: 'italic', fontSize: '0.95rem' }}>
               Nessuna richiesta pendente.
             </p>
           )}
           {pendingDms.map(u => (
-            <div key={u.id} style={{ border: '1px solid #5a4020', backgroundColor: '#221c14', padding: '16px 20px' }}>
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3', fontSize: '0.9rem' }}>{u.name || u.email}</div>
-                  <div style={{ color: '#6a5040', fontFamily: 'Crimson Text, serif', fontSize: '0.8rem' }}>{u.email}</div>
+            <div key={u.id} className="card" style={{ padding: 24 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.9rem', fontWeight: 700, color: 'var(--fg-1)', marginBottom: 4 }}>
+                    {u.name || u.email}
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontSize: '0.8rem', fontStyle: 'italic', marginBottom: 12 }}>
+                    {u.email}
+                  </div>
                   {u.dmNote && (
-                    <div style={{ color: '#a08060', fontFamily: 'Crimson Text, serif', fontSize: '0.85rem', fontStyle: 'italic', marginTop: 8, padding: '8px 12px', border: '1px solid #3a3020', backgroundColor: '#1a1410' }}>
+                    <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-2)', fontSize: '0.9rem', fontStyle: 'italic', lineHeight: 1.65, padding: '12px 16px', backgroundColor: 'var(--bg-card)', borderLeft: '2px solid var(--gold)', marginBottom: 8 }}>
                       "{u.dmNote}"
                     </div>
                   )}
-                  <div style={{ color: '#5a4020', fontFamily: 'Cinzel, serif', fontSize: '0.6rem', marginTop: 6 }}>
-                    {new Date(u.createdAt).toLocaleDateString('it-IT')}
-                  </div>
+                  <div className="label" style={{ marginTop: 8 }}>{new Date(u.createdAt).toLocaleDateString('it-IT')}</div>
                 </div>
-                <div className="flex gap-2 flex-shrink-0">
-                  <button onClick={() => handleApprove(u.id)} disabled={!!loading}
-                    style={{ border: '1px solid #4a7c4e', color: '#4a7c4e', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', padding: '6px 14px', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                  <button onClick={() => handleApprove(u.id)} disabled={!!loading} className="btn btn-ghost"
+                    style={{ padding: '6px 14px', color: 'var(--fg-1)', borderColor: 'var(--info)' }}>
                     {loading === u.id + '_approve' ? '…' : '✓ Approva'}
                   </button>
-                  <button onClick={() => handleReject(u.id)} disabled={!!loading}
-                    style={{ border: '1px solid #8b2020', color: '#8b2020', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.7rem', padding: '6px 14px', cursor: 'pointer' }}>
+                  <button onClick={() => handleReject(u.id)} disabled={!!loading} className="btn btn-ghost"
+                    style={{ padding: '6px 14px', color: 'var(--fg-1)', borderColor: 'var(--danger)' }}>
                     {loading === u.id + '_reject' ? '…' : '✕ Rifiuta'}
                   </button>
                 </div>
@@ -100,21 +111,33 @@ export default function AdminPanel({ users }: { users: User[] }) {
         </div>
       )}
 
+      {/* Tutti gli utenti */}
       {tab === 'users' && (
-        <div className="space-y-2">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {others.map(u => (
-            <div key={u.id} className="flex items-center justify-between" style={{ border: '1px solid #3a3020', backgroundColor: '#1e1810', padding: '12px 16px' }}>
-              <div>
-                <div style={{ fontFamily: 'Cinzel, serif', color: '#e8d5a3', fontSize: '0.85rem' }}>{u.name || u.email}</div>
-                <div style={{ color: '#6a5040', fontFamily: 'Crimson Text, serif', fontSize: '0.75rem' }}>{u.email}</div>
+            <div key={u.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '14px 20px', backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-1)', fontSize: '0.9rem', marginBottom: 2 }}>
+                  {u.name || u.email}
+                </div>
+                <div style={{ fontFamily: 'var(--font-body)', color: 'var(--fg-3)', fontSize: '0.8rem', fontStyle: 'italic' }}>
+                  {u.email}
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <span style={{ fontFamily: 'Cinzel, serif', fontSize: '0.65rem', color: ROLE_COLORS[u.role] ?? '#6a5040', border: `1px solid ${ROLE_COLORS[u.role] ?? '#6a5040'}`, padding: '2px 8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+                <span className={`badge ${ROLE_BADGE[u.role] ?? 'badge-default'}`}>
                   {ROLE_LABELS[u.role] ?? u.role}
                 </span>
                 {u.role !== 'superadmin' && (
-                  <select value={u.role} onChange={e => handleRoleChange(u.id, e.target.value as User['role'])}
-                    style={{ backgroundColor: '#1a1410', border: '1px solid #5a4020', color: '#a08060', fontFamily: 'Cinzel, serif', fontSize: '0.65rem', padding: '3px 6px', outline: 'none' }}>
+                  <select
+                    value={u.role}
+                    onChange={e => handleRoleChange(u.id, e.target.value as User['role'])}
+                    style={{
+                      backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)',
+                      color: 'var(--fg-2)', fontFamily: 'var(--font-label)',
+                      fontSize: '8px', letterSpacing: '0.3em', padding: '4px 8px', outline: 'none', cursor: 'pointer',
+                    }}
+                  >
                     <option value="dm">DM</option>
                     <option value="player">Giocatore</option>
                     <option value="pending">Pending</option>
@@ -123,7 +146,7 @@ export default function AdminPanel({ users }: { users: User[] }) {
                 )}
                 {u.role !== 'superadmin' && (
                   <button onClick={() => handleDelete(u.id, u.email)} disabled={!!loading}
-                    style={{ border: '1px solid #5a2020', color: '#6a3030', backgroundColor: 'transparent', fontFamily: 'Cinzel, serif', fontSize: '0.6rem', padding: '3px 8px', cursor: 'pointer' }}>
+                    className="btn btn-ghost" style={{ padding: '4px 10px', color: 'var(--fg-1)', borderColor: 'rgba(139,26,26,0.4)', fontSize: '8px' }}>
                     🗑
                   </button>
                 )}
