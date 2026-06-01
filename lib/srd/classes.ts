@@ -216,3 +216,32 @@ export const CLASSES: DndClass[] = [
 export function getClass(key: string): DndClass | undefined {
   return CLASSES.find(c => c.key === key);
 }
+
+// ─── Sottoarchétipi che conferiscono la magia a classi melee ──────────────────
+// Chiave = classKey della classe base. spellList = chiave classe di cui usano la lista.
+export interface SpellcastingSubclass {
+  subclassName: string; // nome da confrontare con CharacterClass.subclass
+  spellList: string;    // classKey della lista incantesimi accessibile
+}
+
+export const SPELLCASTING_SUBCLASSES: Record<string, SpellcastingSubclass[]> = {
+  fighter: [{ subclassName: 'Cavaliere Occulto', spellList: 'wizard' }],
+  rogue:   [{ subclassName: 'Mistificatore Arcano', spellList: 'wizard' }],
+};
+
+// ─── Nomi degli archetipi comuni per ogni classe ─────────────────────────────
+// Usato solo per la UI; non esaustivo.
+export const COMMON_SUBCLASSES: Record<string, string[]> = {
+  barbarian: ['Araldo del Berserker', 'Araldo del Totemico', 'Araldo degli Antenati'],
+  bard:      ['Collegio della Conoscenza', 'Collegio del Valore'],
+  cleric:    ['Dominio della Vita', 'Dominio della Luce', 'Dominio degli Inganni', 'Dominio della Natura', 'Dominio delle Tempeste', 'Dominio della Conoscenza', 'Dominio della Guerra', 'Dominio della Morte'],
+  druid:     ['Cerchio della Terra', 'Cerchio della Luna'],
+  fighter:   ['Campione', 'Maestro di Battaglia', 'Cavaliere Occulto'],
+  monk:      ['Via della Mano Aperta', 'Via delle Ombre', 'Via dei Quattro Elementi'],
+  paladin:   ['Giuramento della Devozione', 'Giuramento degli Antichi', 'Giuramento della Vendetta'],
+  ranger:    ['Cacciatore', 'Signore della Bestia'],
+  rogue:     ['Ladro', 'Assassino', 'Mistificatore Arcano'],
+  sorcerer:  ['Discendenza del Drago', 'Anima Selvaggia'],
+  warlock:   ['Il Signore degli Archi', 'Il Grande Antico', 'Il Celestiale'],
+  wizard:    ['Tradizione dell\'Abiurazione', 'Tradizione dell\'Evocazione', 'Tradizione della Divinazione', 'Tradizione dell\'Ammaliamento', 'Tradizione dell\'Invocazione', 'Tradizione dell\'Illusione', 'Tradizione della Necromanzia', 'Tradizione della Trasmutazione'],
+};

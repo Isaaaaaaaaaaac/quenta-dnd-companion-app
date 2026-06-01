@@ -1,4 +1,8 @@
 import type { Config } from 'drizzle-kit';
+import { config } from 'dotenv';
+
+// Carica .env.local quando drizzle-kit gira fuori da Next.js
+config({ path: '.env.local' });
 
 const isTurso = !!process.env.TURSO_DATABASE_URL;
 

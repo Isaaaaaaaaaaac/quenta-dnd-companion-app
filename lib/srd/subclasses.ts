@@ -122,3 +122,125 @@ export function needsSubclass(classKey: string, level: number): boolean {
   const entry = getSubclassEntry(classKey);
   return entry !== null && level >= entry.unlockLevel;
 }
+
+// ─── DOMAIN / OATH SPELLS ────────────────────────────────────────────────────
+// Incantesimi sempre preparati (non contano verso il limite) per Chierico e Paladino.
+// SRD 5.1 ufficiale — si sbloccano a livelli 1, 3, 5, 7, 9 del personaggio.
+
+export interface DomainSpellEntry {
+  id: string;   // corrisponde a SrdSpell.id se presente nel DB, altrimenti ID descrittivo
+  name: string; // nome italiano
+}
+
+export interface DomainSpellTier {
+  minLevel: number; // livello minimo del personaggio per sbloccare (1 | 3 | 5 | 7 | 9)
+  spells: DomainSpellEntry[];
+}
+
+// Chierico — 7 domini SRD
+export const CLERIC_DOMAIN_SPELLS: Record<string, DomainSpellTier[]> = {
+  life: [
+    { minLevel: 1, spells: [{ id: 'benedizione', name: 'Benedizione' }, { id: 'cura-ferite', name: 'Cura Ferite' }] },
+    { minLevel: 3, spells: [{ id: 'restaurazione-minore', name: 'Restaurazione Minore' }, { id: 'arma-spirituale', name: 'Arma Spirituale' }] },
+    { minLevel: 5, spells: [{ id: 'faro-di-speranza', name: 'Faro di Speranza' }, { id: 'ravvivare', name: 'Ravvivare' }] },
+    { minLevel: 7, spells: [{ id: 'protezione-dalla-morte', name: 'Protezione dalla Morte' }, { id: 'guardiano-della-fede', name: 'Guardiano della Fede' }] },
+    { minLevel: 9, spells: [{ id: 'cura-ferite-di-massa', name: 'Cura Ferite di Massa' }, { id: 'resuscitare-i-morti', name: 'Resuscitare i Morti' }] },
+  ],
+  light: [
+    { minLevel: 1, spells: [{ id: 'mani-brucianti', name: 'Mani Brucianti' }, { id: 'fuoco-fatuo', name: 'Fuoco Fatuo' }] },
+    { minLevel: 3, spells: [{ id: 'sfera-di-fuoco-fiammeggiante', name: 'Sfera Fiammeggiante' }, { id: 'raggio-rovente', name: 'Raggio Rovente' }] },
+    { minLevel: 5, spells: [{ id: 'luce-del-giorno', name: 'Luce del Giorno' }, { id: 'palla-di-fuoco', name: 'Palla di Fuoco' }] },
+    { minLevel: 7, spells: [{ id: 'guardiano-della-fede', name: 'Guardiano della Fede' }, { id: 'muro-di-fuoco', name: 'Muro di Fuoco' }] },
+    { minLevel: 9, spells: [{ id: 'colpo-di-fiamma', name: 'Colpo di Fiamma' }, { id: 'scrutare', name: 'Scrutare' }] },
+  ],
+  trickery: [
+    { minLevel: 1, spells: [{ id: 'ammaliare-persone', name: 'Ammaliare Persone' }, { id: 'travestimento', name: 'Travestimento' }] },
+    { minLevel: 3, spells: [{ id: 'immagine-speculare', name: 'Immagine Speculare' }, { id: 'passare-senza-tracce', name: 'Passare Senza Tracce' }] },
+    { minLevel: 5, spells: [{ id: 'occhio-di-blink', name: 'Occhio di Blink' }, { id: 'dissolvere-magie', name: 'Dissolvere Magie' }] },
+    { minLevel: 7, spells: [{ id: 'porta-dimensionale', name: 'Porta Dimensionale' }, { id: 'polimorfismo', name: 'Polimorfismo' }] },
+    { minLevel: 9, spells: [{ id: 'dominare-persone', name: 'Dominare Persone' }, { id: 'modificare-ricordi', name: 'Modificare i Ricordi' }] },
+  ],
+  knowledge: [
+    { minLevel: 1, spells: [{ id: 'parola-di-comando', name: 'Parola di Comando' }, { id: 'identificare', name: 'Identificare' }] },
+    { minLevel: 3, spells: [{ id: 'augurio', name: 'Augurio' }, { id: 'suggestione', name: 'Suggestione' }] },
+    { minLevel: 5, spells: [{ id: 'non-rilevare', name: 'Non Rilevare' }, { id: 'parlare-con-i-morti', name: 'Parlare con i Morti' }] },
+    { minLevel: 7, spells: [{ id: 'occhio-arcano', name: 'Occhio Arcano' }, { id: 'confusione', name: 'Confusione' }] },
+    { minLevel: 9, spells: [{ id: 'leggende', name: 'Leggende' }, { id: 'scrutare', name: 'Scrutare' }] },
+  ],
+  nature: [
+    { minLevel: 1, spells: [{ id: 'amicizia-animali', name: 'Amicizia con gli Animali' }, { id: 'parlare-animali', name: 'Parlare con gli Animali' }] },
+    { minLevel: 3, spells: [{ id: 'scorza', name: 'Scorza' }, { id: 'crescita-spine', name: 'Crescita di Spine' }] },
+    { minLevel: 5, spells: [{ id: 'crescita-piante', name: 'Crescita delle Piante' }, { id: 'muro-di-vento', name: 'Muro di Vento' }] },
+    { minLevel: 7, spells: [{ id: 'dominare-bestie', name: 'Dominare le Bestie' }, { id: 'rovo-avvinghiante', name: 'Rovo Avvinghiante' }] },
+    { minLevel: 9, spells: [{ id: 'piaga-insetti', name: 'Piaga di Insetti' }, { id: 'camminare-alberi', name: 'Camminare tra gli Alberi' }] },
+  ],
+  tempest: [
+    { minLevel: 1, spells: [{ id: 'nube-di-nebbia', name: 'Nube di Nebbia' }, { id: 'onda-tonante', name: 'Onda Tonante' }] },
+    { minLevel: 3, spells: [{ id: 'raffica-di-vento', name: 'Raffica di Vento' }, { id: 'frantumare', name: 'Frantumare' }] },
+    { minLevel: 5, spells: [{ id: 'invocare-fulmini', name: 'Invocare Fulmini' }, { id: 'bufera-di-grandine', name: 'Bufera di Grandine' }] },
+    { minLevel: 7, spells: [{ id: 'controllo-acqua', name: 'Controllo dell\'Acqua' }, { id: 'tempesta-di-ghiaccio', name: 'Tempesta di Ghiaccio' }] },
+    { minLevel: 9, spells: [{ id: 'onda-distruttiva', name: 'Onda Distruttiva' }, { id: 'piaga-insetti', name: 'Piaga di Insetti' }] },
+  ],
+  war: [
+    { minLevel: 1, spells: [{ id: 'favore-divino', name: 'Favore Divino' }, { id: 'scudo-della-fede', name: 'Scudo della Fede' }] },
+    { minLevel: 3, spells: [{ id: 'arma-magica', name: 'Arma Magica' }, { id: 'arma-spirituale', name: 'Arma Spirituale' }] },
+    { minLevel: 5, spells: [{ id: 'mantello-del-crociato', name: 'Mantello del Crociato' }, { id: 'guardiani-spirituali', name: 'Guardiani Spirituali' }] },
+    { minLevel: 7, spells: [{ id: 'liberta-di-movimento', name: 'Libertà di Movimento' }, { id: 'pelle-sassosa', name: 'Pelle Sassosa' }] },
+    { minLevel: 9, spells: [{ id: 'colpo-di-fiamma', name: 'Colpo di Fiamma' }, { id: 'bloccare-mostro', name: 'Bloccare Mostro' }] },
+  ],
+};
+
+// Paladino — 3 giuramenti SRD
+export const PALADIN_OATH_SPELLS: Record<string, DomainSpellTier[]> = {
+  devotion: [
+    { minLevel: 3, spells: [{ id: 'protezione-bene-male', name: 'Protezione dal Bene e dal Male' }, { id: 'santuario', name: 'Santuario' }] },
+    { minLevel: 5, spells: [{ id: 'restaurazione-minore', name: 'Restaurazione Minore' }, { id: 'zona-della-verita', name: 'Zona della Verità' }] },
+    { minLevel: 9, spells: [{ id: 'faro-di-speranza', name: 'Faro di Speranza' }, { id: 'dissolvere-magie', name: 'Dissolvere Magie' }] },
+    { minLevel: 13, spells: [{ id: 'liberta-di-movimento', name: 'Libertà di Movimento' }, { id: 'guardiano-della-fede', name: 'Guardiano della Fede' }] },
+    { minLevel: 17, spells: [{ id: 'comunione', name: 'Comunione' }, { id: 'colpo-di-fiamma', name: 'Colpo di Fiamma' }] },
+  ],
+  ancients: [
+    { minLevel: 3, spells: [{ id: 'colpo-avvinghiante', name: 'Colpo Avvinghiante' }, { id: 'parlare-animali', name: 'Parlare con gli Animali' }] },
+    { minLevel: 5, spells: [{ id: 'raggio-di-luna', name: 'Raggio di Luna' }, { id: 'passo-fatato', name: 'Passo Fatato' }] },
+    { minLevel: 9, spells: [{ id: 'crescita-piante', name: 'Crescita delle Piante' }, { id: 'protezione-energia', name: 'Protezione dall\'Energia' }] },
+    { minLevel: 13, spells: [{ id: 'tempesta-di-ghiaccio', name: 'Tempesta di Ghiaccio' }, { id: 'pelle-sassosa', name: 'Pelle Sassosa' }] },
+    { minLevel: 17, spells: [{ id: 'comunione-natura', name: 'Comunione con la Natura' }, { id: 'camminare-alberi', name: 'Camminare tra gli Alberi' }] },
+  ],
+  vengeance: [
+    { minLevel: 3, spells: [{ id: 'anatema', name: 'Anatema' }, { id: 'segno-del-cacciatore', name: 'Segno del Cacciatore' }] },
+    { minLevel: 5, spells: [{ id: 'bloccare-persone', name: 'Bloccare Persone' }, { id: 'passo-fatato', name: 'Passo Fatato' }] },
+    { minLevel: 9, spells: [{ id: 'accelerare', name: 'Accelerare' }, { id: 'protezione-energia', name: 'Protezione dall\'Energia' }] },
+    { minLevel: 13, spells: [{ id: 'bando', name: 'Bando' }, { id: 'porta-dimensionale', name: 'Porta Dimensionale' }] },
+    { minLevel: 17, spells: [{ id: 'bloccare-mostro', name: 'Bloccare Mostro' }, { id: 'scrutare', name: 'Scrutare' }] },
+  ],
+};
+
+/**
+ * Restituisce gli incantesimi di dominio/giuramento accessibili al livello attuale.
+ * Questi incantesimi sono sempre preparati e non contano verso il limite.
+ */
+export function getDomainSpells(
+  classKey: string,
+  subclassKey: string | undefined,
+  charLevel: number,
+): DomainSpellEntry[] {
+  if (!subclassKey) return [];
+  const source =
+    classKey === 'cleric'  ? CLERIC_DOMAIN_SPELLS  :
+    classKey === 'paladin' ? PALADIN_OATH_SPELLS    : null;
+  if (!source) return [];
+  const tiers = source[subclassKey] ?? [];
+  return tiers
+    .filter(t => charLevel >= t.minLevel)
+    .flatMap(t => t.spells);
+}
+
+/** Verifica se un incantesimo è di dominio per un personaggio */
+export function isDomainSpell(
+  spellId: string,
+  classKey: string,
+  subclassKey: string | undefined,
+  charLevel: number,
+): boolean {
+  return getDomainSpells(classKey, subclassKey, charLevel).some(s => s.id === spellId);
+}

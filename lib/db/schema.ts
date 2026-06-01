@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, primaryKey, real } from 'drizzle-orm/sqlite-core';
 
 // ─── CAMPAGNE ──────────────────────────────────────────────────────────────
 
@@ -168,6 +168,10 @@ export interface InventoryItem {
   notes?: string;
   equipped?: boolean;
   equippedSlot?: string;
+  // Nuovi campi per il sistema di equipaggiamento
+  category?: 'Arma' | 'Armatura' | 'Scudo' | 'Magico' | 'Pergamena' | 'Pozione' | 'Comune' | 'Strumento' | 'Cavalcatura' | 'Consumabile';
+  srdKey?: string;    // chiave nel WEAPONS o ARMORS SRD (es. 'longsword', 'chain_mail')
+  attuned?: boolean;  // sintonia oggetto magico (max 3, distinto da equipped)
 }
 
 export interface CharacterWeapon {
@@ -221,6 +225,15 @@ export interface CharacterFeat {
   prerequisite?: string;
 }
 
+export interface PinnedFeature {
+  key: string;
+  type: 'class' | 'racial' | 'feat';
+  name: string;
+  description?: string;
+  resourceKey?: string;   // se presente → mostra in Col 2 con counter
+  resetType?: 'short' | 'long';
+}
+
 export interface KnownSpell {
   id: string;                // index SRD (es. "fireball")
   name: string;
@@ -229,6 +242,7 @@ export interface KnownSpell {
   ritual?: boolean;
   concentration?: boolean;
   school?: string;
+  sourceClass?: string;      // classKey che ha aggiunto questo incantesimo (per multiclasse)
 }
 
 export interface SkillProficiency {
@@ -304,7 +318,31 @@ export interface CharacterSheet {
 
   // Note DM private
   dmNotes?: string;
+
+  // Scelte tratti razziali (es. bonus caratteristiche, lingue, competenze)
+  racialChoices?: { traitKey: string; value: string | string[] }[];
+
+  // Feature pinnate — visibili direttamente sulla scheda
+  pinnedFeatures?: PinnedFeature[];
+
+  // Stato riposo (impostato dal DM, letto dal giocatore)
+  pendingRest?: 'short' | 'long' | null;
+
+  // Dadi Vita usati (tot disponibili = sum(class.level), tipo = CLASSES.hitDie)
+  hitDiceUsed?: number;
 }
+
+// ─── API USAGE TRACKING ───────────────────────────────────────────────────────
+export const apiUsageLogs = sqliteTable('api_usage_logs', {
+  id:          text('id').primaryKey(),
+  service:     text('service').notNull(),       // es. 'gemini_image'
+  characterId: text('character_id'),
+  userId:      text('user_id'),
+  costEur:     real('cost_eur').notNull().default(0.04), // costo stimato €
+  createdAt:   text('created_at').notNull(),
+});
+
+export type ApiUsageLog = typeof apiUsageLogs.$inferSelect;
 
 export type Character = typeof characters.$inferSelect;
 export type NewCharacter = typeof characters.$inferInsert;
