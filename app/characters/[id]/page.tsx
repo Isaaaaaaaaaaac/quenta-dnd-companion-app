@@ -389,6 +389,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
 
         {/* Tab navigation */}
         <SheetTabBar
+          characterId={char.id}
           combat={
             <div style={{ padding: 'var(--s-2)', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--s-2)', alignItems: 'start' }}>
 

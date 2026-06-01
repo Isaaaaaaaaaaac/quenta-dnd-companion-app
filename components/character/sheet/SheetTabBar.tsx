@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 type TabId = 'combat' | 'equipment' | 'spells' | 'bio';
 
@@ -12,23 +12,23 @@ const TABS: { id: TabId; label: string }[] = [
 ];
 
 interface Props {
+  characterId: string;
   combat: React.ReactNode;
   equipment: React.ReactNode;
   spells: React.ReactNode;
   bio: React.ReactNode;
 }
 
-export default function SheetTabBar({ combat, equipment, spells, bio }: Props) {
-  const [activeTab, setActiveTab] = useState<TabId>('combat');
-
-  useEffect(() => {
-    const saved = localStorage.getItem('quenta:sheet-tab') as TabId | null;
-    if (saved && TABS.some(t => t.id === saved)) setActiveTab(saved);
-  }, []);
+export default function SheetTabBar({ characterId, combat, equipment, spells, bio }: Props) {
+  const [activeTab, setActiveTab] = useState<TabId>(() => {
+    if (typeof window === 'undefined') return 'combat';
+    const saved = localStorage.getItem(`quenta:sheet-tab:${characterId}`) as TabId | null;
+    return saved && TABS.some(t => t.id === saved) ? saved : 'combat';
+  });
 
   function handleTab(id: TabId) {
     setActiveTab(id);
-    localStorage.setItem('quenta:sheet-tab', id);
+    localStorage.setItem(`quenta:sheet-tab:${characterId}`, id);
   }
 
   const panels: Record<TabId, React.ReactNode> = { combat, equipment, spells, bio };
