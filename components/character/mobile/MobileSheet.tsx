@@ -69,10 +69,10 @@ const SCHOOL_ABBR: Record<string, string> = {
 };
 
 const TABS: { id: Tab; icon: string; label: string }[] = [
-  { id: 'combat',    icon: '⚔',  label: 'Combat'  },
-  { id: 'equipment', icon: '🎒', label: 'Gear'    },
-  { id: 'spells',    icon: '✨', label: 'Magia'   },
-  { id: 'bio',       icon: '🧙', label: 'Bio'     },
+  { id: 'combat',    icon: '⚔',  label: 'Scontro'  },
+  { id: 'equipment', icon: '🎒', label: 'Oggetti'  },
+  { id: 'spells',    icon: '✨', label: 'Magia'    },
+  { id: 'bio',       icon: '🧙', label: 'Bio'      },
 ];
 
 const CARD: React.CSSProperties = {
@@ -113,7 +113,7 @@ function SB({ label, value }: { label: string; value: string | number }) {
 export default function MobileSheet({
   characterId, charName, classLabel,
   hpCurrent, hpMax, hpTemp, hpPct, hpColor,
-  level, xp: _xp, xpPct, canLevelUp, prof, hitDie: _hitDie,
+  level, xp: _xp, xpPct, canLevelUp, prof, hitDie,
   passPerc, spellDC, spellAtk,
   carriedKg, carryMax, carryPct, carryOverloaded,
   canCast, sheet, conditions, resources,
@@ -234,14 +234,14 @@ export default function MobileSheet({
                 <SB label="Velocità"   value={`${sheet.speed ?? 9}m`} />
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
-                <SB label="Bonus Comp."   value={`+${prof}`} />
-                <SB label="Perc. Passiva" value={passPerc} />
-                {spellDC !== null && (
-                  <>
-                    <SB label="CD Incant."   value={spellDC} />
-                    <SB label="Att. Incant." value={formatModifier(spellAtk!)} />
-                  </>
-                )}
+                {[
+                  ['Bonus Comp.',   `+${prof}`],
+                  ['Perc. Passiva', passPerc],
+                  ...(spellDC !== null ? [['CD Incant.', spellDC], ['Att. Incant.', formatModifier(spellAtk!)]] : []),
+                  ['Dado Vita', `d${hitDie}`],
+                ].map(([label, value]) => (
+                  <SB key={String(label)} label={String(label)} value={value} />
+                ))}
               </div>
             </div>
 
