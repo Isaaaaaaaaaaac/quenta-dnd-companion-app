@@ -2,15 +2,14 @@
    QUENTA — DESIGN SYSTEM v3.0 (cool-slate)
    globals.css · Tailwind v4 · @theme inline
 
-   FONT COMBO: Lora (display / H1–H3 / numeri grandi / flavor)
-               + Work Sans (body UI / H4–H6 / label / eyebrow / button)
+   FONT COMBO: Source Serif 4 (display / H1–H3 / numeri grandi / flavor)
+               + Public Sans (body UI / H4–H6 / label / eyebrow / button)
 
    COLORI: cool-slate backgrounds, sepia ink accents
    RADIUS: --r 5px / --r2 9px
    SPACING: grid 8px → --sp-1 8px … --sp-6 48px
 ───────────────────────────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 @import "tailwindcss";
 
 
@@ -128,10 +127,10 @@
   --hp-track:    #1D2025;
 
   /* ── Font ── */
-  --font-serif:   'Lora', Georgia, serif;
-  --font-sans:    'Work Sans', system-ui, sans-serif;
+  --font-serif:   'Source Serif 4', 'Bookmania', Georgia, serif;
+  --font-sans:    'Public Sans', 'Scala Sans', system-ui, sans-serif;
   --font-display: var(--font-serif);
-  --font-body:    var(--font-sans);
+  --font-body:    var(--font-serif);
   --font-label:   var(--font-sans);
 
   /* ── Radius ── */
@@ -205,7 +204,7 @@ body::before {
 }
 
 
-/* ─── HEADINGS — Lora per H1–H3, Work Sans per H4–H6 ─────────── */
+/* ─── HEADINGS — Source Serif 4 per H1–H3, Public Sans per H4–H6 ─ */
 h1 {
   font-family: var(--font-serif);
   font-size: 1.8rem;

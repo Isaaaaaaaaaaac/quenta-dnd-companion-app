@@ -4,6 +4,23 @@ import { auth, signOut } from '@/auth';
 import { getSessionUser } from '@/lib/auth-helpers';
 import NavLinks from '@/components/layout/NavLinks';
 import MobileNavDrawer from '@/components/layout/MobileNavDrawer';
+import { Source_Serif_4, Public_Sans } from 'next/font/google';
+
+const sourceSerif4 = Source_Serif_4({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
+  display: 'swap',
+});
+
+const publicSans = Public_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Quenta',
@@ -25,13 +42,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     .toUpperCase() ?? '?';
 
   return (
-    <html lang="it" className="h-full">
+    <html lang="it" className={`h-full ${sourceSerif4.variable} ${publicSans.variable}`}>
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         <header className="site-header">
 
           {/* Logo */}
           <a href={isDm ? '/' : '/my-character'} style={{ textDecoration: 'none' }}>
-            <span style={{ fontFamily: "'Lora', Georgia, serif", fontSize: '16px', fontWeight: 700, letterSpacing: '.12em', color: 'var(--gold)' }}>
+            <span style={{ fontFamily: "var(--font-serif)", fontSize: '16px', fontWeight: 700, letterSpacing: '.12em', color: 'var(--gold)' }}>
               QUENTA
             </span>
           </a>
@@ -43,7 +60,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             {session && (
               <>
                 <div style={{
-                  fontFamily: "'Work Sans', system-ui, sans-serif",
+                  fontFamily: "var(--font-sans)",
                   fontSize: '11px', fontWeight: 600,
                   background: 'var(--gold)', color: 'var(--bg-deep)',
                   padding: '0 8px', height: 32, lineHeight: '32px',
@@ -54,7 +71,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 </div>
                 <form action={async () => { 'use server'; await signOut({ redirectTo: '/sign-in' }); }}>
                   <button type="submit" style={{
-                    fontFamily: "'Work Sans', system-ui, sans-serif",
+                    fontFamily: "var(--font-sans)",
                     fontSize: '11px', fontWeight: 500, letterSpacing: '.04em',
                     color: 'var(--fg-2)', background: 'none',
                     border: '1px solid var(--border-leather)', padding: '0 8px',
@@ -85,7 +102,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                       border: '1px solid var(--border-leather)',
                       borderRadius: 'var(--r)', padding: '0 12px',
                       height: 36, cursor: 'pointer',
-                      fontFamily: "'Work Sans', system-ui, sans-serif",
+                      fontFamily: "var(--font-sans)",
                       fontSize: '12px', fontWeight: 500, letterSpacing: '.04em',
                       color: 'var(--fg-2)',
                     }}>
