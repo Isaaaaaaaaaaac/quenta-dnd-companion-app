@@ -18,10 +18,10 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
   return (
     <div style={{
       background: 'var(--bg-deep)', border: `1px solid ${isWarning ? 'rgba(139,26,26,.5)' : 'var(--border-leather-dim)'}`,
-      borderRadius: 'var(--r2)', padding: 'var(--sp-3)', marginBottom: 'var(--sp-4)',
+      borderRadius: 'var(--r2)', padding: 'var(--s-3)', marginBottom: 'var(--s-4)',
     }}>
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--sp-2)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s-2)' }}>
         <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase' }}>
           ✨ Utilizzo Gemini API — Generazione Ritratti
         </div>
@@ -33,7 +33,7 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
       </div>
 
       {/* Barra progresso budget */}
-      <div style={{ marginBottom: 'var(--sp-2)' }}>
+      <div style={{ marginBottom: 'var(--s-2)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)' }}>
             Budget utilizzato
@@ -51,13 +51,13 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
       </div>
 
       {/* Stats questo mese */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--sp-1)', marginBottom: 'var(--sp-2)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--s-1)', marginBottom: 'var(--s-2)' }}>
         {[
           { label: 'Questo mese', value: `${thisMonthCount} img` },
           { label: 'Costo mese', value: `€${thisMonthCost.toFixed(2)}` },
           { label: 'Costo medio/img', value: `€0.04` },
         ].map(({ label, value }) => (
-          <div key={label} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1)', textAlign: 'center' }}>
+          <div key={label} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
             <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.07em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 4 }}>{label}</div>
             <div style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 600, color: 'var(--fg-1)' }}>{value}</div>
           </div>
@@ -88,7 +88,7 @@ export default function ApiUsageWidget({ totalAllTime, thisMonthCost, thisMonthC
         </p>
       )}
 
-      <div style={{ marginTop: 'var(--sp-2)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-3)', lineHeight: 1.6 }}>
+      <div style={{ marginTop: 'var(--s-2)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-3)', lineHeight: 1.6 }}>
         * I costi sono stime basate su €0.04/immagine. Per dati esatti consulta{' '}
         <a href="https://aistudio.google.com/billing" target="_blank" rel="noreferrer" style={{ color: 'var(--gold)' }}>
           AI Studio Billing

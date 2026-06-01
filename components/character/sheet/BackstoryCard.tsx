@@ -49,18 +49,18 @@ export default function BackstoryCard({
         background: 'var(--bg-deep)',
         border: '1px solid var(--border-leather-dim)',
         borderRadius: 'var(--r2)',
-        padding: 'var(--sp-2)',
+        padding: 'var(--s-2)',
         display: 'flex',
         flexDirection: vertical ? 'column' : 'row',
-        gap: vertical ? 'var(--sp-2)' : 'var(--sp-3)',
+        gap: vertical ? 'var(--s-2)' : 'var(--s-3)',
       }}>
 
         {/* ── Sezione sinistra: Narrativa (1fr) ─────────────────── */}
         <div style={{ flex: '1 1 0', minWidth: 0 }}>
           {/* Header piccolo */}
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 'var(--sp-1)',
-            marginBottom: hasNarrative ? 'var(--sp-1)' : 0,
+            display: 'flex', alignItems: 'center', gap: 'var(--s-1)',
+            marginBottom: hasNarrative ? 'var(--s-1)' : 0,
           }}>
             <span style={{
               fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600,
@@ -75,14 +75,14 @@ export default function BackstoryCard({
             <div style={{
               display: 'grid',
               gridTemplateColumns: narrative.length > 1 ? '1fr 1fr' : '1fr',
-              gap: 'var(--sp-1)',
+              gap: 'var(--s-1)',
             }}>
               {narrative.map(({ label, icon, val }) => (
                 <div key={label} style={{
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border-leather)',
                   borderRadius: 'var(--r)',
-                  padding: '6px var(--sp-1)',
+                  padding: '6px var(--s-1)',
                 }}>
                   <span style={{
                     fontFamily: 'var(--font-sans)', fontSize: '7px', fontWeight: 600,
@@ -122,11 +122,11 @@ export default function BackstoryCard({
         {/* ── Sezione destra/basso: Backstory preview ───────────── */}
         <div style={{
           flex: vertical ? 'none' : '2 1 0', minWidth: 0,
-          display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)',
+          display: 'flex', flexDirection: 'column', gap: 'var(--s-1)',
         }}>
           {/* Header */}
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 'var(--sp-1)',
+            display: 'flex', alignItems: 'center', gap: 'var(--s-1)',
           }}>
             <span style={{
               fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600,
@@ -153,7 +153,7 @@ export default function BackstoryCard({
                 <button
                   onClick={() => setModalOpen(true)}
                   style={{
-                    height: 28, padding: '0 var(--sp-2)',
+                    height: 28, padding: '0 var(--s-2)',
                     fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600,
                     letterSpacing: '.06em',
                     color: 'var(--gold)', background: 'rgba(184,134,11,.07)',
@@ -188,7 +188,7 @@ export default function BackstoryCard({
             <div style={{
               flex: 1, display: 'flex', flexDirection: 'column',
               alignItems: 'flex-start', justifyContent: 'center',
-              gap: 'var(--sp-1)', padding: 'var(--sp-1) 0',
+              gap: 'var(--s-1)', padding: 'var(--s-1) 0',
             }}>
               <p style={{
                 fontFamily: 'var(--font-serif)', fontStyle: 'italic',
@@ -199,7 +199,7 @@ export default function BackstoryCard({
               <button
                 onClick={() => setModalOpen(true)}
                 style={{
-                  height: 28, padding: '0 var(--sp-2)',
+                  height: 28, padding: '0 var(--s-2)',
                   fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600,
                   letterSpacing: '.06em',
                   color: 'var(--arcane)', background: 'rgba(91,33,182,.07)',

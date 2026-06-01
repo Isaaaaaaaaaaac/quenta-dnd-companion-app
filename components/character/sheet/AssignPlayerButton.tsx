@@ -28,7 +28,7 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
   const btnSm: React.CSSProperties = {
     fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em',
     color: 'var(--fg-2)', background: 'none',
-    border: '1px solid var(--border-leather)', padding: '0 var(--sp-1)',
+    border: '1px solid var(--border-leather)', padding: '0 var(--s-1)',
     height: 24, borderRadius: 'var(--r)', cursor: 'pointer', transition: 'all .2s',
   };
 
@@ -36,7 +36,7 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
     <div>
       {/* Inline player row */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
           <div style={{
             width: 32, height: 32, borderRadius: 'var(--r)',
             background: 'var(--bg-card)', border: '1px solid var(--border-leather)',
@@ -65,7 +65,7 @@ export default function AssignPlayerButton({ characterId, currentUserId }: Props
             value={input} onChange={e => setInput(e.target.value)}
             placeholder="email@gmail.com"
             style={{
-              height: 32, padding: '0 var(--sp-1)', borderRadius: 'var(--r)',
+              height: 32, padding: '0 var(--s-1)', borderRadius: 'var(--r)',
               border: '1px solid var(--border-leather)', background: 'var(--bg-card)',
               color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '11px',
               outline: 'none', width: '100%',

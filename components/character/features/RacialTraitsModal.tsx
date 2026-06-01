@@ -83,7 +83,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
       <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', width: '100%', maxWidth: 960, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
         {/* Header */}
-        <div style={{ padding: 'var(--sp-2) var(--sp-2) var(--sp-1)', borderBottom: '1px solid var(--border-leather)', flexShrink: 0 }}>
+        <div style={{ padding: 'var(--s-2) var(--s-2) var(--s-1)', borderBottom: '1px solid var(--border-leather)', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase' }}>
@@ -96,7 +96,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
         </div>
 
         {/* Trait list */}
-        <div style={{ overflowY: 'auto', flex: 1, padding: 'var(--sp-2)' }}>
+        <div style={{ overflowY: 'auto', flex: 1, padding: 'var(--s-2)' }}>
           {visibleTraits.length === 0 && (
             <p style={{ padding: 24, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '13px', color: 'var(--fg-3)', textAlign: 'center' }}>
               Nessun tratto trovato per questa razza.
@@ -108,7 +108,7 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
             const currentVal = getChoice(trait.key);
 
             return (
-              <div key={trait.key} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-2)', marginBottom: 'var(--sp-1)' }}>
+              <div key={trait.key} style={{ background: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-2)', marginBottom: 'var(--s-1)' }}>
                 {/* Trait header */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                   {trait.choice && <span style={{ fontSize: 10 }}>⚡</span>}
@@ -235,12 +235,12 @@ export default function RacialTraitsModal({ characterId, raceKey, raceName, subr
 
         {/* Footer */}
         {hasChoices && (
-          <div style={{ padding: 'var(--sp-2)', borderTop: '1px solid var(--border-leather)', flexShrink: 0, display: 'flex', justifyContent: 'flex-end', gap: 'var(--sp-1)' }}>
-            <button onClick={onClose} style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', padding: '0 var(--sp-2)', height: 36, borderRadius: 'var(--r)', cursor: 'pointer' }}>
+          <div style={{ padding: 'var(--s-2)', borderTop: '1px solid var(--border-leather)', flexShrink: 0, display: 'flex', justifyContent: 'flex-end', gap: 'var(--s-1)' }}>
+            <button onClick={onClose} style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)', background: 'none', border: '1px solid var(--border-leather)', padding: '0 var(--s-2)', height: 36, borderRadius: 'var(--r)', cursor: 'pointer' }}>
               Annulla
             </button>
             <button onClick={handleSave} disabled={isPending}
-              style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', fontWeight: 600, color: 'var(--bg-deep)', background: 'var(--gold)', border: 'none', padding: '0 var(--sp-3)', height: 36, borderRadius: 'var(--r)', cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.5 : 1 }}>
+              style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', fontWeight: 600, color: 'var(--bg-deep)', background: 'var(--gold)', border: 'none', padding: '0 var(--s-3)', height: 36, borderRadius: 'var(--r)', cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.5 : 1 }}>
               {isPending ? 'Salvataggio…' : 'Salva Scelte'}
             </button>
           </div>

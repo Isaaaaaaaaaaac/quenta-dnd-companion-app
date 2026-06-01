@@ -11,7 +11,7 @@ export default function ConditionBadge({ conditionId, characterId, name, icon }:
       title={`Rimuovi: ${name}`}
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 6,
-        padding: '0 var(--sp-1)', height: 24,
+        padding: '0 var(--s-1)', height: 24,
         fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
         border: '1px solid rgba(139,26,26,.5)', color: '#fca5a5',
         background: 'rgba(139,26,26,.08)', borderRadius: 'var(--r)',

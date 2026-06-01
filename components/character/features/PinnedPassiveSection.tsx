@@ -29,7 +29,7 @@ export default function PinnedPassiveSection({ features }: Props) {
               onClick={() => setExpanded(isOpen ? null : id)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 6,
-                padding: '3px var(--sp-1)', borderRadius: 'var(--r)',
+                padding: '3px var(--s-1)', borderRadius: 'var(--r)',
                 cursor: f.description ? 'pointer' : 'default',
                 transition: 'background .15s',
               }}

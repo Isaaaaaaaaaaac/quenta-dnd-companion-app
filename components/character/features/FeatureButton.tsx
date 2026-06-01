@@ -44,7 +44,7 @@ export default function FeatureButton({
         onClick={() => setOpen(true)}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '0 var(--sp-1)', height: 32,
+          padding: '0 var(--s-1)', height: 32,
           border: '1px solid var(--border-leather)', borderRadius: 'var(--r)',
           cursor: 'pointer', transition: 'all .2s',
         }}
@@ -52,7 +52,7 @@ export default function FeatureButton({
         onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-leather)'; e.currentTarget.style.background = 'transparent'; }}
       >
         <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)' }}>{label}</span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
           {count !== null && (
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 600, color: 'var(--gold)' }}>{count}</span>
           )}

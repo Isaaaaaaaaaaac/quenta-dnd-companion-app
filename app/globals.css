@@ -7,7 +7,7 @@
 
    COLORI: cool-slate backgrounds, sepia ink accents
    RADIUS: --r 5px / --r2 9px
-   SPACING: grid 8px → --sp-1 8px … --sp-6 48px
+   SPACING: griglia 8px → --s-1 8px … --s-11 120px
 ───────────────────────────────────────────────────────────────── */
 
 @import "tailwindcss";
@@ -59,11 +59,17 @@
   --radius-md: var(--r2);
 
   /* Spacing */
-  --spacing-1: var(--sp-1);
-  --spacing-2: var(--sp-2);
-  --spacing-3: var(--sp-3);
-  --spacing-4: var(--sp-4);
-  --spacing-6: var(--sp-6);
+  --spacing-1:  var(--s-1);
+  --spacing-2:  var(--s-2);
+  --spacing-3:  var(--s-3);
+  --spacing-4:  var(--s-4);
+  --spacing-5:  var(--s-5);
+  --spacing-6:  var(--s-6);
+  --spacing-7:  var(--s-7);
+  --spacing-8:  var(--s-8);
+  --spacing-9:  var(--s-9);
+  --spacing-10: var(--s-10);
+  --spacing-11: var(--s-11);
 
   /* Shadows */
   --shadow-card:     var(--shadow-card);
@@ -137,12 +143,23 @@
   --r:  5px;
   --r2: 9px;
 
-  /* ── Spacing ── */
-  --sp-1: 8px;
-  --sp-2: 16px;
-  --sp-3: 24px;
-  --sp-4: 32px;
-  --sp-6: 48px;
+  /* ── Spacing — griglia 8px (11 step) ── */
+  --s-1:  8px;
+  --s-2:  16px;
+  --s-3:  24px;
+  --s-4:  32px;
+  --s-5:  40px;
+  --s-6:  48px;
+  --s-7:  56px;
+  --s-8:  64px;
+  --s-9:  80px;
+  --s-10: 96px;
+  --s-11: 120px;
+
+  /* ── Button heights ── */
+  --btn-compact: 32px;
+  --btn-default: 40px;
+  --btn-touch:   44px;
 
   /* ── Shadows ── */
   --shadow-card:     0 2px 4px rgba(0,0,0,.5), 0 6px 18px rgba(0,0,0,.55);
@@ -325,7 +342,7 @@ button {
   .divider {
     display: flex;
     align-items: center;
-    gap: var(--sp-1);
+    gap: var(--s-1);
     color: var(--fg-3);
   }
   .divider::before, .divider::after {
@@ -411,7 +428,7 @@ button {
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 0 var(--sp-3);
+    padding: 0 var(--s-3);
     height: 40px;
     border: 1px solid;
     cursor: pointer;
@@ -485,7 +502,7 @@ button {
     text-transform: uppercase;
     color: var(--fg-3);
     display: block;
-    margin-bottom: var(--sp-1);
+    margin-bottom: var(--s-1);
   }
 
   .field-input {
@@ -495,7 +512,7 @@ button {
     color: var(--fg-1);
     font-family: var(--font-sans);
     font-size: 0.95rem;
-    padding: var(--sp-1) var(--sp-1);
+    padding: var(--s-1) var(--s-1);
     outline: none;
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     border-radius: var(--r);
@@ -523,7 +540,7 @@ button {
     font-size: 12px;
     color: var(--danger);
     font-style: italic;
-    margin-top: var(--sp-1);
+    margin-top: var(--s-1);
   }
 
   /* ── Badges ── */
@@ -550,10 +567,10 @@ button {
   /* ── Callout ── */
   .callout {
     border-left: 2px solid;
-    padding: var(--sp-2);
+    padding: var(--s-2);
     border-radius: 0 var(--r) var(--r) 0;
     display: flex;
-    gap: var(--sp-2);
+    gap: var(--s-2);
     align-items: flex-start;
   }
   .callout-icon { font-size: 14px; margin-top: 2px; flex-shrink: 0; }
@@ -592,7 +609,7 @@ button {
     transition: border-color var(--transition-fast);
   }
   .card:hover { border-color: var(--gold-dim); }
-  .card-body  { padding: var(--sp-4); }
+  .card-body  { padding: var(--s-4); }
 
   /* ── HP bar ── */
   .hp-bar-track {
@@ -637,7 +654,7 @@ button {
 .modal-grid-2col {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--sp-1);
+  gap: var(--s-1);
   align-items: start;
 }
 .talenti-body     { display: flex; flex: 1; overflow: hidden; }

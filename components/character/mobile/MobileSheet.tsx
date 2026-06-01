@@ -80,8 +80,8 @@ const CARD: React.CSSProperties = {
   background: 'var(--bg-deep)',
   border: '1px solid var(--border-leather-dim)',
   borderRadius: 'var(--r2)',
-  padding: 'var(--sp-2)',
-  marginBottom: 'var(--sp-2)',
+  padding: 'var(--s-2)',
+  marginBottom: 'var(--s-2)',
 };
 
 // ─── helpers ──────────────────────────────────────────────────
@@ -91,8 +91,8 @@ function SH({ children }: { children: React.ReactNode }) {
     <div style={{
       fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600,
       letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase',
-      display: 'flex', alignItems: 'center', gap: 'var(--sp-1)',
-      marginBottom: 'var(--sp-1)',
+      display: 'flex', alignItems: 'center', gap: 'var(--s-1)',
+      marginBottom: 'var(--s-1)',
     }}>
       {children}
       <span style={{ flex: 1, height: .5, background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
@@ -102,7 +102,7 @@ function SH({ children }: { children: React.ReactNode }) {
 
 function SB({ label, value }: { label: string; value: string | number }) {
   return (
-    <div style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1)', textAlign: 'center' }}>
+    <div style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{label}</span>
       <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)', display: 'block' }}>{value}</span>
     </div>
@@ -144,8 +144,8 @@ export default function MobileSheet({
 
       {/* ── Mini header ─────────────────────────────────────── */}
       <div style={{
-        display: 'flex', alignItems: 'center', gap: 'var(--sp-2)',
-        height: 64, padding: '0 var(--sp-2)',
+        display: 'flex', alignItems: 'center', gap: 'var(--s-2)',
+        height: 64, padding: '0 var(--s-2)',
         background: 'var(--bg-deep)',
         borderBottom: '1px solid var(--border-leather-dim)',
         flexShrink: 0,
@@ -192,13 +192,13 @@ export default function MobileSheet({
       {/* ── Content area ─────────────────────────────────────── */}
       <div style={{
         flex: 1, overflowY: 'auto',
-        padding: 'var(--sp-2)',
+        padding: 'var(--s-2)',
         paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
       }}>
 
         {/* Pending rest banner — sempre visibile al giocatore */}
         {!isDm && sheet.pendingRest && (
-          <div style={{ marginBottom: 'var(--sp-2)' }}>
+          <div style={{ marginBottom: 'var(--s-2)' }}>
             <PendingRestBanner
               characterId={characterId}
               pendingRest={sheet.pendingRest}
@@ -221,12 +221,12 @@ export default function MobileSheet({
             {/* Statistiche di combattimento */}
             <div style={CARD}>
               <SH>Statistiche</SH>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--sp-1)', marginBottom: 'var(--sp-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
                 <SB label="C.A."       value={sheet.armorClass ?? (10 + abilityModifier(stats.dex))} />
                 <SB label="Iniziativa" value={formatModifier(abilityModifier(stats.dex) + (sheet.initiativeBonus ?? 0))} />
                 <SB label="Velocità"   value={`${sheet.speed ?? 9}m`} />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
                 <SB label="Bonus Comp."   value={`+${prof}`} />
                 <SB label="Perc. Passiva" value={passPerc} />
                 {spellDC !== null && (
@@ -241,7 +241,7 @@ export default function MobileSheet({
             {/* HP */}
             <div style={CARD}>
               <SH>Punti Ferita</SH>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--sp-1)', marginBottom: 'var(--sp-1)' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
                 <span style={{ fontFamily: 'var(--font-serif)', fontSize: '52px', fontWeight: 700, lineHeight: 1, color: hpColor, transition: 'color .4s' }}>
                   {hpCurrent}
                 </span>
@@ -249,18 +249,18 @@ export default function MobileSheet({
                   / {hpMax} max{hpTemp > 0 ? ` (+${hpTemp} temp)` : ''}
                 </span>
               </div>
-              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden', marginBottom: 'var(--sp-1)' }}>
+              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden', marginBottom: 'var(--s-1)' }}>
                 <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpColor, borderRadius: 2, transition: 'width .5s ease, background .6s' }} />
               </div>
               <HpControls characterId={characterId} hpCurrent={hpCurrent} hpMax={hpMax} />
-              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginTop: 'var(--sp-1)' }}>
+              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginTop: 'var(--s-1)' }}>
                 Dado Vita{' '}
                 <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '12px', color: 'var(--fg-1)' }}>
                   d{hitDie} × {level}
                 </strong>
               </div>
               {hpCurrent === 0 && (
-                <div style={{ marginTop: 'var(--sp-1)', paddingTop: 'var(--sp-1)', borderTop: '1px solid rgba(139,26,26,0.4)' }}>
+                <div style={{ marginTop: 'var(--s-1)', paddingTop: 'var(--s-1)', borderTop: '1px solid rgba(139,26,26,0.4)' }}>
                   <DeathSavesTracker characterId={characterId} sheet={sheet} />
                 </div>
               )}
@@ -268,7 +268,7 @@ export default function MobileSheet({
 
             {/* Risorse Attive */}
             {pinnedActive.length > 0 && (
-              <div style={{ marginBottom: 'var(--sp-2)' }}>
+              <div style={{ marginBottom: 'var(--s-2)' }}>
                 <PinnedActiveResources characterId={characterId} features={pinnedActive} resources={resources} />
               </div>
             )}
@@ -276,7 +276,7 @@ export default function MobileSheet({
             {/* Condizioni */}
             <div style={CARD}>
               <SH>Condizioni Attive</SH>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-1)', alignItems: 'center', minHeight: 24 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--s-1)', alignItems: 'center', minHeight: 24 }}>
                 {conditions.length === 0 && (
                   <span style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)' }}>
                     Nessuna condizione
@@ -304,7 +304,7 @@ export default function MobileSheet({
                   <thead>
                     <tr>
                       {['Arma', 'Danno', 'Acc.'].map(h => (
-                        <th key={h} style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', textAlign: 'left', paddingBottom: 'var(--sp-1)', borderBottom: '1px solid var(--border-leather)', fontWeight: 400, textTransform: 'uppercase' }}>
+                        <th key={h} style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', textAlign: 'left', paddingBottom: 'var(--s-1)', borderBottom: '1px solid var(--border-leather)', fontWeight: 400, textTransform: 'uppercase' }}>
                           {h}
                         </th>
                       ))}
@@ -341,21 +341,21 @@ export default function MobileSheet({
             {/* Caratteristiche */}
             <div style={CARD}>
               <SH>Caratteristiche</SH>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--sp-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--s-1)' }}>
                 {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
                   const val = stats[key];
                   const mod = abilityModifier(val);
                   const isNeg = mod < 0;
                   const isZero = mod === 0;
                   return (
-                    <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1)', textAlign: 'center' }}>
+                    <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
                       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>
                         {ABILITY_NAMES[key]}
                       </span>
                       <span style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 700, color: isNeg ? 'var(--danger)' : isZero ? 'var(--fg-2)' : 'var(--gold)', lineHeight: 1, display: 'block' }}>
                         {formatModifier(mod)}
                       </span>
-                      <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--sp-1)', minWidth: 24 }}>
+                      <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>
                         {val}
                       </span>
                     </div>
@@ -373,7 +373,7 @@ export default function MobileSheet({
                   const bonus = abilityModifier(stats[key]) + (proficient ? prof : 0);
                   return (
                     <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
                         <div style={{ width: 8, height: 8, borderRadius: '50%', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
                         <span style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{ABILITY_NAMES[key]}</span>
                       </div>
@@ -394,7 +394,7 @@ export default function MobileSheet({
                   const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                   const bonus = skillBonus(stats[skill.ability as Ability], level, sk.proficient, sk.expertise);
                   return (
-                    <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px var(--sp-1)', borderRadius: 'var(--r)' }}>
+                    <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px var(--s-1)', borderRadius: 'var(--r)' }}>
                       <div style={{ width: 7, height: 7, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                       <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '12px' }}>{skill.name}</span>
                       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>
@@ -423,7 +423,7 @@ export default function MobileSheet({
             {/* Trasporto */}
             <div style={CARD}>
               <SH>Capacità di Trasporto</SH>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--sp-1)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--s-1)' }}>
                 <span>Peso trasportato</span>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: carryOverloaded ? 'var(--danger)' : 'var(--fg-1)' }}>
                   {carriedKg.toFixed(1)} / {carryMax} kg
@@ -438,7 +438,7 @@ export default function MobileSheet({
             {sheet.money && (
               <div style={CARD}>
                 <SH>Denaro</SH>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--sp-1)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--s-1)' }}>
                   {([
                     ['PP', 'var(--fg-1)', sheet.money.pp],
                     ['PO', 'var(--gold)',    sheet.money.gp],
@@ -446,7 +446,7 @@ export default function MobileSheet({
                     ['PA', '#a8a8a8',               sheet.money.sp],
                     ['PR', '#b06030',               sheet.money.cp],
                   ] as [string, string, number][]).map(([label, color, val]) => (
-                    <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1) 4px', textAlign: 'center' }}>
+                    <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
                       <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
                       <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
                     </div>
@@ -458,7 +458,7 @@ export default function MobileSheet({
             {/* Note DM (solo per DM) */}
             {sheet.dmNotes && isDm && (
               <div style={{ ...CARD, border: '1px solid rgba(139,26,26,0.4)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--sp-1)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--s-1)' }}>
                   <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 1 }} />
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
                 </div>
@@ -473,7 +473,7 @@ export default function MobileSheet({
         {/* ════════════════ TAB: MAGIA ═══════════════════════ */}
         {activeTab === 'magic' && (
           <div style={{ ...CARD, opacity: canCast ? 1 : 0.55 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--sp-1)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s-1)' }}>
               <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase' }}>
                 ✨ Incantesimi
               </span>
@@ -511,7 +511,7 @@ export default function MobileSheet({
           <>
             {/* Portrait + Info + XP */}
             <div style={CARD}>
-              <div style={{ display: 'flex', gap: 'var(--sp-2)', alignItems: 'flex-start' }}>
+              <div style={{ display: 'flex', gap: 'var(--s-2)', alignItems: 'flex-start' }}>
                 {/* Portrait */}
                 <div style={{
                   width: 72, height: 72, borderRadius: 'var(--r2)', flexShrink: 0,
@@ -532,7 +532,7 @@ export default function MobileSheet({
                 {/* Nome + Classe + XP */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 700, color: 'var(--fg-1)', marginBottom: 2 }}>{charName}</div>
-                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--sp-1)' }}>{classLabel}</div>
+                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--s-1)' }}>{classLabel}</div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-3)', marginBottom: 4 }}>
                     <span>XP</span>
                     <span style={{ color: canLevelUp ? 'var(--gold)' : 'var(--fg-2)' }}>
@@ -546,13 +546,13 @@ export default function MobileSheet({
               </div>
 
               {/* Identità sotto */}
-              <div style={{ marginTop: 'var(--sp-2)', display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div style={{ marginTop: 'var(--s-2)', display: 'flex', flexDirection: 'column', gap: 4 }}>
                 {[
                   ['Razza',          [sheet.race, sheet.subrace].filter(Boolean).join(' — ')],
                   ['Background',     sheet.background],
                   ['Allineamento',   sheet.alignment],
                 ].filter(([, v]) => v).map(([label, val]) => (
-                  <div key={String(label)} style={{ display: 'flex', gap: 'var(--sp-1)', alignItems: 'baseline' }}>
+                  <div key={String(label)} style={{ display: 'flex', gap: 'var(--s-1)', alignItems: 'baseline' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-3)', textTransform: 'uppercase', flexShrink: 0, minWidth: 80 }}>{label}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', color: 'var(--fg-1)' }}>{val}</span>
                   </div>
@@ -563,7 +563,7 @@ export default function MobileSheet({
             {/* Feature buttons */}
             <div style={CARD}>
               <SH>Capacità</SH>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)' }}>
                 <FeatureButton
                   mode="class"
                   label="Caratteristiche di Classe"
@@ -602,7 +602,7 @@ export default function MobileSheet({
 
             {/* Pinned passive */}
             {pinnedPassive.length > 0 && (
-              <div style={{ marginBottom: 'var(--sp-2)' }}>
+              <div style={{ marginBottom: 'var(--s-2)' }}>
                 <PinnedPassiveSection features={pinnedPassive} />
               </div>
             )}

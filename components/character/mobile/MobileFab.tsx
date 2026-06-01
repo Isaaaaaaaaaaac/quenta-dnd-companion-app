@@ -51,18 +51,18 @@ function QuickInputModal({
       style={{ position: 'fixed', inset: 0, zIndex: 460, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, background: 'rgba(0,0,0,.65)' }}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--sp-3)', width: '100%', maxWidth: 320 }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--s-3)', width: '100%', maxWidth: 320 }}>
         {/* header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: subtitle ? 4 : 'var(--sp-2)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: subtitle ? 4 : 'var(--s-2)' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 700, color: 'var(--fg-1)' }}>{title}</span>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer', padding: 4 }}>✕</button>
         </div>
         {subtitle && (
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--sp-2)' }}>{subtitle}</div>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--s-2)' }}>{subtitle}</div>
         )}
 
         {/* quick amounts */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 'var(--sp-2)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 'var(--s-2)' }}>
           {quickAmounts.map(n => {
             const sel = inputValue === String(n);
             return (
@@ -87,7 +87,7 @@ function QuickInputModal({
             width: '100%', height: 48, background: 'var(--bg-card)',
             border: '1px solid var(--border-leather)', borderRadius: 'var(--r)',
             color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '18px',
-            outline: 'none', padding: '0 var(--sp-2)', marginBottom: 'var(--sp-2)',
+            outline: 'none', padding: '0 var(--s-2)', marginBottom: 'var(--s-2)',
             boxSizing: 'border-box', textAlign: 'center',
           }}
         />
@@ -119,8 +119,8 @@ function ConditionPickerModal({ onClose, onSelect }: { onClose: () => void; onSe
       style={{ position: 'fixed', inset: 0, zIndex: 460, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, background: 'rgba(0,0,0,.65)' }}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--sp-2)', width: '100%', maxWidth: 360, maxHeight: '72vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--sp-2)', flexShrink: 0 }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--s-2)', width: '100%', maxWidth: 360, maxHeight: '72vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s-2)', flexShrink: 0 }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 700, color: 'var(--fg-1)' }}>⚠ Aggiungi Condizione</span>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer', padding: 4 }}>✕</button>
         </div>

@@ -86,7 +86,7 @@ export default function MobileNavDrawer({
         {/* Top row: Logo + chiudi */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '0 var(--sp-3)', height: 48, flexShrink: 0,
+          padding: '0 var(--s-3)', height: 48, flexShrink: 0,
           borderBottom: '1px solid var(--border-leather-dim)',
         }}>
           <span style={{
@@ -110,7 +110,7 @@ export default function MobileNavDrawer({
         </div>
 
         {/* Nav list */}
-        <nav style={{ flex: 1, padding: 'var(--sp-1) 0', overflowY: 'auto' }}>
+        <nav style={{ flex: 1, padding: 'var(--s-1) 0', overflowY: 'auto' }}>
           {navItems.map(item => {
             const active = isActive(item.path);
             return (
@@ -119,8 +119,8 @@ export default function MobileNavDrawer({
                 href={item.path}
                 onClick={() => setOpen(false)}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: 'var(--sp-2)',
-                  padding: 'var(--sp-2) var(--sp-3)',
+                  display: 'flex', alignItems: 'center', gap: 'var(--s-2)',
+                  padding: 'var(--s-2) var(--s-3)',
                   textDecoration: 'none',
                   color: active
                     ? 'var(--gold)'
@@ -151,12 +151,12 @@ export default function MobileNavDrawer({
 
         {/* Bottom: profilo + logout */}
         <div style={{
-          padding: 'var(--sp-2) var(--sp-3)',
+          padding: 'var(--s-2) var(--s-3)',
           borderTop: '1px solid var(--border-leather)',
           flexShrink: 0,
         }}>
           {/* User info */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-2)', marginBottom: 'var(--sp-2)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', marginBottom: 'var(--s-2)' }}>
             <div style={{
               width: 36, height: 36, borderRadius: 'var(--r)', flexShrink: 0,
               background: 'var(--gold)', color: 'var(--bg-deep)',

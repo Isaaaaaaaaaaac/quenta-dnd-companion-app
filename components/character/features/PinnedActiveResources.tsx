@@ -19,13 +19,13 @@ export default function PinnedActiveResources({ characterId, features, resources
   return (
     <div style={{
       background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)',
-      borderRadius: 'var(--r2)', padding: 'var(--sp-2)', marginBottom: 'var(--sp-2)',
+      borderRadius: 'var(--r2)', padding: 'var(--s-2)', marginBottom: 'var(--s-2)',
     }}>
       {/* Header */}
       <div style={{
         fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600,
         letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase',
-        display: 'flex', alignItems: 'center', gap: 'var(--sp-1)', marginBottom: 'var(--sp-1)',
+        display: 'flex', alignItems: 'center', gap: 'var(--s-1)', marginBottom: 'var(--s-1)',
       }}>
         ⚡ Risorse Attive
         <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />

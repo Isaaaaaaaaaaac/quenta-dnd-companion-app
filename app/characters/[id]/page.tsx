@@ -44,12 +44,12 @@ const CARD: React.CSSProperties = {
   background: 'var(--bg-deep)',
   border: '1px solid var(--border-leather-dim)',
   borderRadius: 'var(--r2)',
-  padding: 'var(--sp-2)',
+  padding: 'var(--s-2)',
 };
 const DV: React.CSSProperties = {
   height: '.5px',
   background: 'linear-gradient(to right, transparent, rgba(184,134,11,.35), transparent)',
-  margin: 'var(--sp-1) 0',
+  margin: 'var(--s-1) 0',
 };
 const IR: React.CSSProperties = {
   display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
@@ -61,8 +61,8 @@ function SectionTitle({ children, mb = true }: { children: React.ReactNode; mb?:
     <div style={{
       fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600,
       letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase',
-      display: 'flex', alignItems: 'center', gap: 'var(--sp-1)',
-      marginBottom: mb ? 'var(--sp-1)' : 0,
+      display: 'flex', alignItems: 'center', gap: 'var(--s-1)',
+      marginBottom: mb ? 'var(--s-1)' : 0,
     }}>
       {children}
       <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
@@ -212,7 +212,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
 
       {/* Breadcrumb */}
       {campaign && (
-        <div style={{ display: 'flex', gap: 4, alignItems: 'center', fontSize: '11px', color: 'var(--fg-3)', marginBottom: 'var(--sp-2)' }}>
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center', fontSize: '11px', color: 'var(--fg-3)', marginBottom: 'var(--s-2)' }}>
           <a href="/campaigns" style={{ color: 'var(--fg-2)' }}>Campagne</a>
           <span>/</span>
           <a href={`/campaigns/${campaign.id}`} style={{ color: 'var(--fg-2)' }}>{campaign.name}</a>
@@ -222,14 +222,14 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
       )}
 
       {/* Layout: sidebar sinistra + pannello destro (3 col + backstory) */}
-      <div style={{ display: 'flex', gap: 'var(--sp-2)', alignItems: 'start' }}>
+      <div style={{ display: 'flex', gap: 'var(--s-2)', alignItems: 'start' }}>
 
         {/* ════ COL 1: Identity (sidebar fissa 232px) ════ */}
-        <div style={{ width: 232, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+        <div style={{ width: 232, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
           <div style={CARD}>
 
             {/* Portrait + Name */}
-            <div style={{ display: 'flex', gap: 'var(--sp-1)', alignItems: 'flex-start', marginBottom: 'var(--sp-2)' }}>
+            <div style={{ display: 'flex', gap: 'var(--s-1)', alignItems: 'flex-start', marginBottom: 'var(--s-2)' }}>
               <PortraitButton
                 characterId={char.id}
                 characterName={char.name}
@@ -242,7 +242,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                 </div>
                 <div style={{ fontSize: '11px', color: 'var(--fg-2)', lineHeight: 1.5 }}>{classLabel}</div>
                 {sheet.alignment && (
-                  <span style={{ display: 'inline-block', marginTop: 'var(--sp-1)', fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '2px var(--sp-1)' }}>
+                  <span style={{ display: 'inline-block', marginTop: 'var(--s-1)', fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: '2px var(--s-1)' }}>
                     {sheet.alignment}
                   </span>
                 )}
@@ -263,7 +263,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
             <Divider />
 
             {/* Personaggio attivo */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--sp-1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s-1)' }}>
               <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)' }}>Stato nel party</span>
               {char.campaignId && (
                 <ActiveCharacterButton
@@ -295,7 +295,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
             {classesWithSubclass.map(c => {
               const cls = CLASSES.find(cl => cl.key === c.classKey);
               return (
-                <div key={c.classKey} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 var(--sp-1)', height: 32, border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', marginBottom: 4, cursor: 'default' }}>
+                <div key={c.classKey} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 var(--s-1)', height: 32, border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', marginBottom: 4, cursor: 'default' }}>
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', letterSpacing: '.06em', color: 'var(--fg-2)' }}>
                     {cls?.name ?? c.classKey}
                   </span>
@@ -349,7 +349,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
             {pinnedPassive.length > 0 && (
               <>
                 <Divider />
-                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 'var(--sp-1)', marginBottom: 4 }}>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 'var(--s-1)', marginBottom: 4 }}>
                   📌 Pinnate
                   <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
                 </div>
@@ -374,7 +374,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
         {/* Fine sidebar ════════════════════════════════════════════════ */}
 
         {/* ════ Pannello destro: grid 3 colonne + BackstoryCard ════ */}
-        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
         {/* ════ Storia: narrativa + backstory preview ════ */}
         <BackstoryCard
           characterId={char.id}
@@ -387,27 +387,27 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
           isOwner={!isDm}
         />
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--sp-2)', alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--s-2)', alignItems: 'start' }}>
 
         {/* ════ COL 2: Chi sei — Caratteristiche + Salvezze + Abilità ════ */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
 
           {/* Caratteristiche */}
           <div style={CARD}>
             <SectionTitle>Caratteristiche</SectionTitle>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-1)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
               {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
                 const val = stats[key];
                 const mod = abilityModifier(val);
                 const isNeg = mod < 0;
                 const isZero = mod === 0;
                 return (
-                  <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1)', textAlign: 'center' }}>
+                  <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>{ABILITY_NAMES[key]}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 700, color: isNeg ? 'var(--danger)' : isZero ? 'var(--fg-2)' : 'var(--gold)', lineHeight: 1, display: 'block' }}>
                       {formatModifier(mod)}
                     </span>
-                    <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--sp-1)', minWidth: 24 }}>{val}</span>
+                    <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>{val}</span>
                   </div>
                 );
               })}
@@ -423,7 +423,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                 const bonus = abilityModifier(stats[key]) + (proficient ? prof : 0);
                 return (
                   <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
                       <div style={{ width: 8, height: 8, borderRadius: '50%', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
                       <span style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{ABILITY_NAMES[key]}</span>
                     </div>
@@ -439,7 +439,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
           {/* Abilità */}
           <div style={CARD}>
             <SectionTitle>Abilità</SectionTitle>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 var(--sp-1)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 var(--s-1)' }}>
               {/* Left: str + dex + int */}
               <div>
                 {leftAbilities.map((ability, abilityIdx) => {
@@ -447,14 +447,14 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   if (!abilitySkills.length) return null;
                   return (
                     <div key={ability}>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--sp-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--sp-1)' }}>
+                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
                         {ABILITY_SHORT[ability]}
                       </div>
                       {abilitySkills.map(skill => {
                         const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--sp-1)', borderRadius: 'var(--r)' }}>
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r)' }}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
@@ -475,14 +475,14 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   if (!abilitySkills.length) return null;
                   return (
                     <div key={ability}>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--sp-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--sp-1)' }}>
+                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
                         {ABILITY_SHORT[ability]}
                       </div>
                       {abilitySkills.map(skill => {
                         const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--sp-1)', borderRadius: 'var(--r)' }}>
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r)' }}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
@@ -502,31 +502,31 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
         </div>
 
         {/* ════ COL 3: In battaglia — Combattimento + HP + Condizioni + Attacchi ════ */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
 
           {/* Statistiche di Combattimento + HP */}
           <div style={CARD}>
             <SectionTitle>Statistiche di Combattimento</SectionTitle>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 'var(--sp-1)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 'var(--s-1)' }}>
                 {[
                   ['C.A.', sheet.armorClass ?? (10 + abilityModifier(stats.dex))],
                   ['Iniziativa', formatModifier(abilityModifier(stats.dex) + (sheet.initiativeBonus ?? 0))],
                   ['Velocità', `${sheet.speed ?? 9}m`],
                 ].map(([l, v]) => (
-                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1)', textAlign: 'center' }}>
+                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
                   </div>
                 ))}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
                 {[
                   ['Bonus Comp.', `+${prof}`],
                   ['Perc. Passiva', passPerc],
                   ...(spellDC !== null ? [['CD Incant.', spellDC], ['Att. Incant.', formatModifier(spellAtk!)]] : []),
                 ].map(([l, v]) => (
-                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1)', textAlign: 'center' }}>
+                  <div key={String(l)} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1)', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.07em', color: 'var(--fg-2)', display: 'block', marginBottom: 4, textTransform: 'uppercase' }}>{l}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{v}</span>
                   </div>
@@ -535,23 +535,23 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
             </div>
 
             {/* HP */}
-            <div style={{ marginTop: 'var(--sp-2)' }}>
+            <div style={{ marginTop: 'var(--s-2)' }}>
               <SectionTitle>Punti Ferita</SectionTitle>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--sp-1)', marginBottom: 'var(--sp-1)' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
                 <span style={{ fontFamily: 'var(--font-serif)', fontSize: '48px', fontWeight: 700, lineHeight: 1, color: hpColor, transition: 'color .4s' }}>{char.hpCurrent}</span>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--fg-2)' }}>
                   / {char.hpMax} max{char.hpTemp > 0 ? ` (+${char.hpTemp} temp)` : ''}
                 </span>
               </div>
-              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden', marginBottom: 'var(--sp-1)' }}>
+              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 2, overflow: 'hidden', marginBottom: 'var(--s-1)' }}>
                 <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpColor, borderRadius: 2, transition: 'width .5s ease, background .6s' }} />
               </div>
               <HpControls characterId={char.id} hpCurrent={char.hpCurrent} hpMax={char.hpMax} />
-              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginTop: 'var(--sp-1)' }}>
+              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginTop: 'var(--s-1)' }}>
                 Dado Vita <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '12px', color: 'var(--fg-1)' }}>d{hitDie} × {level}</strong>
               </div>
               {char.hpCurrent === 0 && (
-                <div style={{ marginTop: 'var(--sp-1)', paddingTop: 'var(--sp-1)', borderTop: '1px solid rgba(139,26,26,0.4)' }}>
+                <div style={{ marginTop: 'var(--s-1)', paddingTop: 'var(--s-1)', borderTop: '1px solid rgba(139,26,26,0.4)' }}>
                   <DeathSavesTracker characterId={char.id} sheet={sheet} />
                 </div>
               )}
@@ -561,7 +561,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
           {/* Condizioni */}
           <div style={CARD}>
             <SectionTitle>Condizioni Attive</SectionTitle>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--sp-1)', alignItems: 'center', minHeight: 24 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--s-1)', alignItems: 'center', minHeight: 24 }}>
               {conditions.length === 0 && (
                 <span style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)' }}>Nessuna condizione</span>
               )}
@@ -585,7 +585,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                 <thead>
                   <tr>
                     {['Arma', 'Car.', 'Danno', 'Acc.'].map(h => (
-                      <th key={h} style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', textAlign: 'left', paddingBottom: 'var(--sp-1)', borderBottom: '1px solid var(--border-leather)', fontWeight: 400, textTransform: 'uppercase' }}>{h}</th>
+                      <th key={h} style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', letterSpacing: '.09em', color: 'var(--fg-2)', textAlign: 'left', paddingBottom: 'var(--s-1)', borderBottom: '1px solid var(--border-leather)', fontWeight: 400, textTransform: 'uppercase' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -622,7 +622,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
         </div>
 
         {/* ════ COL 4: Cosa hai — Inventario + Denaro + Incantesimi ════ */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
 
           {/* Inventario */}
           <InventoryCard
@@ -634,7 +634,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
           {/* Capacità di Trasporto */}
           <div style={CARD}>
             <SectionTitle>Capacità di Trasporto</SectionTitle>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--sp-1)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--s-1)' }}>
               <span>Peso trasportato</span>
               <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: carryOverloaded ? 'var(--danger)' : 'var(--fg-1)' }}>
                 {carriedKg.toFixed(1)} / {carryMax} kg
@@ -649,7 +649,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
           {sheet.money && (
             <div style={CARD}>
               <SectionTitle>Denaro</SectionTitle>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--sp-1)', marginBottom: 'var(--sp-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
                 {([
                   ['PP', 'var(--fg-1)', sheet.money.pp],
                   ['PO', 'var(--gold)',    sheet.money.gp],
@@ -657,13 +657,13 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   ['PA', '#a8a8a8',               sheet.money.sp],
                   ['PR', '#b06030',               sheet.money.cp],
                 ] as [string, string, number][]).map(([label, color, val]) => (
-                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1) 4px', textAlign: 'center' }}>
+                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
                   </div>
                 ))}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
                 <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>+ Aggiungi</button>
                 <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>Assegna Denaro</button>
               </div>
@@ -672,7 +672,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
 
           {/* Incantesimi */}
           <div style={{ ...CARD, opacity: canCast ? 1 : 0.55 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--sp-1)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s-1)' }}>
               <SectionTitle mb={false}>Incantesimi</SectionTitle>
               {canCast && (
                 <AddSpellButton
@@ -709,7 +709,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
           {/* Note DM */}
           {sheet.dmNotes && isDm && (
             <div style={{ ...CARD, border: '1px solid rgba(139,26,26,0.4)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--sp-1)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--s-1)' }}>
                 <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 1 }} />
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
               </div>
@@ -724,7 +724,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
           {/* Abilità — rimosso, ora in COL 2 */}
           <div style={CARD}>
             <SectionTitle>Abilità</SectionTitle>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 var(--sp-1)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 var(--s-1)' }}>
 
               {/* Left: str + dex + int */}
               <div>
@@ -733,14 +733,14 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   if (!abilitySkills.length) return null;
                   return (
                     <div key={ability}>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--sp-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--sp-1)' }}>
+                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
                         {ABILITY_SHORT[ability]}
                       </div>
                       {abilitySkills.map(skill => {
                         const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--sp-1)', borderRadius: 'var(--r)' }}>
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r)' }}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
@@ -762,14 +762,14 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   if (!abilitySkills.length) return null;
                   return (
                     <div key={ability}>
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--sp-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--sp-1)' }}>
+                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase', marginBottom: 2, paddingLeft: 'var(--s-2)', marginTop: abilityIdx === 0 ? 0 : 'var(--s-1)' }}>
                         {ABILITY_SHORT[ability]}
                       </div>
                       {abilitySkills.map(skill => {
                         const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
                         const bonus = skillBonus(stats[skill.ability], level, sk.proficient, sk.expertise);
                         return (
-                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--sp-1)', borderRadius: 'var(--r)' }}>
+                          <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '3px var(--s-1)', borderRadius: 'var(--r)' }}>
                             <div style={{ width: 6, height: 6, borderRadius: '50%', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
                             <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '11px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill.name}</span>
                             <span style={{ fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>{ABILITY_SHORT[ability]}</span>
@@ -790,7 +790,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
           {sheet.money && (
             <div style={CARD}>
               <SectionTitle>Denaro</SectionTitle>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--sp-1)', marginBottom: 'var(--sp-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
                 {([
                   ['PP', 'var(--fg-1)', sheet.money.pp],
                   ['PO', 'var(--gold)',    sheet.money.gp],
@@ -798,13 +798,13 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
                   ['PA', '#a8a8a8',               sheet.money.sp],
                   ['PR', '#b06030',               sheet.money.cp],
                 ] as [string, string, number][]).map(([label, color, val]) => (
-                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--sp-1) 4px', textAlign: 'center' }}>
+                  <div key={label} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r)', padding: 'var(--s-1) 4px', textAlign: 'center' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color, display: 'block', marginBottom: 2, textTransform: 'uppercase' }}>{label}</span>
                     <span style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 600, color: 'var(--fg-1)', display: 'block' }}>{val}</span>
                   </div>
                 ))}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--sp-1)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-1)' }}>
                 <button style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.05em', height: 32, borderRadius: 'var(--r)', border: '1px solid var(--border-leather)', background: 'var(--bg-card)', color: 'var(--fg-2)', cursor: 'pointer', transition: 'all .2s' }}>
                   + Aggiungi
                 </button>
@@ -818,7 +818,7 @@ export default async function CharacterPage({ params }: { params: Promise<{ id: 
           {/* Note DM */}
           {sheet.dmNotes && isDm && (
             <div style={{ ...CARD, border: '1px solid rgba(139,26,26,0.4)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--sp-1)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--s-1)' }}>
                 <div style={{ width: 2, height: 14, backgroundColor: 'var(--danger)', opacity: 0.7, borderRadius: 1 }} />
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-1)' }}>Note DM</span>
               </div>

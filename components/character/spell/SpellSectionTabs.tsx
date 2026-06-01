@@ -80,7 +80,7 @@ export default function SpellSectionTabs({ knownSpells, activeSpellSlots, isPrep
           )}
 
           {displaySpells.map(spell => (
-            <div key={spell.id} style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-1)', padding: '4px var(--sp-1)', borderRadius: 'var(--r)' }}>
+            <div key={spell.id} style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)', padding: '4px var(--s-1)', borderRadius: 'var(--r)' }}>
               <LevelPips level={spell.level} />
               <span style={{ flex: 1, fontSize: '12px', color: spell.prepared || spell.level === 0 ? 'var(--fg-1)' : 'var(--fg-2)' }}>
                 {spell.name}

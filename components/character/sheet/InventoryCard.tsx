@@ -15,7 +15,7 @@ const CARD: React.CSSProperties = {
   background: 'var(--bg-deep)',
   border: '1px solid var(--border-leather-dim)',
   borderRadius: 'var(--r2)',
-  padding: 'var(--sp-2)',
+  padding: 'var(--s-2)',
 };
 
 function categoryIcon(cat?: string): string {
@@ -49,7 +49,7 @@ function ItemRow({ item, characterId }: { item: InventoryItem; characterId: stri
     <>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8,
-        padding: '5px var(--sp-1)', borderRadius: 'var(--r)',
+        padding: '5px var(--s-1)', borderRadius: 'var(--r)',
         opacity: isPending ? 0.5 : 1, transition: 'opacity .15s',
         background: item.equipped ? 'rgba(184,134,11,.04)' : 'transparent',
       }}>
@@ -110,7 +110,7 @@ function ItemRow({ item, characterId }: { item: InventoryItem; characterId: stri
 
       {/* Messaggio di errore (es. conflitti slot) */}
       {error && (
-        <div style={{ padding: '3px var(--sp-1)', fontSize: '10px', color: 'var(--danger)', fontFamily: 'var(--font-sans)' }}>
+        <div style={{ padding: '3px var(--s-1)', fontSize: '10px', color: 'var(--danger)', fontFamily: 'var(--font-sans)' }}>
           ⚠ {error}
         </div>
       )}
@@ -127,11 +127,11 @@ export default function InventoryCard({ characterId, inventory, money }: Props) 
   return (
     <div style={CARD}>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--sp-1)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s-1)' }}>
         <div style={{
           fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600,
           letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase',
-          display: 'flex', alignItems: 'center', gap: 'var(--sp-1)', flex: 1,
+          display: 'flex', alignItems: 'center', gap: 'var(--s-1)', flex: 1,
         }}>
           Equipaggiamento
           <span style={{ flex: 1, height: '.5px', background: 'linear-gradient(to right, rgba(184,134,11,.35), transparent)' }} />
@@ -147,12 +147,12 @@ export default function InventoryCard({ characterId, inventory, money }: Props) 
       )}
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 'var(--sp-1)' }}>
+      <div style={{ display: 'flex', gap: 4, marginBottom: 'var(--s-1)' }}>
         {(['all', 'equipped'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)}
             style={{
               fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.06em',
-              padding: '0 var(--sp-1)', height: 24, lineHeight: '24px',
+              padding: '0 var(--s-1)', height: 24, lineHeight: '24px',
               borderRadius: 'var(--r)',
               border: `1px solid ${tab === t ? 'var(--border-leather)' : 'transparent'}`,
               background: tab === t ? 'var(--bg-card)' : 'none',
@@ -166,7 +166,7 @@ export default function InventoryCard({ characterId, inventory, money }: Props) 
 
       {/* Items */}
       {filtered.length === 0 && (
-        <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)', padding: '4px var(--sp-1)' }}>
+        <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '12px', color: 'var(--fg-3)', padding: '4px var(--s-1)' }}>
           Nessun oggetto
         </p>
       )}

@@ -47,15 +47,15 @@ function XpModal({
       style={{ position: 'fixed', inset: 0, zIndex: 460, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, background: 'rgba(0,0,0,.65)' }}
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--sp-3)', width: '100%', maxWidth: 320 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--sp-1)' }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--s-3)', width: '100%', maxWidth: 320 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s-1)' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 700, color: 'var(--fg-1)' }}>⭐ Assegna XP al gruppo</span>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--fg-2)', fontSize: 16, cursor: 'pointer', padding: 4 }}>✕</button>
         </div>
-        <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--sp-2)' }}>
+        <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginBottom: 'var(--s-2)' }}>
           L'XP verrà assegnato a tutti i personaggi della campagna.
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 'var(--sp-2)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 'var(--s-2)' }}>
           {XP_AMOUNTS.map(amount => (
             <button key={amount} onClick={() => setVal(String(amount))} style={{
               height: 34, padding: '0 12px', borderRadius: 'var(--r)',
@@ -74,7 +74,7 @@ function XpModal({
             width: '100%', height: 48, background: 'var(--bg-card)',
             border: '1px solid var(--border-leather)', borderRadius: 'var(--r)',
             color: 'var(--fg-1)', fontFamily: 'var(--font-sans)', fontSize: '18px',
-            outline: 'none', padding: '0 var(--sp-2)', marginBottom: 'var(--sp-2)',
+            outline: 'none', padding: '0 var(--s-2)', marginBottom: 'var(--s-2)',
             boxSizing: 'border-box', textAlign: 'center',
           }}
         />

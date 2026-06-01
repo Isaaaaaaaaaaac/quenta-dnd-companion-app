@@ -29,7 +29,7 @@ export default function PartyRestButtons({ campaignId }: Props) {
       <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-3)', letterSpacing: '.05em' }}>
         Dichiara riposo per i personaggi attivi nel party
       </div>
-      <div style={{ display: 'flex', gap: 'var(--sp-1)' }}>
+      <div style={{ display: 'flex', gap: 'var(--s-1)' }}>
         <button
           onClick={() => handleRest('short')} disabled={!!pending}
           style={btn('short', 'var(--info)', 'var(--info)')}>

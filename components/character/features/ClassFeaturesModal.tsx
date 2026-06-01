@@ -52,7 +52,7 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
 
   const CARD: React.CSSProperties = {
     background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)',
-    borderRadius: 'var(--r2)', padding: 'var(--sp-2)',
+    borderRadius: 'var(--r2)', padding: 'var(--s-2)',
     opacity: isPending ? 0.7 : 1, transition: 'opacity .2s',
   };
 
@@ -62,8 +62,8 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
       <div style={{ ...CARD, width: '100%', maxWidth: 960, maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
         {/* Header */}
-        <div style={{ padding: '0 0 var(--sp-2)', borderBottom: '1px solid var(--border-leather)', flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--sp-1)' }}>
+        <div style={{ padding: '0 0 var(--s-2)', borderBottom: '1px solid var(--border-leather)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s-1)' }}>
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase' }}>
               Caratteristiche di Classe
             </span>
@@ -92,7 +92,7 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
         </div>
 
         {/* Feature list */}
-        <div style={{ overflowY: 'auto', flex: 1, padding: 'var(--sp-2)' }}>
+        <div style={{ overflowY: 'auto', flex: 1, padding: 'var(--s-2)' }}>
           {features.length === 0 && (
             <p style={{ padding: '24px', fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '13px', color: 'var(--fg-3)', textAlign: 'center' }}>
               Nessuna caratteristica trovata per questa classe.
@@ -109,8 +109,8 @@ export default function ClassFeaturesModal({ characterClasses, resources, charac
                 background: unlocked ? 'var(--bg-card)' : 'var(--bg-deep)',
                 border: `1px solid ${unlocked ? 'var(--border-leather)' : 'rgba(74,69,56,.3)'}`,
                 borderRadius: 'var(--r)',
-                padding: 'var(--sp-2)',
-                marginBottom: 'var(--sp-1)',
+                padding: 'var(--s-2)',
+                marginBottom: 'var(--s-1)',
                 opacity: unlocked ? 1 : 0.4,
                 transition: 'opacity .2s',
               }}>

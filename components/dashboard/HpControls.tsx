@@ -34,7 +34,7 @@ export default function HpControls({ characterId, hpCurrent, hpMax }: Props) {
   });
 
   return (
-    <div style={{ display: 'flex', gap: 'var(--sp-1)', alignItems: 'center' }}>
+    <div style={{ display: 'flex', gap: 'var(--s-1)', alignItems: 'center' }}>
       <input
         type="number" min="0"
         value={amount} onChange={e => setAmount(e.target.value)}

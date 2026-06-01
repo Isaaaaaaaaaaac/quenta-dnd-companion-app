@@ -20,7 +20,7 @@ export default function AddConditionButton({ characterId }: Props) {
         style={{
           fontFamily: 'var(--font-sans)', fontSize: '9px', letterSpacing: '.07em',
           color: 'var(--fg-3)', background: 'none',
-          border: '1px dashed var(--fg-3)', padding: '0 var(--sp-1)',
+          border: '1px dashed var(--fg-3)', padding: '0 var(--s-1)',
           height: 24, borderRadius: 'var(--r)', cursor: 'pointer', transition: 'all .2s',
         }}>
         + Condizione

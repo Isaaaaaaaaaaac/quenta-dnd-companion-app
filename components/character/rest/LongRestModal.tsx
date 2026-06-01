@@ -48,10 +48,10 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
   return (
     <div className="modal-overlay" style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(12,10,9,.85)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--sp-3)', width: '100%', maxWidth: 440 }}>
+      <div style={{ background: 'var(--bg-deep)', border: '1px solid var(--border-leather-dim)', borderRadius: 'var(--r2)', padding: 'var(--s-3)', width: '100%', maxWidth: 440 }}>
 
         {/* Header */}
-        <div style={{ marginBottom: 'var(--sp-3)' }}>
+        <div style={{ marginBottom: 'var(--s-3)' }}>
           <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--arcane)', textTransform: 'uppercase', marginBottom: 6 }}>
             ☾ Riposo Lungo
           </div>
@@ -67,12 +67,12 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
 
         {/* Scelte */}
         {isPreparedCaster ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-1)', marginBottom: 'var(--sp-2)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)', marginBottom: 'var(--s-2)' }}>
             <button
               onClick={handleKeep} disabled={pending}
               style={{
                 fontFamily: 'var(--font-sans)', fontSize: '11px', letterSpacing: '.04em',
-                padding: 'var(--sp-2)', borderRadius: 'var(--r)',
+                padding: 'var(--s-2)', borderRadius: 'var(--r)',
                 border: '1px solid var(--border-leather)', background: 'var(--bg-card)',
                 color: 'var(--fg-1)', cursor: pending ? 'not-allowed' : 'pointer',
                 textAlign: 'left', lineHeight: 1.5, transition: 'all .2s',
@@ -86,7 +86,7 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
               onClick={() => setStep('spell-prep')} disabled={pending}
               style={{
                 fontFamily: 'var(--font-sans)', fontSize: '11px', letterSpacing: '.04em',
-                padding: 'var(--sp-2)', borderRadius: 'var(--r)',
+                padding: 'var(--s-2)', borderRadius: 'var(--r)',
                 border: '1px solid rgba(91,33,182,.4)', background: 'rgba(91,33,182,.06)',
                 color: 'var(--arcane)', cursor: 'pointer',
                 textAlign: 'left', lineHeight: 1.5, transition: 'all .2s',
@@ -97,7 +97,7 @@ export default function LongRestModal({ characterId, isPreparedCaster, currentSp
             </button>
           </div>
         ) : (
-          <div style={{ marginBottom: 'var(--sp-2)' }}>
+          <div style={{ marginBottom: 'var(--s-2)' }}>
             <button
               onClick={handleKeep} disabled={pending}
               style={{

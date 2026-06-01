@@ -170,7 +170,7 @@ export default function TalentiModal({ characterId, currentFeats, asiHistory, st
 
           {/* Catalogo */}
           <div style={{
-            flex: 1, overflowY: 'auto', padding: 'var(--sp-1) 0',
+            flex: 1, overflowY: 'auto', padding: 'var(--s-1) 0',
             borderRight: isMobile ? 'none' : '1px solid var(--border-leather)',
             borderBottom: isMobile ? '1px solid var(--border-leather)' : 'none',
           }}>
@@ -224,7 +224,7 @@ export default function TalentiModal({ characterId, currentFeats, asiHistory, st
             width: isMobile ? '100%' : 220,
             maxHeight: isMobile ? 200 : undefined,
             flexShrink: isMobile ? 0 : undefined,
-            overflowY: 'auto', padding: 'var(--sp-1) 0',
+            overflowY: 'auto', padding: 'var(--s-1) 0',
             display: 'flex', flexDirection: 'column',
           }}>
             <div style={{ padding: '4px 16px 8px', fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-3)', textTransform: 'uppercase' }}>

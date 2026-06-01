@@ -87,8 +87,8 @@ export default function BackstoryModal({
 
         {/* ── Header ─────────────────────────────────────────────── */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 'var(--sp-2)',
-          padding: 'var(--sp-2) var(--sp-3)',
+          display: 'flex', alignItems: 'center', gap: 'var(--s-2)',
+          padding: 'var(--s-2) var(--s-3)',
           borderBottom: '1px solid var(--border-leather-dim)',
           flexShrink: 0,
         }}>
@@ -144,7 +144,7 @@ export default function BackstoryModal({
 
         {/* ── Corpo ──────────────────────────────────────────────── */}
         <div style={{
-          flex: 1, overflowY: 'auto', padding: 'var(--sp-3)',
+          flex: 1, overflowY: 'auto', padding: 'var(--s-3)',
         }}>
           {isOwner ? (
             <>
@@ -152,7 +152,7 @@ export default function BackstoryModal({
                 <p style={{
                   fontFamily: 'var(--font-serif)', fontStyle: 'italic',
                   fontSize: '12px', color: 'var(--fg-3)',
-                  marginBottom: 'var(--sp-2)',
+                  marginBottom: 'var(--s-2)',
                 }}>
                   Scrivi la storia del tuo personaggio. Questo campo salva automaticamente.
                 </p>
@@ -191,7 +191,7 @@ export default function BackstoryModal({
           ) : (
             <div style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center',
-              padding: 'var(--sp-4) 0', gap: 'var(--sp-1)',
+              padding: 'var(--s-4) 0', gap: 'var(--s-1)',
             }}>
               <span style={{ fontSize: 28, opacity: .2 }}>📖</span>
               <p style={{
@@ -206,7 +206,7 @@ export default function BackstoryModal({
 
         {/* ── Footer ─────────────────────────────────────────────── */}
         <div style={{
-          padding: 'var(--sp-2) var(--sp-3)',
+          padding: 'var(--s-2) var(--s-3)',
           borderTop: '1px solid var(--border-leather)',
           display: 'flex', justifyContent: 'flex-end',
           flexShrink: 0,
@@ -214,7 +214,7 @@ export default function BackstoryModal({
           <button
             onClick={onClose}
             style={{
-              height: 36, padding: '0 var(--sp-3)',
+              height: 36, padding: '0 var(--s-3)',
               fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600,
               letterSpacing: '.07em', textTransform: 'uppercase',
               color: 'var(--fg-2)', background: 'none',
