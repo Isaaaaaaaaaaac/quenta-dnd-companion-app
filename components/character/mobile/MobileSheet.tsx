@@ -23,7 +23,7 @@ import type { CharacterSheet, CharacterResource, PinnedFeature, KnownSpell } fro
 
 // ─── types ────────────────────────────────────────────────────
 
-type Tab = 'combat' | 'stats' | 'items' | 'magic' | 'identity';
+type Tab = 'combat' | 'equipment' | 'spells' | 'bio';
 
 interface Props {
   characterId: string;
@@ -69,11 +69,10 @@ const SCHOOL_ABBR: Record<string, string> = {
 };
 
 const TABS: { id: Tab; icon: string; label: string }[] = [
-  { id: 'combat',   icon: '⚔',  label: 'Combat'   },
-  { id: 'stats',    icon: '📊', label: 'Stats'    },
-  { id: 'items',    icon: '🎒', label: 'Oggetti'  },
-  { id: 'magic',    icon: '✨', label: 'Magia'    },
-  { id: 'identity', icon: '🧙', label: 'Identità' },
+  { id: 'combat',    icon: '⚔',  label: 'Combat'  },
+  { id: 'equipment', icon: '🎒', label: 'Gear'    },
+  { id: 'spells',    icon: '✨', label: 'Magia'   },
+  { id: 'bio',       icon: '🧙', label: 'Bio'     },
 ];
 
 const CARD: React.CSSProperties = {
@@ -114,7 +113,7 @@ function SB({ label, value }: { label: string; value: string | number }) {
 export default function MobileSheet({
   characterId, charName, classLabel,
   hpCurrent, hpMax, hpTemp, hpPct, hpColor,
-  level, xp, xpPct, canLevelUp, prof, hitDie,
+  level, xp: _xp, xpPct, canLevelUp, prof, hitDie: _hitDie,
   passPerc, spellDC, spellAtk,
   carriedKg, carryMax, carryPct, carryOverloaded,
   canCast, sheet, conditions, resources,
@@ -122,7 +121,7 @@ export default function MobileSheet({
   pinnedPassive, pinnedActive,
   casterClassKeys, isDm, isActiveCharacter,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<Tab>(isActiveCharacter ? 'combat' : 'identity');
+  const [activeTab, setActiveTab] = useState<Tab>(isActiveCharacter ? 'combat' : 'bio');
 
   const stats       = sheet.stats ?? { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 };
   const savingThrows = sheet.savingThrowProficiencies ?? ({} as Record<string, boolean>);
@@ -142,51 +141,59 @@ export default function MobileSheet({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, background: 'var(--bg-deep)' }}>
 
-      {/* ── Mini header ─────────────────────────────────────── */}
+      {/* ── HP Strip (sticky header) ─────────────────────────── */}
       <div style={{
-        display: 'flex', alignItems: 'center', gap: 'var(--s-2)',
-        height: 64, padding: '0 var(--s-2)',
+        padding: 'var(--s-2)',
         background: 'var(--bg-deep)',
         borderBottom: '1px solid var(--border-leather-dim)',
         flexShrink: 0,
       }}>
-        {/* Portrait */}
-        <div style={{
-          width: 40, height: 40, borderRadius: 'var(--r-sm)', flexShrink: 0,
-          overflow: 'hidden', border: '1.5px solid var(--border-leather-dim)',
-          background: 'var(--bg-card)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          {sheet.portraitUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={sheet.portraitUrl} alt={charName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          ) : (
-            <span style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 700, color: 'var(--gold)' }}>
-              {charName.charAt(0).toUpperCase()}
-            </span>
-          )}
-        </div>
-
-        {/* Nome + Classe */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: 'var(--font-serif)', fontSize: '14px', fontWeight: 700, color: 'var(--fg-1)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {charName}
+        {/* Row 1: portrait + name + HP number */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', marginBottom: 'var(--s-1)' }}>
+          {/* Portrait */}
+          <div style={{
+            width: 36, height: 36, borderRadius: 'var(--r-sm)', flexShrink: 0,
+            overflow: 'hidden', border: '1.5px solid var(--border-leather-dim)',
+            background: 'var(--bg-card)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            {sheet.portraitUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={sheet.portraitUrl} alt={charName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : (
+              <span style={{ fontFamily: 'var(--font-serif)', fontSize: '16px', fontWeight: 700, color: 'var(--gold)' }}>
+                {charName.charAt(0).toUpperCase()}
+              </span>
+            )}
           </div>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {classLabel}
+          {/* Name + class */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', fontWeight: 700, color: 'var(--fg-1)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {charName}
+            </div>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', color: 'var(--fg-3)' }}>{classLabel}</div>
           </div>
-        </div>
-
-        {/* HP compatto */}
-        <div style={{ flexShrink: 0, textAlign: 'right' }}>
-          <div style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 700, color: hpColor, lineHeight: 1 }}>
-            {hpCurrent}
-            <span style={{ fontSize: 12, color: 'var(--fg-2)', fontWeight: 400 }}>/{hpMax}</span>
-          </div>
-          <div style={{ width: 60, height: 4, background: 'var(--bg-card)', borderRadius: 'var(--r-sm)', marginTop: 4, marginLeft: 'auto' }}>
-            <div style={{ height: '100%', width: `${hpPct}%`, background: hpColor, borderRadius: 'var(--r-sm)', transition: 'width .5s, background .6s' }} />
+          {/* HP number */}
+          <div style={{ flexShrink: 0, textAlign: 'right' }}>
+            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: hpColor, lineHeight: 1 }}>
+              {hpCurrent}<span style={{ fontSize: 11, color: 'var(--fg-2)', fontWeight: 400 }}>/{hpMax}</span>
+            </div>
+            {hpTemp > 0 && (
+              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--info)' }}>+{hpTemp} temp</div>
+            )}
           </div>
         </div>
+        {/* Row 2: HP bar */}
+        <div style={{ height: 3, backgroundColor: 'var(--bg-card)', borderRadius: 'var(--r-sm)', overflow: 'hidden', marginBottom: 'var(--s-1)' }}>
+          <div style={{ height: '100%', width: `${hpPct}%`, background: hpColor, borderRadius: 'var(--r-sm)', transition: 'width .5s, background .6s' }} />
+        </div>
+        {/* Row 3: HP controls */}
+        <HpControls characterId={characterId} hpCurrent={hpCurrent} hpMax={hpMax} />
+        {hpCurrent === 0 && (
+          <div style={{ marginTop: 'var(--s-1)', paddingTop: 'var(--s-1)', borderTop: '1px solid var(--danger-border)' }}>
+            <DeathSavesTracker characterId={characterId} sheet={sheet} />
+          </div>
+        )}
       </div>
 
       {/* ── Content area ─────────────────────────────────────── */}
@@ -238,32 +245,75 @@ export default function MobileSheet({
               </div>
             </div>
 
-            {/* HP */}
+            {/* Caratteristiche */}
             <div style={CARD}>
-              <SH>Punti Ferita</SH>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
-                <span style={{ fontFamily: 'var(--font-serif)', fontSize: '52px', fontWeight: 700, lineHeight: 1, color: hpColor, transition: 'color .4s' }}>
-                  {hpCurrent}
-                </span>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--fg-2)' }}>
-                  / {hpMax} max{hpTemp > 0 ? ` (+${hpTemp} temp)` : ''}
-                </span>
+              <SH>Caratteristiche</SH>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--s-1)' }}>
+                {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
+                  const val = stats[key];
+                  const mod = abilityModifier(val);
+                  const isNeg = mod < 0;
+                  const isZero = mod === 0;
+                  return (
+                    <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
+                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>
+                        {ABILITY_NAMES[key]}
+                      </span>
+                      <span style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 700, color: isNeg ? 'var(--danger)' : isZero ? 'var(--fg-2)' : 'var(--gold)', lineHeight: 1, display: 'block' }}>
+                        {formatModifier(mod)}
+                      </span>
+                      <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>
+                        {val}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
-              <div style={{ height: 6, backgroundColor: 'var(--bg-card)', borderRadius: 'var(--r-sm)', overflow: 'hidden', marginBottom: 'var(--s-1)' }}>
-                <div style={{ height: '100%', width: `${hpPct}%`, backgroundColor: hpColor, borderRadius: 'var(--r-sm)', transition: 'width .5s ease, background .6s' }} />
+            </div>
+
+            {/* Tiri Salvezza */}
+            <div style={CARD}>
+              <SH>Tiri Salvezza</SH>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
+                  const proficient = (savingThrows as Record<string, boolean>)[key] ?? false;
+                  const bonus = abilityModifier(stats[key]) + (proficient ? prof : 0);
+                  return (
+                    <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
+                        <div style={{ width: 8, height: 8, borderRadius: 'var(--r-sm)', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
+                        <span style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{ABILITY_NAMES[key]}</span>
+                      </div>
+                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)' }}>
+                        {formatModifier(bonus)}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
-              <HpControls characterId={characterId} hpCurrent={hpCurrent} hpMax={hpMax} />
-              <div style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: 'var(--fg-2)', marginTop: 'var(--s-1)' }}>
-                Dado Vita{' '}
-                <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '12px', color: 'var(--fg-1)' }}>
-                  d{hitDie} × {level}
-                </strong>
+            </div>
+
+            {/* Abilità — lista flat, più compatta sul mobile */}
+            <div style={CARD}>
+              <SH>Abilità</SH>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                {SKILLS.map(skill => {
+                  const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
+                  const bonus = skillBonus(stats[skill.ability as Ability], level, sk.proficient, sk.expertise);
+                  return (
+                    <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
+                      <div style={{ width: 7, height: 7, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
+                      <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '12px' }}>{skill.name}</span>
+                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>
+                        {ABILITY_SHORT[skill.ability as Ability]}
+                      </span>
+                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 28, textAlign: 'right', flexShrink: 0 }}>
+                        {formatModifier(bonus)}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
-              {hpCurrent === 0 && (
-                <div style={{ marginTop: 'var(--s-1)', paddingTop: 'var(--s-1)', borderTop: '1px solid var(--danger-border)' }}>
-                  <DeathSavesTracker characterId={characterId} sheet={sheet} />
-                </div>
-              )}
             </div>
 
             {/* Risorse Attive */}
@@ -335,84 +385,8 @@ export default function MobileSheet({
           </>
         )}
 
-        {/* ════════════════ TAB: STATS ═══════════════════════ */}
-        {activeTab === 'stats' && (
-          <>
-            {/* Caratteristiche */}
-            <div style={CARD}>
-              <SH>Caratteristiche</SH>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--s-1)' }}>
-                {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
-                  const val = stats[key];
-                  const mod = abilityModifier(val);
-                  const isNeg = mod < 0;
-                  const isZero = mod === 0;
-                  return (
-                    <div key={key} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', padding: 'var(--s-1)', textAlign: 'center' }}>
-                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600, letterSpacing: '.08em', color: 'var(--fg-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>
-                        {ABILITY_NAMES[key]}
-                      </span>
-                      <span style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 700, color: isNeg ? 'var(--danger)' : isZero ? 'var(--fg-2)' : 'var(--gold)', lineHeight: 1, display: 'block' }}>
-                        {formatModifier(mod)}
-                      </span>
-                      <span style={{ display: 'inline-block', marginTop: 4, backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border-leather)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--font-sans)', fontSize: '10px', color: 'var(--fg-2)', padding: '1px var(--s-1)', minWidth: 24 }}>
-                        {val}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Tiri Salvezza */}
-            <div style={CARD}>
-              <SH>Tiri Salvezza</SH>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as Ability[]).map(key => {
-                  const proficient = (savingThrows as Record<string, boolean>)[key] ?? false;
-                  const bonus = abilityModifier(stats[key]) + (proficient ? prof : 0);
-                  return (
-                    <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
-                        <div style={{ width: 8, height: 8, borderRadius: 'var(--r-sm)', border: `1.5px solid ${proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: proficient ? 'var(--gold)' : 'transparent', flexShrink: 0 }} />
-                        <span style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{ABILITY_NAMES[key]}</span>
-                      </div>
-                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)' }}>
-                        {formatModifier(bonus)}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Abilità — lista flat, più compatta sul mobile */}
-            <div style={CARD}>
-              <SH>Abilità</SH>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                {SKILLS.map(skill => {
-                  const sk = skillMap[skill.key] ?? { proficient: false, expertise: false };
-                  const bonus = skillBonus(stats[skill.ability as Ability], level, sk.proficient, sk.expertise);
-                  return (
-                    <div key={skill.key} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px var(--s-1)', borderRadius: 'var(--r-sm)' }}>
-                      <div style={{ width: 7, height: 7, borderRadius: 'var(--r-sm)', border: `1.5px solid ${sk.expertise ? 'var(--arcane)' : sk.proficient ? 'var(--gold)' : 'var(--fg-3)'}`, backgroundColor: sk.proficient ? (sk.expertise ? 'var(--arcane)' : 'var(--gold)') : 'transparent', flexShrink: 0 }} />
-                      <span style={{ flex: 1, color: 'var(--fg-2)', fontSize: '12px' }}>{skill.name}</span>
-                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '8px', color: 'var(--fg-3)', flexShrink: 0 }}>
-                        {ABILITY_SHORT[skill.ability as Ability]}
-                      </span>
-                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500, color: bonus > 0 ? 'var(--gold)' : bonus < 0 ? 'var(--danger)' : 'var(--fg-2)', minWidth: 28, textAlign: 'right', flexShrink: 0 }}>
-                        {formatModifier(bonus)}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* ════════════════ TAB: OGGETTI ═════════════════════ */}
-        {activeTab === 'items' && (
+        {/* ════════════════ TAB: EQUIPMENT ══════════════════ */}
+        {activeTab === 'equipment' && (
           <>
             <InventoryCard
               characterId={characterId}
@@ -470,8 +444,8 @@ export default function MobileSheet({
           </>
         )}
 
-        {/* ════════════════ TAB: MAGIA ═══════════════════════ */}
-        {activeTab === 'magic' && (
+        {/* ════════════════ TAB: SPELLS ══════════════════════ */}
+        {activeTab === 'spells' && (
           <div style={{ ...CARD, opacity: canCast ? 1 : 0.55 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s-1)' }}>
               <span style={{ fontFamily: 'var(--font-sans)', fontSize: '9px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase' }}>
@@ -506,8 +480,8 @@ export default function MobileSheet({
           </div>
         )}
 
-        {/* ════════════════ TAB: IDENTITÀ ════════════════════ */}
-        {activeTab === 'identity' && (
+        {/* ════════════════ TAB: BIO ═════════════════════════ */}
+        {activeTab === 'bio' && (
           <>
             {/* Portrait + Info + XP */}
             <div style={CARD}>
@@ -642,14 +616,14 @@ export default function MobileSheet({
                 height: 64,
                 padding: '0 2px',
                 background: 'none', border: 'none',
-                borderTop: `2px solid ${active ? 'var(--gold)' : 'transparent'}`,
+                borderTop: `2px solid ${active ? (tab.id === 'spells' ? 'var(--arcane)' : 'var(--gold)') : 'transparent'}`,
                 cursor: 'pointer', transition: 'all .18s',
               }}>
               <span style={{ fontSize: 18, marginBottom: 4, lineHeight: 1 }}>{tab.icon}</span>
               <span style={{
                 fontFamily: 'var(--font-sans)', fontSize: '8px', fontWeight: 600,
                 letterSpacing: '.06em', textTransform: 'uppercase',
-                color: active ? 'var(--gold)' : 'var(--fg-3)',
+                color: active ? (tab.id === 'spells' ? 'var(--arcane)' : 'var(--gold)') : 'var(--fg-3)',
               }}>
                 {tab.label}
               </span>
