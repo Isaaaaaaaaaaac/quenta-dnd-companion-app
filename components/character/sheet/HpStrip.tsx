@@ -45,11 +45,11 @@ export default function HpStrip({
     >
       {/* HP number + bar */}
       <div style={{ minWidth: 140 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--s-1)', marginBottom: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--s-1)', marginBottom: 'var(--s-1)' }}>
           <span
             style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: '40px',
+              fontSize: '48px',
               fontWeight: 700,
               lineHeight: 1,
               color: hpColor,
@@ -68,7 +68,7 @@ export default function HpStrip({
             backgroundColor: 'var(--bg-card)',
             borderRadius: 'var(--r-sm)',
             overflow: 'hidden',
-            marginBottom: 4,
+            marginBottom: 'var(--s-1)',
           }}
         >
           <div
@@ -135,7 +135,7 @@ export default function HpStrip({
             letterSpacing: '.1em',
             color: 'var(--gold)',
             textTransform: 'uppercase',
-            marginBottom: 6,
+            marginBottom: 'var(--s-1)',
           }}
         >
           Condizioni Attive
