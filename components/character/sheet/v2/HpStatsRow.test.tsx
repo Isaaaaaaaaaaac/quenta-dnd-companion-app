@@ -17,11 +17,12 @@ import type { Character, CharacterSheet } from '@/lib/db/schema';
 import type { SheetViewModel } from '@/lib/character-sheet/buildSheetViewModel';
 
 const character = { id: 'char-1', name: 'Thorin', hpCurrent: 42, hpMax: 56, hpTemp: 0 } as Character;
-const sheet = {} as CharacterSheet;
+const sheet = { initiativeBonus: 0 } as CharacterSheet;
 
 function makeModel(overrides: Partial<SheetViewModel> = {}): SheetViewModel {
   return {
     hpPct: 75, hpColor: 'var(--success)', canCast: true, spellDC: 16, spellAtk: 6,
+    prof: 3, stats: { str: 10, dex: 14, con: 10, int: 10, wis: 10, cha: 10 },
     ...overrides,
   } as SheetViewModel;
 }
@@ -48,6 +49,11 @@ describe('HpStatsRow', () => {
     expect(screen.getByText('Velocità')).toBeInTheDocument();
     expect(screen.getByText('CD Incantesimi')).toBeInTheDocument();
     expect(screen.getByText('Attacco Incantesimi')).toBeInTheDocument();
+  });
+
+  it('computes Iniziativa from the dex modifier, not the proficiency bonus', () => {
+    renderRow();
+    expect(screen.getByText('+2')).toBeInTheDocument();
   });
 
   it('hides the two spellcasting cards when the character cannot cast', () => {

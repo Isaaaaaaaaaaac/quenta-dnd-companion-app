@@ -4,6 +4,7 @@ import { startTransition, useState } from 'react';
 import { card } from './styles';
 import { useToast } from './useToast';
 import { applyDamage, applyHealing, setTempHp } from '@/lib/db/actions';
+import { abilityModifier, formatModifier } from '@/lib/rules/calculations';
 import DeathSavesTracker from '@/components/character/sheet/DeathSavesTracker';
 import type { Character, CharacterSheet } from '@/lib/db/schema';
 import type { SheetViewModel } from '@/lib/character-sheet/buildSheetViewModel';
@@ -60,7 +61,7 @@ export default function HpStatsRow({ character, sheet, model }: HpStatsRowProps)
 
   const stats: { label: string; value: string }[] = [
     { label: 'C.A.', value: String(sheet.armorClass ?? '—') },
-    { label: 'Iniziativa', value: String(model.prof) },
+    { label: 'Iniziativa', value: formatModifier(abilityModifier(model.stats.dex) + (sheet.initiativeBonus ?? 0)) },
     { label: 'Velocità', value: sheet.speed ? `${sheet.speed}m` : '—' },
   ];
   if (model.canCast) {
