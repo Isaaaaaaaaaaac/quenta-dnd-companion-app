@@ -29,7 +29,7 @@ lib/character-sheet/
   buildSheetViewModel.test.ts     # NEW
 
 components/character/sheet/v2/
-  styles.ts                       # NEW — shared CSS-in-JS tokens + modColor/hpBarColor
+  styles.ts                       # NEW — shared CSS-in-JS tokens + modColor
   styles.test.ts                  # NEW
   useToast.ts                     # NEW
   Toast.tsx                       # NEW (ToastProvider)
@@ -409,14 +409,14 @@ git commit -m "feat: add buildSheetViewModel shared character sheet data helper"
 - Test: `components/character/sheet/v2/styles.test.ts`
 
 **Interfaces:**
-- Produces: `card`, `innerBox`, `sectionLabel: CSSProperties`; `modColor(mod: number): string`; `hpBarColor(pct: number): string` — used by every component task from Task 5 onward.
+- Produces: `card`, `innerBox`, `sectionLabel: CSSProperties`; `modColor(mod: number): string` — used by every component task from Task 5 onward. (No `hpBarColor` here — HP bar color is `model.hpColor`, already computed by `buildSheetViewModel`, Task 2; a second HP-color helper would be unused dead code.)
 
 - [ ] **Step 1: Write the failing test**
 
 ```typescript
 // components/character/sheet/v2/styles.test.ts
 import { describe, it, expect } from 'vitest';
-import { modColor, hpBarColor } from './styles';
+import { modColor } from './styles';
 
 describe('modColor', () => {
   it('returns danger for negative modifiers', () => {
@@ -427,18 +427,6 @@ describe('modColor', () => {
   });
   it('returns gold for positive modifiers', () => {
     expect(modColor(3)).toBe('var(--gold)');
-  });
-});
-
-describe('hpBarColor', () => {
-  it('returns success above 60%', () => {
-    expect(hpBarColor(75)).toBe('var(--success)');
-  });
-  it('returns warning between 30% and 60%', () => {
-    expect(hpBarColor(45)).toBe('var(--warning)');
-  });
-  it('returns danger at or below 30%', () => {
-    expect(hpBarColor(20)).toBe('var(--danger)');
   });
 });
 ```
@@ -480,18 +468,12 @@ export function modColor(mod: number): string {
   if (mod === 0) return 'var(--fg-2)';
   return 'var(--gold)';
 }
-
-export function hpBarColor(pct: number): string {
-  if (pct > 60) return 'var(--success)';
-  if (pct > 30) return 'var(--warning)';
-  return 'var(--danger)';
-}
 ```
 
 - [ ] **Step 4: Run tests to verify they pass**
 
 Run: `npm test -- styles`
-Expected: PASS — 6 tests passed.
+Expected: PASS — 3 tests passed.
 
 - [ ] **Step 5: Commit**
 
@@ -1181,7 +1163,7 @@ git commit -m "feat: add DM-only sidebar actions for character sheet v2"
 - Test: `components/character/sheet/v2/HpStatsRow.test.tsx`
 
 **Interfaces:**
-- Consumes: `applyDamage(characterId: string, amount: number): Promise<void>`, `applyHealing(characterId: string, amount: number): Promise<void>`, `setTempHp(characterId: string, amount: number): Promise<void>` from `@/lib/db/actions`; `DeathSavesTracker` (`@/components/character/sheet/DeathSavesTracker`, props `{characterId, sheet}`); `hpBarColor` (Task 3); `useToast` (Task 4).
+- Consumes: `applyDamage(characterId: string, amount: number): Promise<void>`, `applyHealing(characterId: string, amount: number): Promise<void>`, `setTempHp(characterId: string, amount: number): Promise<void>` from `@/lib/db/actions`; `DeathSavesTracker` (`@/components/character/sheet/DeathSavesTracker`, props `{characterId, sheet}`); `model.hpColor` (already computed by `buildSheetViewModel`, Task 2 — no separate color helper needed); `useToast` (Task 4).
 - Produces: `export interface HpStatsRowProps { character: Character; sheet: CharacterSheet; model: SheetViewModel }` and `export default function HpStatsRow(props: HpStatsRowProps): ReactNode` — consumed by `CharacterSheetView` (Task 16).
 
 - [ ] **Step 1: Write the failing test**
