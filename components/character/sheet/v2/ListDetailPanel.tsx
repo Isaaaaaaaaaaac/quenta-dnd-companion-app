@@ -31,13 +31,13 @@ export default function ListDetailPanel<T extends ListDetailItem>({
         ))}
       </div>
       <div style={{
-        ...card, position: 'sticky', top: 64,
+        ...card, position: 'sticky', top: 'var(--s-8)',
         maxHeight: 'calc(100vh - 220px)', overflowY: 'auto', overflowX: 'hidden',
       }}>
         {selected ? renderDetail(selected) : (
           <p style={{
             fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '13px',
-            color: 'var(--fg-3)', textAlign: 'center', padding: '40px 20px', margin: 0,
+            color: 'var(--fg-3)', textAlign: 'center', padding: 'var(--s-5) var(--s-3)', margin: 0,
           }}>
             {emptyDetailText}
           </p>
