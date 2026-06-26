@@ -7,6 +7,7 @@ import { useToast } from '../useToast';
 import { equipInventoryItem, saveInventory } from '@/lib/db/actions';
 import { innerBox } from '../styles';
 import AddEquipmentButton from '@/components/character/sheet/AddEquipmentButton';
+import { getSrdItemDescription } from '@/lib/srd/itemDescription';
 import type { InventoryItem, CharacterSheet } from '@/lib/db/schema';
 
 export interface InventoryTabProps {
@@ -187,7 +188,15 @@ export default function InventoryTab({ characterId, inventory, money, carriedKg,
               <div style={innerBox}><div style={{ fontSize: '7px', color: 'var(--fg-3)' }}>Peso</div><div style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{item.weight * item.quantity} kg</div></div>
               {item.quantity > 1 && <div style={innerBox}><div style={{ fontSize: '7px', color: 'var(--fg-3)' }}>Quantità</div><div style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{item.quantity}</div></div>}
             </div>
-            {item.notes && <p style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', color: 'var(--fg-2)', lineHeight: 1.65 }}>{item.notes}</p>}
+            {(() => {
+              const srdDesc = getSrdItemDescription(item.srdKey);
+              return (
+                <>
+                  {srdDesc && <p style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', color: 'var(--fg-2)', lineHeight: 1.65 }}>{srdDesc}</p>}
+                  {item.notes && <p style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', color: 'var(--fg-2)', lineHeight: 1.65, fontStyle: 'italic' }}>{item.notes}</p>}
+                </>
+              );
+            })()}
           </div>
         )}
       />

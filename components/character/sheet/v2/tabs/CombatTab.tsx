@@ -6,6 +6,7 @@ import { useToast } from '../useToast';
 import { useClassResource } from '@/lib/db/actions';
 import { abilityModifier, formatModifier } from '@/lib/rules/calculations';
 import { innerBox } from '../styles';
+import { getSrdItemDescription } from '@/lib/srd/itemDescription';
 import type { CharacterWeapon, PinnedFeature, CharacterResource, CharacterStats } from '@/lib/db/schema';
 
 export interface CombatTabProps {
@@ -90,6 +91,15 @@ export default function CombatTab({ characterId, weapons, stats, prof, pinnedAll
                     </div>
                   </div>
                 </div>
+                {(() => {
+                  const srdDesc = getSrdItemDescription(w.srdKey);
+                  return srdDesc ? (
+                    <p style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', color: 'var(--fg-2)', lineHeight: 1.65, marginTop: 12 }}>{srdDesc}</p>
+                  ) : null;
+                })()}
+                {w.notes && (
+                  <p style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', color: 'var(--fg-2)', lineHeight: 1.65, fontStyle: 'italic', marginTop: 12 }}>{w.notes}</p>
+                )}
               </div>
             );
           }}
