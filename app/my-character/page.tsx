@@ -1,13 +1,15 @@
 import { requireAuth } from '@/lib/auth-helpers';
 import { getMemberships } from '@/lib/db/userActions';
 import { getDb } from '@/lib/db/client';
-import { characters, characterConditions, characterSpellSlots, campaigns, type CharacterSheet } from '@/lib/db/schema';
+import { characters, characterConditions, characterSpellSlots, characterResources, campaigns, type CharacterSheet } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 import { CLASSES } from '@/lib/srd/classes';
 import { SKILLS, ABILITY_SHORT, ABILITY_NAMES, type Ability } from '@/lib/srd/skills';
 import { CONDITIONS } from '@/lib/srd/conditions';
 import { abilityModifier, proficiencyBonus, skillBonus, passivePerception, spellSaveDC, spellAttackBonus, formatModifier } from '@/lib/rules/calculations';
+import { buildSheetViewModel } from '@/lib/character-sheet/buildSheetViewModel';
+import CharacterSheetView from '@/components/character/sheet/v2/CharacterSheetView';
 
 export const dynamic = 'force-dynamic';
 
@@ -76,17 +78,19 @@ export default async function MyCharacterPage() {
   }
 
   const sheet = char.sheet as CharacterSheet;
+  const [conditions, spellSlots, resources] = await Promise.all([
+    db.select().from(characterConditions).where(eq(characterConditions.characterId, char.id)),
+    db.select().from(characterSpellSlots).where(eq(characterSpellSlots.characterId, char.id)),
+    db.select().from(characterResources).where(eq(characterResources.characterId, char.id)),
+  ]);
+  const model = buildSheetViewModel(char, sheet, spellSlots);
+
   const level = char.level;
   const prof = proficiencyBonus(level);
   const stats = sheet.stats ?? { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 };
   const savingThrows = sheet.savingThrowProficiencies ?? { str: false, dex: false, con: false, int: false, wis: false, cha: false };
   const skillMap = sheet.skills ?? {};
   const cls = CLASSES.find(c => c.key === sheet.classes?.[0]?.classKey);
-
-  const [conditions, spellSlots] = await Promise.all([
-    db.select().from(characterConditions).where(eq(characterConditions.characterId, char.id)),
-    db.select().from(characterSpellSlots).where(eq(characterSpellSlots.characterId, char.id)),
-  ]);
 
   const castingAbility = cls?.spellcastingAbility as Ability | undefined;
   const castingScore = castingAbility ? stats[castingAbility] : 0;
@@ -102,6 +106,32 @@ export default async function MyCharacterPage() {
   const hpColor = hpPct > 60 ? 'var(--info)' : hpPct > 30 ? 'var(--gold)' : 'var(--danger)';
 
   return (
+    <>
+    {/* ── DESKTOP (≥ 768px) ────────────────────────────────── */}
+    <div className="desktop-layout" style={{ minWidth: 1100, padding: '16px 24px 48px' }}>
+      {campaign && (
+        <div style={{ display: 'flex', gap: 4, alignItems: 'center', fontSize: '11px', color: 'var(--fg-3)', marginBottom: 'var(--s-2)' }}>
+          <a href="/my-characters" style={{ color: 'var(--fg-2)' }}>Personaggi</a>
+          <span>/</span>
+          <span style={{ color: 'var(--fg-1)' }}>{char.name}</span>
+        </div>
+      )}
+      <CharacterSheetView
+        character={char}
+        sheet={sheet}
+        model={model}
+        conditions={conditions}
+        resources={resources}
+        campaign={campaign ? { id: campaign.id, name: campaign.name } : null}
+        isActiveCharacter={true}
+        currentActiveName={null}
+        viewerRole="player"
+        currentUserId={char.userId ?? null}
+        isOwner={true}
+      />
+    </div>
+    {/* ── MOBILE (< 768px) ─────────────────────────────────── */}
+    <div className="mobile-layout">
     <div style={{ maxWidth: 860, margin: '0 auto', padding: '40px 24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
 
       {/* Breadcrumb */}
@@ -331,6 +361,8 @@ export default async function MyCharacterPage() {
       )}
 
     </div>
+    </div>
+    </>
   );
 }
 
