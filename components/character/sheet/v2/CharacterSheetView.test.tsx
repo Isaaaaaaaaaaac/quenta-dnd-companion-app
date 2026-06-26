@@ -22,6 +22,8 @@ vi.mock('@/components/character/sheet/AssignPlayerButton', () => ({ default: () 
 vi.mock('@/components/character/features/FeatureButton', () => ({ default: ({ label }: { label: string }) => <div>{label}</div> }));
 vi.mock('@/components/character/sheet/DeathSavesTracker', () => ({ default: () => <div>death-saves</div> }));
 vi.mock('@/components/character/sheet/BackstoryCard', () => ({ default: () => <div>backstory-card</div> }));
+vi.mock('@/components/character/sheet/AddSpellButton', () => ({ default: () => <div>add-spell-button</div> }));
+vi.mock('@/components/character/sheet/AddEquipmentButton', () => ({ default: () => <div>add-equipment-button</div> }));
 
 import CharacterSheetView from './CharacterSheetView';
 import type { Character, CharacterSheet } from '@/lib/db/schema';

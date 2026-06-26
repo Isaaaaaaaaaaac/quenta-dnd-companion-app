@@ -91,6 +91,9 @@ export default function CharacterSheetView({
               activeSpellSlots={model.activeSpellSlots}
               knownSpells={model.knownSpells}
               canCast={model.canCast}
+              casterClassKeys={model.casterClassKeys}
+              characterClasses={sheet.classes ?? []}
+              characterStats={model.stats}
             />
           )}
           {activeTab === 'inventory' && (

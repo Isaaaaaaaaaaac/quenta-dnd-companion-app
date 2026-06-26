@@ -6,6 +6,7 @@ import ListDetailPanel from '../ListDetailPanel';
 import { useToast } from '../useToast';
 import { equipInventoryItem, saveInventory } from '@/lib/db/actions';
 import { innerBox } from '../styles';
+import AddEquipmentButton from '@/components/character/sheet/AddEquipmentButton';
 import type { InventoryItem, CharacterSheet } from '@/lib/db/schema';
 
 export interface InventoryTabProps {
@@ -99,6 +100,10 @@ export default function InventoryTab({ characterId, inventory, money, carriedKg,
             </div>
           ))}
         </div>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <AddEquipmentButton characterId={characterId} inventory={inventory} money={money} />
       </div>
 
       <div style={{ display: 'flex', gap: 6 }}>

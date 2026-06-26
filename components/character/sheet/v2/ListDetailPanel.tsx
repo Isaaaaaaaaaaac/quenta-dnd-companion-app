@@ -25,14 +25,21 @@ export default function ListDetailPanel<T extends ListDetailItem>({
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-2)', alignItems: 'start' }}>
       <div style={{ ...card, maxHeight: 'calc(100vh - 220px)', overflowY: 'auto', overflowX: 'hidden' }}>
         {items.map(item => (
-          <button
+          <div
             key={item.id}
-            type="button"
+            role="button"
+            tabIndex={0}
             onClick={() => onSelect(item.id)}
-            style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onSelect(item.id);
+              }
+            }}
+            style={{ cursor: 'pointer' }}
           >
             {renderListItem(item, item.id === selectedId)}
-          </button>
+          </div>
         ))}
       </div>
       <div style={{

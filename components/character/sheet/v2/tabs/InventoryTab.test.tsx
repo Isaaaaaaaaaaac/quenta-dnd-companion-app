@@ -5,6 +5,7 @@ vi.mock('@/lib/db/actions', () => ({
   equipInventoryItem: vi.fn().mockResolvedValue({}),
   saveInventory: vi.fn().mockResolvedValue(undefined),
 }));
+vi.mock('@/components/character/sheet/AddEquipmentButton', () => ({ default: () => <div>add-equipment-button</div> }));
 
 import InventoryTab from './InventoryTab';
 import { ToastProvider } from '../Toast';

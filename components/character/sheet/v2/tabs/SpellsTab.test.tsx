@@ -5,11 +5,14 @@ vi.mock('@/lib/db/actions', () => ({
   useSpellSlot: vi.fn().mockResolvedValue(undefined),
   restoreSpellSlot: vi.fn().mockResolvedValue(undefined),
 }));
+vi.mock('@/components/character/sheet/AddSpellButton', () => ({ default: () => <div>add-spell-button</div> }));
 
 import SpellsTab from './SpellsTab';
 import { ToastProvider } from '../Toast';
 import { useSpellSlot } from '@/lib/db/actions';
-import type { CharacterSpellSlot, KnownSpell } from '@/lib/db/schema';
+import type { CharacterSpellSlot, KnownSpell, CharacterStats } from '@/lib/db/schema';
+
+const characterStats: CharacterStats = { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 };
 
 const activeSpellSlots: CharacterSpellSlot[] = [
   { characterId: 'char-1', slotLevel: 1, total: 4, used: 1 },
@@ -22,7 +25,10 @@ const knownSpells: KnownSpell[] = [
 function renderTab(spells = knownSpells) {
   return render(
     <ToastProvider>
-      <SpellsTab characterId="char-1" activeSpellSlots={activeSpellSlots} knownSpells={spells} canCast={true} />
+      <SpellsTab
+        characterId="char-1" activeSpellSlots={activeSpellSlots} knownSpells={spells} canCast={true}
+        casterClassKeys={['cleric']} characterClasses={[{ classKey: 'cleric', level: 6 }]} characterStats={characterStats}
+      />
     </ToastProvider>
   );
 }
@@ -31,7 +37,10 @@ describe('SpellsTab', () => {
   it('shows an empty state with no spells when the character cannot cast', () => {
     render(
       <ToastProvider>
-        <SpellsTab characterId="char-1" activeSpellSlots={[]} knownSpells={[]} canCast={false} />
+        <SpellsTab
+          characterId="char-1" activeSpellSlots={[]} knownSpells={[]} canCast={false}
+          casterClassKeys={[]} characterClasses={[]} characterStats={characterStats}
+        />
       </ToastProvider>
     );
     expect(screen.getByText('Nessun incantesimo disponibile')).toBeInTheDocument();

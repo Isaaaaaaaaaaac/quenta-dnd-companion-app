@@ -6,18 +6,22 @@ import { useToast } from '../useToast';
 import { useSpellSlot, restoreSpellSlot } from '@/lib/db/actions';
 import { SRD_SPELLS, SCHOOLS_IT } from '@/lib/srd/spells';
 import { innerBox } from '../styles';
-import type { CharacterSpellSlot, KnownSpell } from '@/lib/db/schema';
+import AddSpellButton from '@/components/character/sheet/AddSpellButton';
+import type { CharacterSpellSlot, KnownSpell, CharacterClass, CharacterStats } from '@/lib/db/schema';
 
 export interface SpellsTabProps {
   characterId: string;
   activeSpellSlots: CharacterSpellSlot[];
   knownSpells: KnownSpell[];
   canCast: boolean;
+  casterClassKeys: string[];
+  characterClasses: CharacterClass[];
+  characterStats: CharacterStats;
 }
 
 interface SpellItem { id: string; known: KnownSpell; srd: typeof SRD_SPELLS[number] | undefined; }
 
-export default function SpellsTab({ characterId, activeSpellSlots, knownSpells, canCast }: SpellsTabProps) {
+export default function SpellsTab({ characterId, activeSpellSlots, knownSpells, canCast, casterClassKeys, characterClasses, characterStats }: SpellsTabProps) {
   const { show } = useToast();
   const [filter, setFilter] = useState<'all' | 'prepared'>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -61,15 +65,24 @@ export default function SpellsTab({ characterId, activeSpellSlots, knownSpells, 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
           <span style={{ fontSize: '8px', fontWeight: 600, letterSpacing: '.1em', color: 'var(--gold)', textTransform: 'uppercase' }}>Slot Incantesimo</span>
-          <button
-            type="button"
-            onClick={handleResetAll}
-            style={{ fontSize: '8px', color: 'var(--fg-3)', cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}
-          >
-            Reset
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-1)' }}>
+            <AddSpellButton
+              characterId={characterId}
+              currentSpells={knownSpells}
+              casterClassKeys={casterClassKeys}
+              characterClasses={characterClasses}
+              characterStats={characterStats}
+            />
+            <button
+              type="button"
+              onClick={handleResetAll}
+              style={{ fontSize: '8px', color: 'var(--fg-3)', cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}
+            >
+              Reset
+            </button>
+          </div>
         </div>
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {activeSpellSlots.map(slot => {
