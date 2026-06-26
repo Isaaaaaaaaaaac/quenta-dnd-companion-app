@@ -18,22 +18,29 @@ interface Props {
 
 export default function TabNav({ activeTab, onChange }: Props) {
   return (
-    <div style={{ display: 'flex', gap: 2, borderBottom: '1px solid var(--border-leather-dim)' }}>
+    <div style={{ display: 'flex', gap: 'var(--s-1)', borderBottom: '1px solid var(--border-leather-dim)' }}>
       {TABS.map(tab => {
         const isActive = tab.id === activeTab;
         return (
-          <div
+          <button
             key={tab.id}
+            type="button"
             onClick={() => onChange(tab.id)}
             style={{
-              padding: '7px 14px', fontSize: '11px', letterSpacing: '.04em', cursor: 'pointer',
+              padding: 'var(--s-1) var(--s-2)',
+              background: 'none',
+              border: 'none',
+              fontSize: '11px',
+              letterSpacing: '.04em',
+              cursor: 'pointer',
               color: isActive ? 'var(--gold)' : 'var(--fg-2)',
               borderBottom: `2px solid ${isActive ? 'var(--gold)' : 'transparent'}`,
               marginBottom: -1,
+              transition: 'all .12s',
             }}
           >
             {tab.label}
-          </div>
+          </button>
         );
       })}
     </div>
