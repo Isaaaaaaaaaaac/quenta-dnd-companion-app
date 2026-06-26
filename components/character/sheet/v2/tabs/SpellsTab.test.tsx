@@ -8,7 +8,7 @@ vi.mock('@/lib/db/actions', () => ({
 
 import SpellsTab from './SpellsTab';
 import { ToastProvider } from '../Toast';
-import { useSpellSlot, restoreSpellSlot } from '@/lib/db/actions';
+import { useSpellSlot } from '@/lib/db/actions';
 import type { CharacterSpellSlot, KnownSpell } from '@/lib/db/schema';
 
 const activeSpellSlots: CharacterSpellSlot[] = [

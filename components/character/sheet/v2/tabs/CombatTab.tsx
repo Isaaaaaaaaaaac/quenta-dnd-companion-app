@@ -33,6 +33,7 @@ export default function CombatTab({ characterId, weapons, stats, prof, pinnedAll
 
   function handleUse(resourceKey: string) {
     startTransition(async () => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks -- useClassResource is a server action (lib/db/actions.ts), not a React hook; its name only happens to start with "use"
       await useClassResource(characterId, resourceKey, -1);
       show('Capacità utilizzata');
     });

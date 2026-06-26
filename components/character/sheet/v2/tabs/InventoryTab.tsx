@@ -5,7 +5,7 @@ import * as Popover from '@radix-ui/react-popover';
 import ListDetailPanel from '../ListDetailPanel';
 import { useToast } from '../useToast';
 import { equipInventoryItem, saveInventory } from '@/lib/db/actions';
-import { card, innerBox } from '../styles';
+import { innerBox } from '../styles';
 import type { InventoryItem, CharacterSheet } from '@/lib/db/schema';
 
 export interface InventoryTabProps {

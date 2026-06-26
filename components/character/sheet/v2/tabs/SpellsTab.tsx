@@ -28,6 +28,7 @@ export default function SpellsTab({ characterId, activeSpellSlots, knownSpells, 
         for (let i = 0; i < slot.total; i++) await restoreSpellSlot(characterId, slot.slotLevel);
         show(`Slot livello ${slot.slotLevel} ripristinati`);
       } else {
+        // eslint-disable-next-line react-hooks/rules-of-hooks -- useSpellSlot is a server action (lib/db/actions.ts), not a React hook; its name only happens to start with "use"
         await useSpellSlot(characterId, slot.slotLevel);
         show(`Slot livello ${slot.slotLevel} consumato`);
       }
