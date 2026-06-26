@@ -115,3 +115,40 @@ export function calcAC(
   if (hasShield) ac += 2;
   return ac;
 }
+
+// ── Mappa legacy: ID italiano di vecchi modal → chiave SRD inglese ──────────
+// Necessaria per item salvati prima che i modal fossero allineati ai key SRD.
+export const LEGACY_SRD_KEY_ALIASES: Record<string, string> = {
+  // Armi — nomi italiani diversi dalla traduzione SRD
+  'daga':       'dagger',      // Daga → Pugnale
+  'randello':   'club',        // Randello → Clava
+  'lancia':     'javelin',     // Lancia → Giavellotto
+  'spadone':    'greatsword',  // Spadone → Spada a Due Mani
+  'alabarda':   'glaive',      // Alabarda → Glaive (halberd in SRD è separato)
+  'balestra-l': 'crossbow_light',
+  'balestra-m': 'hand_crossbow',
+  // Armature
+  'cuoio':      'leather',     // Cuoio → Di Cuoio
+  'cuoio-b':    'studded_leather', // Cuoio Borchiato → Di Cuoio Borchiato
+  'pettorale':  'breastplate', // Corazza Pettorale → Pettorale
+  'arm-piastre':'plate',       // Armatura di Piastre → A Piastre
+  'giaco':      'chain_mail',  // Giaco di Maglia → Cotta di Piastre (CA 16, pesante)
+  'arm-anelli': 'ring_mail',
+};
+
+/** Traduce un id legacy in chiave SRD, se mappato; altrimenti lo lascia invariato. */
+export function resolveSrdKey(srdKey?: string): string | undefined {
+  return LEGACY_SRD_KEY_ALIASES[srdKey ?? ''] ?? srdKey;
+}
+
+/** Cerca un'arma per chiave SRD (con alias legacy), poi per nome (case-insensitive). */
+export function findWeaponByKeyOrName(item: { srdKey?: string; name: string }): SrdWeapon | undefined {
+  const key = resolveSrdKey(item.srdKey);
+  return WEAPONS.find(w => w.key === key || w.name.toLowerCase() === item.name.toLowerCase());
+}
+
+/** Cerca un'armatura per chiave SRD (con alias legacy), poi per nome (case-insensitive). */
+export function findArmorByKeyOrName(item: { srdKey?: string; name: string }): SrdArmor | undefined {
+  const key = resolveSrdKey(item.srdKey);
+  return ARMORS.find(a => a.key === key || a.name.toLowerCase() === item.name.toLowerCase());
+}

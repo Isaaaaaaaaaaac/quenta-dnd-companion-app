@@ -321,6 +321,11 @@ export function findGearItem(key: string): SrdGearItem | undefined {
   return GEAR_ITEMS.find(i => i.key === key);
 }
 
+/** Cerca un oggetto comune per chiave SRD, poi per nome (case-insensitive). */
+export function findGearItemByKeyOrName(item: { srdKey?: string; name: string }): SrdGearItem | undefined {
+  return GEAR_ITEMS.find(i => i.key === item.srdKey || i.name.toLowerCase() === item.name.toLowerCase());
+}
+
 export function getGearByCategory(category: GearCategory): SrdGearItem[] {
   return GEAR_ITEMS.filter(i => i.category === category);
 }

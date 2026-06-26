@@ -1,6 +1,11 @@
-import { WEAPONS, ARMORS, type WeaponProperty, type WeaponCategory } from './equipment';
-import { findGearItem } from './gear';
-import { findMagicItem } from './magicItems';
+import { findWeaponByKeyOrName, findArmorByKeyOrName, type SrdWeapon, type SrdArmor, type WeaponProperty, type WeaponCategory } from './equipment';
+import { findGearItemByKeyOrName } from './gear';
+import { findMagicItemByKeyOrName } from './magicItems';
+
+export interface SrdLookupItem {
+  srdKey?: string;
+  name: string;
+}
 
 const WEAPON_CATEGORY_LABELS: Record<WeaponCategory, string> = {
   semplice_mischia: 'arma semplice da mischia',
@@ -21,9 +26,7 @@ const WEAPON_PROPERTY_LABELS: Record<WeaponProperty, string> = {
   speciale: 'Speciale',
 };
 
-function describeWeapon(srdKey: string): string | null {
-  const w = WEAPONS.find(x => x.key === srdKey);
-  if (!w) return null;
+function describeWeapon(w: SrdWeapon): string {
   const damage = w.damageDice2h ? `${w.damageDice} ${w.damageType} (${w.damageDice2h} a due mani)` : `${w.damageDice} ${w.damageType}`;
   const parts = [`${WEAPON_CATEGORY_LABELS[w.category]}, danno ${damage}.`];
   if (w.properties.length > 0) {
@@ -33,9 +36,7 @@ function describeWeapon(srdKey: string): string | null {
   return parts.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
 }
 
-function describeArmor(srdKey: string): string | null {
-  const a = ARMORS.find(x => x.key === srdKey);
-  if (!a) return null;
+function describeArmor(a: SrdArmor): string {
   if (a.type === 'scudo') return `Scudo: +${a.baseAC} alla Classe Armatura.`;
   const dexNote = a.maxDexBonus === null
     ? '+ modificatore Destrezza'
@@ -49,21 +50,28 @@ function describeArmor(srdKey: string): string | null {
 }
 
 /**
- * Restituisce la descrizione SRD per una voce di inventario, se disponibile.
+ * Restituisce la descrizione SRD per una voce di inventario/arma, se
+ * disponibile. La ricerca usa prima `srdKey` (incluso un alias legacy per
+ * id di vecchi modal), poi il nome dell'item (case-insensitive) — molti
+ * item esistenti non hanno mai avuto `srdKey` impostato correttamente.
+ *
  * Oggetti magici: testo narrativo reale dell'SRD. Armi/armature: frase
  * riassuntiva generata dalle statistiche reali (l'SRD non ha prosa per
  * queste). Oggetti comuni: nota meccanica reale dell'SRD, se presente.
  * Ritorna null se non c'è alcuna voce SRD corrispondente.
  */
-export function getSrdItemDescription(srdKey: string | undefined): string | null {
-  if (!srdKey) return null;
-  const magicItem = findMagicItem(srdKey);
+export function getSrdItemDescription(item: SrdLookupItem): string | null {
+  const magicItem = findMagicItemByKeyOrName(item);
   if (magicItem) return magicItem.description;
-  const weaponDesc = describeWeapon(srdKey);
-  if (weaponDesc) return weaponDesc;
-  const armorDesc = describeArmor(srdKey);
-  if (armorDesc) return armorDesc;
-  const gearItem = findGearItem(srdKey);
+
+  const weapon = findWeaponByKeyOrName(item);
+  if (weapon) return describeWeapon(weapon);
+
+  const armor = findArmorByKeyOrName(item);
+  if (armor) return describeArmor(armor);
+
+  const gearItem = findGearItemByKeyOrName(item);
   if (gearItem?.note) return gearItem.note;
+
   return null;
 }

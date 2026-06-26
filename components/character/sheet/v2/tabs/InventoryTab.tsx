@@ -189,7 +189,7 @@ export default function InventoryTab({ characterId, inventory, money, carriedKg,
               {item.quantity > 1 && <div style={innerBox}><div style={{ fontSize: '7px', color: 'var(--fg-3)' }}>Quantità</div><div style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{item.quantity}</div></div>}
             </div>
             {(() => {
-              const srdDesc = getSrdItemDescription(item.srdKey);
+              const srdDesc = getSrdItemDescription(item);
               return (
                 <>
                   {srdDesc && <p style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', color: 'var(--fg-2)', lineHeight: 1.65 }}>{srdDesc}</p>}

@@ -392,6 +392,11 @@ export function findMagicItem(key: string): SrdMagicItem | undefined {
   return MAGIC_ITEMS.find(i => i.key === key);
 }
 
+/** Cerca un oggetto magico per chiave SRD, poi per nome (case-insensitive). */
+export function findMagicItemByKeyOrName(item: { srdKey?: string; name: string }): SrdMagicItem | undefined {
+  return MAGIC_ITEMS.find(i => i.key === item.srdKey || i.name.toLowerCase() === item.name.toLowerCase());
+}
+
 export function getMagicItemsByType(type: MagicItemType): SrdMagicItem[] {
   return MAGIC_ITEMS.filter(i => i.type === type);
 }

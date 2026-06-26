@@ -92,7 +92,7 @@ export default function CombatTab({ characterId, weapons, stats, prof, pinnedAll
                   </div>
                 </div>
                 {(() => {
-                  const srdDesc = getSrdItemDescription(w.srdKey);
+                  const srdDesc = getSrdItemDescription(w);
                   return srdDesc ? (
                     <p style={{ fontFamily: 'var(--font-serif)', fontSize: '13px', color: 'var(--fg-2)', lineHeight: 1.65, marginTop: 12 }}>{srdDesc}</p>
                   ) : null;

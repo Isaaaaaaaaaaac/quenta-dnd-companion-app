@@ -8,7 +8,7 @@ import { generateId, now } from '@/lib/utils';
 import { getClass } from '@/lib/srd/classes';
 import { SPELL_SLOTS_FULL, SPELL_SLOTS_HALF, SPELL_SLOTS_PACT, SPELL_SLOTS_THIRD } from '@/lib/srd/constants';
 import type { NewCharacter, CharacterSheet, CharacterWeapon, MagicItem, KnownSpell, AsiHistoryEntry, CharacterFeat, NewCampaign } from './schema';
-import { calcAC, WEAPONS, ARMORS } from '@/lib/srd/equipment';
+import { calcAC, findWeaponByKeyOrName, findArmorByKeyOrName } from '@/lib/srd/equipment';
 import { abilityModifier } from '@/lib/rules/calculations';
 
 // ─── HP ────────────────────────────────────────────────────────────────────
@@ -544,38 +544,10 @@ export async function equipInventoryItem(
     return {};
   }
 
-  // ── Mappa legacy: ID italiano del modal → chiave SRD inglese ────────────────
-  // Necessaria per item salvati prima che il modal fosse allineato ai key SRD.
-  const MODAL_TO_SRD: Record<string, string> = {
-    // Armi — nomi italiani diversi dalla traduzione SRD
-    'daga':       'dagger',      // Daga → Pugnale
-    'randello':   'club',        // Randello → Clava
-    'lancia':     'javelin',     // Lancia → Giavellotto
-    'spadone':    'greatsword',  // Spadone → Spada a Due Mani
-    'alabarda':   'glaive',      // Alabarda → Glaive (halberd in SRD è separato)
-    'balestra-l': 'crossbow_light',
-    'balestra-m': 'hand_crossbow',
-    // Armature
-    'cuoio':      'leather',     // Cuoio → Di Cuoio
-    'cuoio-b':    'studded_leather', // Cuoio Borchiato → Di Cuoio Borchiato
-    'pettorale':  'breastplate', // Corazza Pettorale → Pettorale
-    'arm-piastre':'plate',       // Armatura di Piastre → A Piastre
-    'giaco':      'chain_mail',  // Giaco di Maglia → Cotta di Piastre (CA 16, pesante)
-    'arm-anelli': 'ring_mail',
-  };
-
-  // ── Helper: cerca in SRD per chiave SRD, poi ID legacy, poi nome italiano ───
-  const resolveSrdKey = (srdKey?: string): string | undefined =>
-    MODAL_TO_SRD[srdKey ?? ''] ?? srdKey;
-
-  const findWeapon = (i: typeof item) => {
-    const key = resolveSrdKey(i.srdKey);
-    return WEAPONS.find(w => w.key === key || w.name.toLowerCase() === i.name.toLowerCase());
-  };
-  const findArmor = (i: typeof item) => {
-    const key = resolveSrdKey(i.srdKey);
-    return ARMORS.find(a => a.key === key || a.name.toLowerCase() === i.name.toLowerCase());
-  };
+  // Risoluzione SRD (chiave + alias legacy + fallback per nome) condivisa
+  // con lib/srd/itemDescription.ts — vedi lib/srd/equipment.ts.
+  const findWeapon = (i: typeof item) => findWeaponByKeyOrName(i);
+  const findArmor = (i: typeof item) => findArmorByKeyOrName(i);
 
   // ── Inferisci categoria se mancante (item aggiunti prima dell'aggiornamento) ──
   let cat = item.category;
