@@ -2786,12 +2786,12 @@ Replace the entire content **inside** `<div className="desktop-layout" ...>` —
   isActiveCharacter={isActiveCharacter}
   currentActiveName={currentActiveName}
   viewerRole={isDm ? 'dm' : 'player'}
-  currentUserId={session?.user?.id ?? null}
+  currentUserId={char.userId ?? null}
   isOwner={isDm || isActiveCharacter}
 />
 ```
 
-If `session.user.id` is not already typed on the NextAuth session (check `auth.ts` callbacks — `session()` adds `id`, `role`, `onboarded` per `lib/auth-helpers.ts` research), this should type-check without changes; if TypeScript complains the session type doesn't include `id`, check how `isDm` already reads `session?.user?.email` two lines above and mirror that same access pattern/type assertion rather than introducing a new one.
+`currentUserId` here means the player currently assigned to this character (consumed by `AssignPlayerButton` inside `SidebarDmActions`), not the viewing/logged-in user — same semantics as the original page's `<AssignPlayerButton characterId={char.id} currentUserId={char.userId ?? null} />` call. Do not use `session?.user?.id`.
 
 - [ ] **Step 4: Update imports**
 
