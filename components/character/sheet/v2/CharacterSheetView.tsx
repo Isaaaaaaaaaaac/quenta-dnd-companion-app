@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Sidebar from './Sidebar';
 import SidebarDmActions from './SidebarDmActions';
 import HpStatsRow from './HpStatsRow';
@@ -43,10 +43,6 @@ export default function CharacterSheetView({
   isActiveCharacter, currentActiveName, viewerRole, currentUserId, isOwner,
 }: CharacterSheetViewProps) {
   const [activeTab, setActiveTab] = useState<SheetTabId>(() => readStoredTab(character.id));
-
-  useEffect(() => {
-    setActiveTab(readStoredTab(character.id));
-  }, [character.id]);
 
   function handleTabChange(tab: SheetTabId) {
     setActiveTab(tab);
