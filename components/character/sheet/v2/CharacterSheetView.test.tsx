@@ -65,6 +65,12 @@ describe('CharacterSheetView', () => {
     expect(window.localStorage.getItem('quenta:sheet-v2-tab:char-1')).toBe('inventory');
   });
 
+  it('restores a previously stored tab after mount', () => {
+    window.localStorage.setItem('quenta:sheet-v2-tab:char-1', 'inventory');
+    renderView();
+    expect(screen.getByText('Denaro')).toBeInTheDocument();
+  });
+
   it('does not render DM-only actions for a player viewer', () => {
     renderView('player');
     expect(screen.queryByText('assign-player')).toBeNull();

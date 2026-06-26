@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import SidebarDmActions from './SidebarDmActions';
 import HpStatsRow from './HpStatsRow';
@@ -42,7 +42,16 @@ export default function CharacterSheetView({
   character, sheet, model, conditions, resources, campaign,
   isActiveCharacter, currentActiveName, viewerRole, currentUserId, isOwner,
 }: CharacterSheetViewProps) {
-  const [activeTab, setActiveTab] = useState<SheetTabId>(() => readStoredTab(character.id));
+  // Inizializza sempre con 'stats' per coincidere col markup renderizzato dal server
+  // (window.localStorage non esiste lì): leggere il valore reale già nel lazy initializer
+  // produrrebbe un mismatch di hydration, perché il primo render client avverrebbe con
+  // un tab diverso da quello del server prima ancora che React possa confrontarli.
+  const [activeTab, setActiveTab] = useState<SheetTabId>('stats');
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intenzionale: sincronizza con localStorage solo dopo il mount, per evitare un mismatch di hydration (vedi commento sopra)
+    setActiveTab(readStoredTab(character.id));
+  }, [character.id]);
 
   function handleTabChange(tab: SheetTabId) {
     setActiveTab(tab);
