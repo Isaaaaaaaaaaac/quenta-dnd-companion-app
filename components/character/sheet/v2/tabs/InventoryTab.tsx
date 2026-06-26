@@ -7,7 +7,8 @@ import { useToast } from '../useToast';
 import { equipInventoryItem, saveInventory } from '@/lib/db/actions';
 import { innerBox } from '../styles';
 import AddEquipmentButton from '@/components/character/sheet/AddEquipmentButton';
-import { getSrdItemDescription } from '@/lib/srd/itemDescription';
+import { getSrdItemDescription, getSrdItemIcon } from '@/lib/srd/itemDescription';
+import SrdIcon from '../SrdIcon';
 import type { InventoryItem, CharacterSheet } from '@/lib/db/schema';
 
 export interface InventoryTabProps {
@@ -139,6 +140,7 @@ export default function InventoryTab({ characterId, inventory, money, carriedKg,
         emptyDetailText="Seleziona un oggetto dalla lista per vederne i dettagli"
         renderListItem={(item) => (
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 8px' }}>
+            <SrdIcon icon={getSrdItemIcon(item)} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: '11px', color: item.equipped ? 'var(--fg-1)' : 'var(--fg-2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {item.name}{item.quantity > 1 ? ` ×${item.quantity}` : ''}
@@ -182,7 +184,10 @@ export default function InventoryTab({ characterId, inventory, money, carriedKg,
         )}
         renderDetail={(item) => (
           <div>
-            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)', marginBottom: 4 }}>{item.name}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+              <SrdIcon icon={getSrdItemIcon(item)} size={24} color="var(--gold)" />
+              <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)' }}>{item.name}</div>
+            </div>
             <div style={{ fontSize: '10px', fontWeight: 600, color: 'var(--fg-2)', textTransform: 'uppercase', marginBottom: 12 }}>{item.category}</div>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
               <div style={innerBox}><div style={{ fontSize: '7px', color: 'var(--fg-3)' }}>Peso</div><div style={{ fontSize: '13px', color: 'var(--fg-1)' }}>{item.weight * item.quantity} kg</div></div>

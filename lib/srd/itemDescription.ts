@@ -1,6 +1,9 @@
 import { findWeaponByKeyOrName, findArmorByKeyOrName, type SrdWeapon, type SrdArmor, type WeaponProperty, type WeaponCategory } from './equipment';
 import { findGearItemByKeyOrName } from './gear';
-import { findMagicItemByKeyOrName } from './magicItems';
+import { findMagicItemByKeyOrName, MAGIC_ITEM_ICON } from './magicItems';
+
+/** Icona generica per un item senza alcuna corrispondenza SRD (nome/chiave inventati o errati). */
+export const FALLBACK_ITEM_ICON = 'chest';
 
 export interface SrdLookupItem {
   srdKey?: string;
@@ -74,4 +77,28 @@ export function getSrdItemDescription(item: SrdLookupItem): string | null {
   if (gearItem?.note) return gearItem.note;
 
   return null;
+}
+
+/**
+ * Restituisce il nome icona (@iconify-json/game-icons, senza prefisso
+ * "game-icons:") per una voce di inventario/arma. Stessa risoluzione di
+ * `getSrdItemDescription` (chiave SRD, alias legacy, poi nome). Gli oggetti
+ * magici usano l'icona del loro tipo (`MAGIC_ITEM_ICON`), non una specifica
+ * per singolo oggetto — non ottenibile da una libreria generica per 301
+ * voci distinte. Ritorna `FALLBACK_ITEM_ICON` se non c'è alcuna corrispondenza.
+ */
+export function getSrdItemIcon(item: SrdLookupItem): string {
+  const magicItem = findMagicItemByKeyOrName(item);
+  if (magicItem) return MAGIC_ITEM_ICON[magicItem.type];
+
+  const weapon = findWeaponByKeyOrName(item);
+  if (weapon) return weapon.icon;
+
+  const armor = findArmorByKeyOrName(item);
+  if (armor) return armor.icon;
+
+  const gearItem = findGearItemByKeyOrName(item);
+  if (gearItem) return gearItem.icon;
+
+  return FALLBACK_ITEM_ICON;
 }

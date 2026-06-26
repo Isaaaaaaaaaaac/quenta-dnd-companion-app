@@ -441,3 +441,21 @@ export const TYPE_ICON: Record<MagicItemType, string> = {
   munizioni:    '🏹',
   strumento:    '🎵',
 };
+
+// Icona @iconify-json/game-icons per tipo (un'icona davvero distinta per
+// ognuno dei 301 oggetti magici non è ottenibile da una libreria generica:
+// la maggior parte finirebbe comunque per coincidere con l'oggetto
+// mondano sottostante — es. tutte le spade magiche = icona spada).
+export const MAGIC_ITEM_ICON: Record<MagicItemType, string> = {
+  meraviglioso: 'sparkles',
+  arma:         'shining-sword',
+  armatura:     'armor-upgrade',
+  scudo:        'magic-shield',
+  anello:       'ring',
+  pozione:      'magic-potion',
+  bacchetta:    'crystal-wand',
+  bastone:      'wizard-staff',
+  verga:        'rod-of-asclepius',
+  munizioni:    'arrow-cluster',
+  strumento:    'toolbox',
+};

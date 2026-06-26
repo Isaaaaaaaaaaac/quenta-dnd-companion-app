@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { getSrdItemDescription } from './itemDescription';
+import { getSrdItemDescription, getSrdItemIcon, FALLBACK_ITEM_ICON } from './itemDescription';
 import { WEAPONS, ARMORS } from './equipment';
 import { GEAR_ITEMS } from './gear';
-import { MAGIC_ITEMS } from './magicItems';
+import { MAGIC_ITEMS, MAGIC_ITEM_ICON } from './magicItems';
 
 describe('getSrdItemDescription', () => {
   it('returns null when nothing matches by key or name', () => {
@@ -119,5 +119,35 @@ describe('getSrdItemDescription', () => {
   it('describes a previously-missing martial ranged weapon (heavy crossbow)', () => {
     const desc = getSrdItemDescription({ srdKey: 'crossbow_heavy', name: 'Balestra Pesante' });
     expect(desc).toContain('Gittata: 30/120m.');
+  });
+});
+
+describe('getSrdItemIcon', () => {
+  it('returns the fallback icon when nothing matches', () => {
+    expect(getSrdItemIcon({ srdKey: 'not-a-real-key', name: 'Oggetto Inesistente' })).toBe(FALLBACK_ITEM_ICON);
+  });
+
+  it("returns the weapon's own icon", () => {
+    expect(getSrdItemIcon({ srdKey: 'longsword', name: 'Spada Lunga' })).toBe('broadsword');
+  });
+
+  it("returns the armor's own icon", () => {
+    expect(getSrdItemIcon({ srdKey: 'shield', name: 'Scudo' })).toBe('shield');
+  });
+
+  it("returns the gear item's own icon", () => {
+    expect(getSrdItemIcon({ srdKey: 'torch', name: 'Torcia' })).toBe('torch');
+  });
+
+  it("returns the magic item type's icon, not a per-item icon", () => {
+    const item = MAGIC_ITEMS.find(i => i.key === 'amulet_health')!;
+    expect(getSrdItemIcon({ srdKey: item.key, name: item.name })).toBe(MAGIC_ITEM_ICON[item.type]);
+  });
+
+  it('every weapon, armor, gear and magic item resolves to a real icon name', () => {
+    for (const w of WEAPONS) expect(getSrdItemIcon({ srdKey: w.key, name: w.name })).toBe(w.icon);
+    for (const a of ARMORS) expect(getSrdItemIcon({ srdKey: a.key, name: a.name })).toBe(a.icon);
+    for (const g of GEAR_ITEMS) expect(getSrdItemIcon({ srdKey: g.key, name: g.name })).toBe(g.icon);
+    for (const m of MAGIC_ITEMS) expect(getSrdItemIcon({ srdKey: m.key, name: m.name })).toBe(MAGIC_ITEM_ICON[m.type]);
   });
 });

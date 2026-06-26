@@ -15,47 +15,48 @@ export interface SrdWeapon {
   range?: string;           // es. "18/60m"
   weight: number;           // kg
   cost: string;             // es. "2 PO"
+  icon: string;             // nome icona @iconify-json/game-icons (es. "daggers")
 }
 
 export const WEAPONS: SrdWeapon[] = [
   // ─── Semplici mischia ──────────────────────────────────────────
-  { key: 'club',          name: 'Clava',            category: 'semplice_mischia',   damageDice: '1d4', damageType: 'contundente', properties: ['leggera'],              weight: 1,   cost: '1 PA' },
-  { key: 'dagger',        name: 'Pugnale',          category: 'semplice_mischia',   damageDice: '1d4', damageType: 'perforante',  properties: ['accurata','lanciabile','leggera'], range: '6/18m', weight: 0.5, cost: '2 PO' },
-  { key: 'greatclub',     name: 'Clava Grande',     category: 'semplice_mischia',   damageDice: '1d8', damageType: 'contundente', properties: ['a_due_mani'],           weight: 5,   cost: '2 PA' },
-  { key: 'handaxe',       name: 'Ascia a Mano',     category: 'semplice_mischia',   damageDice: '1d6', damageType: 'tagliente',   properties: ['leggera','lanciabile'], range: '6/18m', weight: 1,   cost: '5 PO' },
-  { key: 'javelin',       name: 'Giavellotto',      category: 'semplice_mischia',   damageDice: '1d6', damageType: 'perforante',  properties: ['lanciabile'],          range: '9/36m', weight: 1,   cost: '5 PA' },
-  { key: 'light_hammer',  name: 'Martello Leggero', category: 'semplice_mischia',   damageDice: '1d4', damageType: 'contundente', properties: ['leggera','lanciabile'], range: '6/18m', weight: 1,   cost: '2 PO' },
-  { key: 'mace',          name: 'Mazza',            category: 'semplice_mischia',   damageDice: '1d6', damageType: 'contundente', properties: [],                       weight: 2,   cost: '5 PO' },
-  { key: 'quarterstaff',  name: 'Bastone',          category: 'semplice_mischia',   damageDice: '1d6', damageType: 'contundente', damageDice2h: '1d8', properties: ['versatile'],  weight: 2,   cost: '2 PA' },
-  { key: 'sickle',        name: 'Falcetto',         category: 'semplice_mischia',   damageDice: '1d4', damageType: 'tagliente',   properties: ['leggera'],              weight: 1,   cost: '1 PO' },
-  { key: 'spear',         name: 'Lancia',           category: 'semplice_mischia',   damageDice: '1d6', damageType: 'perforante',  damageDice2h: '1d8', properties: ['lanciabile','versatile'], range: '6/18m', weight: 1.5, cost: '1 PO' },
+  { key: 'club',          name: 'Clava',            category: 'semplice_mischia',   damageDice: '1d4', damageType: 'contundente', properties: ['leggera'],              weight: 1,   cost: '1 PA', icon: 'wood-club' },
+  { key: 'dagger',        name: 'Pugnale',          category: 'semplice_mischia',   damageDice: '1d4', damageType: 'perforante',  properties: ['accurata','lanciabile','leggera'], range: '6/18m', weight: 0.5, cost: '2 PO', icon: 'daggers' },
+  { key: 'greatclub',     name: 'Clava Grande',     category: 'semplice_mischia',   damageDice: '1d8', damageType: 'contundente', properties: ['a_due_mani'],           weight: 5,   cost: '2 PA', icon: 'wood-club' },
+  { key: 'handaxe',       name: 'Ascia a Mano',     category: 'semplice_mischia',   damageDice: '1d6', damageType: 'tagliente',   properties: ['leggera','lanciabile'], range: '6/18m', weight: 1,   cost: '5 PO', icon: 'battle-axe' },
+  { key: 'javelin',       name: 'Giavellotto',      category: 'semplice_mischia',   damageDice: '1d6', damageType: 'perforante',  properties: ['lanciabile'],          range: '9/36m', weight: 1,   cost: '5 PA', icon: 'thrown-spear' },
+  { key: 'light_hammer',  name: 'Martello Leggero', category: 'semplice_mischia',   damageDice: '1d4', damageType: 'contundente', properties: ['leggera','lanciabile'], range: '6/18m', weight: 1,   cost: '2 PO', icon: 'warhammer' },
+  { key: 'mace',          name: 'Mazza',            category: 'semplice_mischia',   damageDice: '1d6', damageType: 'contundente', properties: [],                       weight: 2,   cost: '5 PO', icon: 'mace-head' },
+  { key: 'quarterstaff',  name: 'Bastone',          category: 'semplice_mischia',   damageDice: '1d6', damageType: 'contundente', damageDice2h: '1d8', properties: ['versatile'],  weight: 2,   cost: '2 PA', icon: 'wizard-staff' },
+  { key: 'sickle',        name: 'Falcetto',         category: 'semplice_mischia',   damageDice: '1d4', damageType: 'tagliente',   properties: ['leggera'],              weight: 1,   cost: '1 PO', icon: 'sickle' },
+  { key: 'spear',         name: 'Lancia',           category: 'semplice_mischia',   damageDice: '1d6', damageType: 'perforante',  damageDice2h: '1d8', properties: ['lanciabile','versatile'], range: '6/18m', weight: 1.5, cost: '1 PO', icon: 'spear-feather' },
   // ─── Semplici distanza ─────────────────────────────────────────
-  { key: 'crossbow_light',name: 'Balestra Leggera', category: 'semplice_distanza',  damageDice: '1d8', damageType: 'perforante',  properties: ['munizioni','pesante'],  range: '24/96m', weight: 2.5, cost: '25 PO' },
-  { key: 'dart',          name: 'Dardo',            category: 'semplice_distanza',  damageDice: '1d4', damageType: 'perforante',  properties: ['accurata','lanciabile'],range: '6/18m', weight: 0.1, cost: '5 PR' },
-  { key: 'shortbow',      name: 'Arco Corto',       category: 'semplice_distanza',  damageDice: '1d6', damageType: 'perforante',  properties: ['munizioni','a_due_mani'],range: '24/96m', weight: 1,   cost: '25 PO' },
-  { key: 'sling',         name: 'Fionda',           category: 'semplice_distanza',  damageDice: '1d4', damageType: 'contundente', properties: ['munizioni'],            range: '9/36m', weight: 0,   cost: '1 PA' },
+  { key: 'crossbow_light',name: 'Balestra Leggera', category: 'semplice_distanza',  damageDice: '1d8', damageType: 'perforante',  properties: ['munizioni','pesante'],  range: '24/96m', weight: 2.5, cost: '25 PO', icon: 'crossbow' },
+  { key: 'dart',          name: 'Dardo',            category: 'semplice_distanza',  damageDice: '1d4', damageType: 'perforante',  properties: ['accurata','lanciabile'],range: '6/18m', weight: 0.1, cost: '5 PR', icon: 'dart' },
+  { key: 'shortbow',      name: 'Arco Corto',       category: 'semplice_distanza',  damageDice: '1d6', damageType: 'perforante',  properties: ['munizioni','a_due_mani'],range: '24/96m', weight: 1,   cost: '25 PO', icon: 'bow-string' },
+  { key: 'sling',         name: 'Fionda',           category: 'semplice_distanza',  damageDice: '1d4', damageType: 'contundente', properties: ['munizioni'],            range: '9/36m', weight: 0,   cost: '1 PA', icon: 'sling' },
   // ─── Marziali mischia ──────────────────────────────────────────
-  { key: 'battleaxe',     name: 'Ascia da Battaglia',category: 'marziale_mischia',  damageDice: '1d8', damageType: 'tagliente',  damageDice2h: '1d10', properties: ['versatile'],  weight: 2,   cost: '10 PO' },
-  { key: 'flail',         name: 'Flagello',         category: 'marziale_mischia',   damageDice: '1d8', damageType: 'contundente', properties: [],                       weight: 1,   cost: '10 PO' },
-  { key: 'glaive',        name: 'Glaive',           category: 'marziale_mischia',   damageDice: '1d10',damageType: 'tagliente',   properties: ['pesante','portata','a_due_mani'], weight: 3,   cost: '20 PO' },
-  { key: 'greataxe',      name: 'Ascia Grande',     category: 'marziale_mischia',   damageDice: '1d12',damageType: 'tagliente',   properties: ['pesante','a_due_mani'], weight: 3.5, cost: '30 PO' },
-  { key: 'greatsword',    name: 'Spada a Due Mani', category: 'marziale_mischia',   damageDice: '2d6', damageType: 'tagliente',   properties: ['pesante','a_due_mani'], weight: 3,   cost: '50 PO' },
-  { key: 'longsword',     name: 'Spada Lunga',      category: 'marziale_mischia',   damageDice: '1d8', damageType: 'tagliente',  damageDice2h: '1d10', properties: ['versatile'],  weight: 1.5, cost: '15 PO' },
-  { key: 'rapier',        name: 'Stocco',           category: 'marziale_mischia',   damageDice: '1d8', damageType: 'perforante',  properties: ['accurata'],             weight: 1,   cost: '25 PO' },
-  { key: 'scimitar',      name: 'Scimitarra',       category: 'marziale_mischia',   damageDice: '1d6', damageType: 'tagliente',   properties: ['accurata','leggera'],   weight: 1.5, cost: '25 PO' },
-  { key: 'shortsword',    name: 'Spada Corta',      category: 'marziale_mischia',   damageDice: '1d6', damageType: 'perforante',  properties: ['accurata','leggera'],   weight: 1,   cost: '10 PO' },
-  { key: 'warhammer',     name: 'Martello da Guerra',category: 'marziale_mischia',  damageDice: '1d8', damageType: 'contundente', damageDice2h: '1d10', properties: ['versatile'],  weight: 2,   cost: '15 PO' },
-  { key: 'lance',         name: 'Lancia da Cavaliere',category: 'marziale_mischia', damageDice: '1d12',damageType: 'perforante',  properties: ['portata','speciale'],  weight: 3,   cost: '10 PO' },
-  { key: 'maul',          name: 'Mazza Ferrata',    category: 'marziale_mischia',   damageDice: '2d6', damageType: 'contundente', properties: ['pesante','a_due_mani'], weight: 5,   cost: '10 PO' },
-  { key: 'morningstar',   name: 'Spada Stellata',   category: 'marziale_mischia',   damageDice: '1d8', damageType: 'perforante',  properties: [],                       weight: 2,   cost: '15 PO' },
-  { key: 'pike',          name: 'Picca',            category: 'marziale_mischia',   damageDice: '1d10',damageType: 'perforante',  properties: ['pesante','portata','a_due_mani'], weight: 9, cost: '5 PO' },
-  { key: 'trident',       name: 'Tridente',         category: 'marziale_mischia',   damageDice: '1d6', damageType: 'perforante', damageDice2h: '1d8', properties: ['lanciabile','versatile'], range: '6/18m', weight: 2, cost: '5 PO' },
-  { key: 'war_pick',      name: 'Piccozza da Guerra',category: 'marziale_mischia',  damageDice: '1d8', damageType: 'perforante',  properties: [],                       weight: 1,   cost: '5 PO' },
-  { key: 'whip',          name: 'Frustino',         category: 'marziale_mischia',   damageDice: '1d4', damageType: 'tagliente',   properties: ['accurata','portata'],  weight: 1,   cost: '2 PO' },
-  { key: 'hand_crossbow', name: 'Balestra a Mano',  category: 'marziale_distanza',  damageDice: '1d6', damageType: 'perforante',  properties: ['leggera','munizioni'],  range: '9/36m',  weight: 1.5, cost: '75 PO' },
-  { key: 'crossbow_heavy',name: 'Balestra Pesante', category: 'marziale_distanza',  damageDice: '1d10',damageType: 'perforante',  properties: ['pesante','munizioni','a_due_mani'], range: '30/120m', weight: 9, cost: '50 PO' },
-  { key: 'blowgun',       name: 'Cerbottana',       category: 'marziale_distanza',  damageDice: '1',   damageType: 'perforante',  properties: ['munizioni'],            range: '7,5/30m', weight: 1, cost: '10 PO' },
-  { key: 'longbow',       name: 'Arco Lungo',       category: 'marziale_distanza',  damageDice: '1d8', damageType: 'perforante',  properties: ['munizioni','pesante','a_due_mani'], range: '45/180m', weight: 1, cost: '50 PO' },
+  { key: 'battleaxe',     name: 'Ascia da Battaglia',category: 'marziale_mischia',  damageDice: '1d8', damageType: 'tagliente',  damageDice2h: '1d10', properties: ['versatile'],  weight: 2,   cost: '10 PO', icon: 'battle-axe' },
+  { key: 'flail',         name: 'Flagello',         category: 'marziale_mischia',   damageDice: '1d8', damageType: 'contundente', properties: [],                       weight: 1,   cost: '10 PO', icon: 'flail' },
+  { key: 'glaive',        name: 'Glaive',           category: 'marziale_mischia',   damageDice: '1d10',damageType: 'tagliente',   properties: ['pesante','portata','a_due_mani'], weight: 3,   cost: '20 PO', icon: 'glaive' },
+  { key: 'greataxe',      name: 'Ascia Grande',     category: 'marziale_mischia',   damageDice: '1d12',damageType: 'tagliente',   properties: ['pesante','a_due_mani'], weight: 3.5, cost: '30 PO', icon: 'war-axe' },
+  { key: 'greatsword',    name: 'Spada a Due Mani', category: 'marziale_mischia',   damageDice: '2d6', damageType: 'tagliente',   properties: ['pesante','a_due_mani'], weight: 3,   cost: '50 PO', icon: 'two-handed-sword' },
+  { key: 'longsword',     name: 'Spada Lunga',      category: 'marziale_mischia',   damageDice: '1d8', damageType: 'tagliente',  damageDice2h: '1d10', properties: ['versatile'],  weight: 1.5, cost: '15 PO', icon: 'broadsword' },
+  { key: 'rapier',        name: 'Stocco',           category: 'marziale_mischia',   damageDice: '1d8', damageType: 'perforante',  properties: ['accurata'],             weight: 1,   cost: '25 PO', icon: 'piercing-sword' },
+  { key: 'scimitar',      name: 'Scimitarra',       category: 'marziale_mischia',   damageDice: '1d6', damageType: 'tagliente',   properties: ['accurata','leggera'],   weight: 1.5, cost: '25 PO', icon: 'crescent-blade' },
+  { key: 'shortsword',    name: 'Spada Corta',      category: 'marziale_mischia',   damageDice: '1d6', damageType: 'perforante',  properties: ['accurata','leggera'],   weight: 1,   cost: '10 PO', icon: 'shard-sword' },
+  { key: 'warhammer',     name: 'Martello da Guerra',category: 'marziale_mischia',  damageDice: '1d8', damageType: 'contundente', damageDice2h: '1d10', properties: ['versatile'],  weight: 2,   cost: '15 PO', icon: 'warhammer' },
+  { key: 'lance',         name: 'Lancia da Cavaliere',category: 'marziale_mischia', damageDice: '1d12',damageType: 'perforante',  properties: ['portata','speciale'],  weight: 3,   cost: '10 PO', icon: 'barbed-spear' },
+  { key: 'maul',          name: 'Mazza Ferrata',    category: 'marziale_mischia',   damageDice: '2d6', damageType: 'contundente', properties: ['pesante','a_due_mani'], weight: 5,   cost: '10 PO', icon: 'warhammer' },
+  { key: 'morningstar',   name: 'Spada Stellata',   category: 'marziale_mischia',   damageDice: '1d8', damageType: 'perforante',  properties: [],                       weight: 2,   cost: '15 PO', icon: 'spiked-mace' },
+  { key: 'pike',          name: 'Picca',            category: 'marziale_mischia',   damageDice: '1d10',damageType: 'perforante',  properties: ['pesante','portata','a_due_mani'], weight: 9, cost: '5 PO', icon: 'spears' },
+  { key: 'trident',       name: 'Tridente',         category: 'marziale_mischia',   damageDice: '1d6', damageType: 'perforante', damageDice2h: '1d8', properties: ['lanciabile','versatile'], range: '6/18m', weight: 2, cost: '5 PO', icon: 'trident' },
+  { key: 'war_pick',      name: 'Piccozza da Guerra',category: 'marziale_mischia',  damageDice: '1d8', damageType: 'perforante',  properties: [],                       weight: 1,   cost: '5 PO', icon: 'war-pick' },
+  { key: 'whip',          name: 'Frustino',         category: 'marziale_mischia',   damageDice: '1d4', damageType: 'tagliente',   properties: ['accurata','portata'],  weight: 1,   cost: '2 PO', icon: 'whip' },
+  { key: 'hand_crossbow', name: 'Balestra a Mano',  category: 'marziale_distanza',  damageDice: '1d6', damageType: 'perforante',  properties: ['leggera','munizioni'],  range: '9/36m',  weight: 1.5, cost: '75 PO', icon: 'crossbow' },
+  { key: 'crossbow_heavy',name: 'Balestra Pesante', category: 'marziale_distanza',  damageDice: '1d10',damageType: 'perforante',  properties: ['pesante','munizioni','a_due_mani'], range: '30/120m', weight: 9, cost: '50 PO', icon: 'crossbow' },
+  { key: 'blowgun',       name: 'Cerbottana',       category: 'marziale_distanza',  damageDice: '1',   damageType: 'perforante',  properties: ['munizioni'],            range: '7,5/30m', weight: 1, cost: '10 PO', icon: 'straight-pipe' },
+  { key: 'longbow',       name: 'Arco Lungo',       category: 'marziale_distanza',  damageDice: '1d8', damageType: 'perforante',  properties: ['munizioni','pesante','a_due_mani'], range: '45/180m', weight: 1, cost: '50 PO', icon: 'bow-arrow' },
 ];
 
 export type ArmorType = 'leggera' | 'media' | 'pesante' | 'scudo';
@@ -70,26 +71,27 @@ export interface SrdArmor {
   strRequired?: number;
   weight: number;
   cost: string;
+  icon: string;             // nome icona @iconify-json/game-icons (es. "shield")
 }
 
 export const ARMORS: SrdArmor[] = [
   // Leggere
-  { key: 'padded',          name: 'Imbottita',          type: 'leggera',  baseAC: 11, maxDexBonus: null, stealthDisadvantage: true,  weight: 4,   cost: '5 PO' },
-  { key: 'leather',         name: 'Di Cuoio',           type: 'leggera',  baseAC: 11, maxDexBonus: null, stealthDisadvantage: false, weight: 5,   cost: '10 PO' },
-  { key: 'studded_leather', name: 'Di Cuoio Borchiato', type: 'leggera',  baseAC: 12, maxDexBonus: null, stealthDisadvantage: false, weight: 6.5, cost: '45 PO' },
+  { key: 'padded',          name: 'Imbottita',          type: 'leggera',  baseAC: 11, maxDexBonus: null, stealthDisadvantage: true,  weight: 4,   cost: '5 PO', icon: 'armor-vest' },
+  { key: 'leather',         name: 'Di Cuoio',           type: 'leggera',  baseAC: 11, maxDexBonus: null, stealthDisadvantage: false, weight: 5,   cost: '10 PO', icon: 'leather-armor' },
+  { key: 'studded_leather', name: 'Di Cuoio Borchiato', type: 'leggera',  baseAC: 12, maxDexBonus: null, stealthDisadvantage: false, weight: 6.5, cost: '45 PO', icon: 'spiked-armor' },
   // Medie
-  { key: 'hide',            name: 'Di Pelle Grezza',    type: 'media',    baseAC: 12, maxDexBonus: 2,    stealthDisadvantage: false, weight: 6,   cost: '10 PO' },
-  { key: 'chain_shirt',     name: 'Cotta di Maglia',    type: 'media',    baseAC: 13, maxDexBonus: 2,    stealthDisadvantage: false, weight: 10,  cost: '50 PO' },
-  { key: 'scale_mail',      name: 'Di Scaglie',         type: 'media',    baseAC: 14, maxDexBonus: 2,    stealthDisadvantage: true,  weight: 20,  cost: '50 PO' },
-  { key: 'breastplate',     name: 'Pettorale',          type: 'media',    baseAC: 14, maxDexBonus: 2,    stealthDisadvantage: false, weight: 10,  cost: '400 PO' },
-  { key: 'half_plate',      name: 'Mezza Armatura',     type: 'media',    baseAC: 15, maxDexBonus: 2,    stealthDisadvantage: true,  weight: 20,  cost: '750 PO' },
+  { key: 'hide',            name: 'Di Pelle Grezza',    type: 'media',    baseAC: 12, maxDexBonus: 2,    stealthDisadvantage: false, weight: 6,   cost: '10 PO', icon: 'layered-armor' },
+  { key: 'chain_shirt',     name: 'Cotta di Maglia',    type: 'media',    baseAC: 13, maxDexBonus: 2,    stealthDisadvantage: false, weight: 10,  cost: '50 PO', icon: 'chain-mail' },
+  { key: 'scale_mail',      name: 'Di Scaglie',         type: 'media',    baseAC: 14, maxDexBonus: 2,    stealthDisadvantage: true,  weight: 20,  cost: '50 PO', icon: 'scale-mail' },
+  { key: 'breastplate',     name: 'Pettorale',          type: 'media',    baseAC: 14, maxDexBonus: 2,    stealthDisadvantage: false, weight: 10,  cost: '400 PO', icon: 'breastplate' },
+  { key: 'half_plate',      name: 'Mezza Armatura',     type: 'media',    baseAC: 15, maxDexBonus: 2,    stealthDisadvantage: true,  weight: 20,  cost: '750 PO', icon: 'armor-cuisses' },
   // Pesanti
-  { key: 'ring_mail',       name: 'Di Anelli',          type: 'pesante',  baseAC: 14, maxDexBonus: 0,    stealthDisadvantage: true,  weight: 20,  cost: '30 PO' },
-  { key: 'chain_mail',      name: 'Cotta di Piastre',   type: 'pesante',  baseAC: 16, maxDexBonus: 0,    stealthDisadvantage: true,  strRequired: 13, weight: 27.5, cost: '75 PO' },
-  { key: 'splint',          name: 'A Stecche',          type: 'pesante',  baseAC: 17, maxDexBonus: 0,    stealthDisadvantage: true,  strRequired: 15, weight: 30,  cost: '200 PO' },
-  { key: 'plate',           name: 'A Piastre',          type: 'pesante',  baseAC: 18, maxDexBonus: 0,    stealthDisadvantage: true,  strRequired: 15, weight: 32.5, cost: '1500 PO' },
+  { key: 'ring_mail',       name: 'Di Anelli',          type: 'pesante',  baseAC: 14, maxDexBonus: 0,    stealthDisadvantage: true,  weight: 20,  cost: '30 PO', icon: 'lamellar' },
+  { key: 'chain_mail',      name: 'Cotta di Piastre',   type: 'pesante',  baseAC: 16, maxDexBonus: 0,    stealthDisadvantage: true,  strRequired: 13, weight: 27.5, cost: '75 PO', icon: 'metal-plate' },
+  { key: 'splint',          name: 'A Stecche',          type: 'pesante',  baseAC: 17, maxDexBonus: 0,    stealthDisadvantage: true,  strRequired: 15, weight: 30,  cost: '200 PO', icon: 'chest-armor' },
+  { key: 'plate',           name: 'A Piastre',          type: 'pesante',  baseAC: 18, maxDexBonus: 0,    stealthDisadvantage: true,  strRequired: 15, weight: 32.5, cost: '1500 PO', icon: 'trench-body-armor' },
   // Scudo
-  { key: 'shield',          name: 'Scudo',              type: 'scudo',    baseAC: 2,  maxDexBonus: null, stealthDisadvantage: false, weight: 3,   cost: '10 PO' },
+  { key: 'shield',          name: 'Scudo',              type: 'scudo',    baseAC: 2,  maxDexBonus: null, stealthDisadvantage: false, weight: 3,   cost: '10 PO', icon: 'shield' },
 ];
 
 export const ITEM_RARITIES = ['comune', 'non comune', 'raro', 'molto raro', 'leggendario', 'artefatto'] as const;

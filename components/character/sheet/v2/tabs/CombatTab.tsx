@@ -6,7 +6,8 @@ import { useToast } from '../useToast';
 import { useClassResource } from '@/lib/db/actions';
 import { abilityModifier, formatModifier } from '@/lib/rules/calculations';
 import { innerBox } from '../styles';
-import { getSrdItemDescription } from '@/lib/srd/itemDescription';
+import { getSrdItemDescription, getSrdItemIcon } from '@/lib/srd/itemDescription';
+import SrdIcon from '../SrdIcon';
 import type { CharacterWeapon, PinnedFeature, CharacterResource, CharacterStats } from '@/lib/db/schema';
 
 export interface CombatTabProps {
@@ -66,9 +67,12 @@ export default function CombatTab({ characterId, weapons, stats, prof, pinnedAll
           onSelect={setSelectedAttackId}
           emptyDetailText="Seleziona un attacco per vederne i dettagli"
           renderListItem={(item) => (
-            <div style={{ padding: '7px 8px', borderRadius: 'var(--r-sm)' }}>
-              <div style={{ fontFamily: 'var(--font-serif)', fontSize: '12px', color: 'var(--fg-1)' }}>{item.weapon.name}</div>
-              <div style={{ fontSize: '9px', color: 'var(--fg-3)' }}>{item.weapon.damageType}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 8px', borderRadius: 'var(--r-sm)' }}>
+              <SrdIcon icon={getSrdItemIcon(item.weapon)} />
+              <div>
+                <div style={{ fontFamily: 'var(--font-serif)', fontSize: '12px', color: 'var(--fg-1)' }}>{item.weapon.name}</div>
+                <div style={{ fontSize: '9px', color: 'var(--fg-3)' }}>{item.weapon.damageType}</div>
+              </div>
             </div>
           )}
           renderDetail={(item) => {
@@ -77,7 +81,10 @@ export default function CombatTab({ characterId, weapons, stats, prof, pinnedAll
             const dmgMod = abilityModifier(stats[w.attackStat]) + (w.magicBonus ?? 0);
             return (
               <div>
-                <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)', marginBottom: 12 }}>{w.name}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                  <SrdIcon icon={getSrdItemIcon(w)} size={24} color="var(--gold)" />
+                  <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 700, color: 'var(--fg-1)' }}>{w.name}</div>
+                </div>
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                   <div style={{ ...innerBox, padding: '5px 10px' }}>
                     <div style={{ fontSize: '7px', color: 'var(--fg-3)', textTransform: 'uppercase' }}>Tiro per Colpire</div>
