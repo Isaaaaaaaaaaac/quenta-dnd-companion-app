@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { getSrdItemDescription } from './itemDescription';
+import { WEAPONS, ARMORS } from './equipment';
+import { GEAR_ITEMS } from './gear';
+import { MAGIC_ITEMS } from './magicItems';
 
 describe('getSrdItemDescription', () => {
   it('returns null when nothing matches by key or name', () => {
@@ -39,8 +42,38 @@ describe('getSrdItemDescription', () => {
     expect(desc).toContain('velocità');
   });
 
-  it('returns null for a gear item with no mechanical note (matches the real SRD, which has no rules text for it)', () => {
-    expect(getSrdItemDescription({ srdKey: 'book', name: 'Libro' })).toBeNull();
+  it('returns a flavor description for a gear item with no official SRD rules text', () => {
+    // 'Libro' non ha testo meccanico nell'SRD ufficiale, ma ogni voce del
+    // dataset deve avere comunque una descrizione (anche solo funzionale/flavor).
+    expect(getSrdItemDescription({ srdKey: 'book', name: 'Libro' })).not.toBeNull();
+  });
+
+  it('every gear item in the dataset has a description', () => {
+    for (const item of GEAR_ITEMS) {
+      const desc = getSrdItemDescription({ srdKey: item.key, name: item.name });
+      expect(desc, `oggetto senza descrizione: ${item.name} (${item.key})`).not.toBeNull();
+    }
+  });
+
+  it('every weapon in the dataset has a description', () => {
+    for (const weapon of WEAPONS) {
+      const desc = getSrdItemDescription({ srdKey: weapon.key, name: weapon.name });
+      expect(desc, `arma senza descrizione: ${weapon.name} (${weapon.key})`).not.toBeNull();
+    }
+  });
+
+  it('every armor in the dataset has a description', () => {
+    for (const armor of ARMORS) {
+      const desc = getSrdItemDescription({ srdKey: armor.key, name: armor.name });
+      expect(desc, `armatura senza descrizione: ${armor.name} (${armor.key})`).not.toBeNull();
+    }
+  });
+
+  it('every magic item in the dataset has a description', () => {
+    for (const item of MAGIC_ITEMS) {
+      const desc = getSrdItemDescription({ srdKey: item.key, name: item.name });
+      expect(desc, `oggetto magico senza descrizione: ${item.name} (${item.key})`).not.toBeNull();
+    }
   });
 
   // ── Dati reali osservati nel database: molti item non hanno mai avuto
