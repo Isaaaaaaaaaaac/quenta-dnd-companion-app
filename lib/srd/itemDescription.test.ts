@@ -69,4 +69,22 @@ describe('getSrdItemDescription', () => {
     const desc = getSrdItemDescription({ srdKey: 'torcia', name: 'Torcia' });
     expect(desc).not.toBeNull();
   });
+
+  // ── Voci aggiunte perché assenti dal dataset SRD pur esistendo nell'SRD reale ──
+
+  it('describes the previously-missing rope item', () => {
+    const desc = getSrdItemDescription({ srdKey: 'rope_hempen', name: 'Corda di Canapa (15 m)' });
+    expect(desc).toContain('CD 17 Forza');
+  });
+
+  it('describes a previously-missing martial melee weapon (lance)', () => {
+    const desc = getSrdItemDescription({ srdKey: 'lance', name: 'Lancia da Cavaliere' });
+    expect(desc).toContain('1d12 perforante');
+    expect(desc).toContain('Portata');
+  });
+
+  it('describes a previously-missing martial ranged weapon (heavy crossbow)', () => {
+    const desc = getSrdItemDescription({ srdKey: 'crossbow_heavy', name: 'Balestra Pesante' });
+    expect(desc).toContain('Gittata: 30/120m.');
+  });
 });

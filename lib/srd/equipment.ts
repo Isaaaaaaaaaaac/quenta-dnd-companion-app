@@ -45,7 +45,16 @@ export const WEAPONS: SrdWeapon[] = [
   { key: 'scimitar',      name: 'Scimitarra',       category: 'marziale_mischia',   damageDice: '1d6', damageType: 'tagliente',   properties: ['accurata','leggera'],   weight: 1.5, cost: '25 PO' },
   { key: 'shortsword',    name: 'Spada Corta',      category: 'marziale_mischia',   damageDice: '1d6', damageType: 'perforante',  properties: ['accurata','leggera'],   weight: 1,   cost: '10 PO' },
   { key: 'warhammer',     name: 'Martello da Guerra',category: 'marziale_mischia',  damageDice: '1d8', damageType: 'contundente', damageDice2h: '1d10', properties: ['versatile'],  weight: 2,   cost: '15 PO' },
+  { key: 'lance',         name: 'Lancia da Cavaliere',category: 'marziale_mischia', damageDice: '1d12',damageType: 'perforante',  properties: ['portata','speciale'],  weight: 3,   cost: '10 PO' },
+  { key: 'maul',          name: 'Mazza Ferrata',    category: 'marziale_mischia',   damageDice: '2d6', damageType: 'contundente', properties: ['pesante','a_due_mani'], weight: 5,   cost: '10 PO' },
+  { key: 'morningstar',   name: 'Spada Stellata',   category: 'marziale_mischia',   damageDice: '1d8', damageType: 'perforante',  properties: [],                       weight: 2,   cost: '15 PO' },
+  { key: 'pike',          name: 'Picca',            category: 'marziale_mischia',   damageDice: '1d10',damageType: 'perforante',  properties: ['pesante','portata','a_due_mani'], weight: 9, cost: '5 PO' },
+  { key: 'trident',       name: 'Tridente',         category: 'marziale_mischia',   damageDice: '1d6', damageType: 'perforante', damageDice2h: '1d8', properties: ['lanciabile','versatile'], range: '6/18m', weight: 2, cost: '5 PO' },
+  { key: 'war_pick',      name: 'Piccozza da Guerra',category: 'marziale_mischia',  damageDice: '1d8', damageType: 'perforante',  properties: [],                       weight: 1,   cost: '5 PO' },
+  { key: 'whip',          name: 'Frustino',         category: 'marziale_mischia',   damageDice: '1d4', damageType: 'tagliente',   properties: ['accurata','portata'],  weight: 1,   cost: '2 PO' },
   { key: 'hand_crossbow', name: 'Balestra a Mano',  category: 'marziale_distanza',  damageDice: '1d6', damageType: 'perforante',  properties: ['leggera','munizioni'],  range: '9/36m',  weight: 1.5, cost: '75 PO' },
+  { key: 'crossbow_heavy',name: 'Balestra Pesante', category: 'marziale_distanza',  damageDice: '1d10',damageType: 'perforante',  properties: ['pesante','munizioni','a_due_mani'], range: '30/120m', weight: 9, cost: '50 PO' },
+  { key: 'blowgun',       name: 'Cerbottana',       category: 'marziale_distanza',  damageDice: '1',   damageType: 'perforante',  properties: ['munizioni'],            range: '7,5/30m', weight: 1, cost: '10 PO' },
   { key: 'longbow',       name: 'Arco Lungo',       category: 'marziale_distanza',  damageDice: '1d8', damageType: 'perforante',  properties: ['munizioni','pesante','a_due_mani'], range: '45/180m', weight: 1, cost: '50 PO' },
 ];
 
