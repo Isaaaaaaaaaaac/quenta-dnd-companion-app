@@ -10,8 +10,8 @@ describe('StatsTab', () => {
   it('renders all 6 ability score badges with their modifier', () => {
     render(<StatsTab stats={stats} savingThrows={savingThrows} skillMap={skillMap} level={6} />);
     expect(screen.getAllByText('FOR').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('+2').length).toBeGreaterThan(0); // str mod
-    expect(screen.getAllByText('+3').length).toBeGreaterThan(0); // wis mod
+    expect(screen.getByTestId('ability-mod-str')).toHaveTextContent('+2');
+    expect(screen.getByTestId('ability-mod-wis')).toHaveTextContent('+3');
   });
 
   it('renders all 6 saving throws with proficiency-adjusted bonus', () => {

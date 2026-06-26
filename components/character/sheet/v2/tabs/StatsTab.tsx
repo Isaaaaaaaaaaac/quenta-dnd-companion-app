@@ -26,7 +26,7 @@ export default function StatsTab({ stats, savingThrows, skillMap, level }: Stats
                 <span style={{ fontSize: '8px', fontWeight: 600, letterSpacing: '.06em', color: 'var(--fg-2)' }}>{ABILITY_SHORT[ab]}</span>
                 <span style={{ fontSize: '10px', color: 'var(--fg-3)' }}>{stats[ab]}</span>
               </div>
-              <span style={{ fontFamily: 'var(--font-serif)', fontSize: '26px', fontWeight: 700, color: modColor(mod) }}>
+              <span data-testid={`ability-mod-${ab}`} style={{ fontFamily: 'var(--font-serif)', fontSize: '26px', fontWeight: 700, color: modColor(mod) }}>
                 {formatModifier(mod)}
               </span>
             </div>
